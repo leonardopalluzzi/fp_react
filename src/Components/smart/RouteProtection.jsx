@@ -4,7 +4,10 @@ import { Navigate } from "react-router-dom";
 export default function RouteProtection({ children }) {
     const { token } = useAuthContext();
 
-    if (!token.response) {
+    console.log(token);
+
+
+    if (token.state != "success") {
         return <Navigate to="/login" replace />
     }
 

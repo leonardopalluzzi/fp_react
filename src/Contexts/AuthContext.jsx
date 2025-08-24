@@ -13,11 +13,13 @@ function AuthProvider({ children }) {
     });
 
     useEffect(() => {
-        localStorage.getItem("token")
-        if (token) {
+        const checkForToken = localStorage.getItem('token')
+        console.log(checkForToken);
+
+        if (checkForToken) {
             setToken({
                 state: 'success',
-                response: token
+                response: checkForToken
             })
         }
     }, [])
