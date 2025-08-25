@@ -7,9 +7,10 @@ import EmployeeDashboard from "./Pages/Employee/EmployeeDashboard"
 import CustomerDashboard from "./Pages/Customer/CustomerDashboard"
 import Login from "./Pages/Common/Login"
 import Register from "./Pages/Common/Register"
-import RouteProtection from "./Components/smart/RouteProtection"
 import { AuthProvider } from "./Contexts/AuthContext"
 import { Navigate } from "react-router-dom";
+import RouteProtectionLayout from "./Layouts/RouteProtectionLayout"
+import Logout from "./Pages/Common/Logout"
 
 
 
@@ -17,53 +18,40 @@ function App() {
 
   return (
     <>
-      <AuthProvider>
-        <BrowserRouter>
+
+      <BrowserRouter>
+        <AuthProvider>
+
           <Routes>
             <Route path="/login" Component={Login} />
             <Route path="/register" Component={Register} />
 
-            {/* admin layout */}
-            <Route Component={AdminLayout}>
-              <Route path="/admindashboard" element={
-                <>
-                  <RouteProtection>
-                    <AdminDashboard />
-                  </RouteProtection>
-                </>
-              } />
+            <Route Component={RouteProtectionLayout}>
+              {/* admin layout */}
+              <Route Component={AdminLayout}>
+                <Route path="/admindashboard" Component={AdminDashboard} />
+              </Route>
 
+
+              {/* employee layout */}
+              <Route Component={EmployeeLayout}>
+                <Route path="/employeedashboard" Component={EmployeeDashboard} />
+              </Route>
+
+              {/* customer layout */}
+              <Route Component={CustomerLayout}>
+                <Route path="/customerdashboard" Component={CustomerDashboard} />
+              </Route>
+
+              <Route path="/logout" Component={Logout} />
             </Route>
 
-            {/* employee layout */}
-            <Route Component={EmployeeLayout}>
-              <Route path="/employeedashboard" element={
-                <>
-                  <RouteProtection>
-                    <EmployeeDashboard />
-                  </RouteProtection>
-                </>
-              } />
 
-
-            </Route>
-
-            {/* customer layout */}
-            <Route Component={CustomerLayout}>
-              <Route path="/customerdashboard" element={
-                <>
-                  <RouteProtection>
-                    <CustomerDashboard />
-                  </RouteProtection>
-                </>
-              } />
-
-
-            </Route>
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+        </AuthProvider>
+      </BrowserRouter >
+
     </>
   )
 }
