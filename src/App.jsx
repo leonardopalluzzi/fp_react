@@ -11,6 +11,7 @@ import { AuthProvider } from "./Contexts/AuthContext"
 import { Navigate } from "react-router-dom";
 import RouteProtectionLayout from "./Layouts/RouteProtectionLayout"
 import Logout from "./Pages/Common/Logout"
+import RenderRoutes from "./Components/RoutesProtection/RenderRoutes"
 
 
 
@@ -21,32 +22,15 @@ function App() {
 
       <BrowserRouter>
         <AuthProvider>
-
           <Routes>
             <Route path="/login" Component={Login} />
             <Route path="/register" Component={Register} />
+            <Route path="/logout" Component={Logout} />
 
-            <Route Component={RouteProtectionLayout}>
-              {/* admin layout */}
-              <Route Component={AdminLayout}>
-                <Route path="/admindashboard" Component={AdminDashboard} />
-              </Route>
+            {/* Qui inseriamo le rotte dinamiche protette */}
+            <Route path="/*" Component={RenderRoutes} />
 
-
-              {/* employee layout */}
-              <Route Component={EmployeeLayout}>
-                <Route path="/employeedashboard" Component={EmployeeDashboard} />
-              </Route>
-
-              {/* customer layout */}
-              <Route Component={CustomerLayout}>
-                <Route path="/customerdashboard" Component={CustomerDashboard} />
-              </Route>
-
-              <Route path="/logout" Component={Logout} />
-            </Route>
-
-
+            {/* fallback */}
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </AuthProvider>
