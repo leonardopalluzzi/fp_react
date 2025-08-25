@@ -21,6 +21,11 @@ function AuthProvider({ children }) {
                 state: 'success',
                 response: checkForToken
             })
+        } else {
+            setToken({
+                state: "error",
+                message: "User Not Logged"
+            })
         }
     }, [])
 
