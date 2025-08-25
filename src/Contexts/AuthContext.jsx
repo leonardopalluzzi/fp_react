@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { Role } from "../Js/Roles";
 
 const AuthContext = createContext()
 
@@ -28,6 +29,7 @@ function AuthProvider({ children }) {
                 .then(res => res.json())
                 .then(data => {
                     console.log(jwtDecode(data.token));
+                    const decoded = jwtDecode(data.token)
 
                     setCurrentUser({
                         state: 'success',
@@ -36,6 +38,19 @@ function AuthProvider({ children }) {
                     })
 
                     localStorage.setItem("token", data.token);
+
+                    if (decoded != null) {
+                        if (decoded.roles.includes(Role.SUPERADMIN)) {
+                            navigate('/admin/dashboard')
+                        } else if (decoded.roles.includes(Role.ADMIN)) {
+                            navigate('/admin/dashboard')
+                        } else if (decoded.roles.includes(Role.EMPLOYEE)) {
+                            navigate('/employee/dashboard')
+                        } else if (decoded.roles.includes(Role.CUSTOMER)) {
+                            navigate('/customer/dashboard')
+                        }
+                    }
+
                 })
                 .catch(err => {
                     setCurrentUser({

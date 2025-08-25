@@ -27,11 +27,9 @@ function App() {
             <Route path="/register" Component={Register} />
             <Route path="/logout" Component={Logout} />
 
-            {/* Qui inseriamo le rotte dinamiche protette */}
+            {/* renderizzo rotte dinamicamente in base ai ruoli */}
             <Route path="/*" Component={RenderRoutes} />
 
-            {/* fallback */}
-            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter >

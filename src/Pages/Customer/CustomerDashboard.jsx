@@ -1,5 +1,4 @@
 export default function CustomerDashboard() {
-    console.log('poagina dah customer');
 
     return (
         <>

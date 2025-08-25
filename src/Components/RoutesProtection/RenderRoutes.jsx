@@ -1,19 +1,11 @@
 import { useAuthContext } from "../../Contexts/AuthContext";
 import { Route, Routes } from "react-router-dom";
 import { routes } from '../../Js/Routes';
+import { Navigate } from "react-router-dom";
 
 export default function RenderRoutes() {
 
-
-
     const { currentUser } = useAuthContext()
-
-    let allowedRoutes;
-
-    if (currentUser.state == 'success') {
-        allowedRoutes = routes.filter(route => route.roles.some(role => currentUser.details.roles.includes(role)))
-    }
-
 
     switch (currentUser.state) {
         case 'loading':
@@ -30,13 +22,9 @@ export default function RenderRoutes() {
                 </>
             )
         case 'success':
-
-
+            const allowedRoutes = routes.filter(route => route.roles.some(role => currentUser.details.roles.includes(role)))
             return (
-
                 <Routes>
-                    <Route element={<h1>cacca</h1>} />
-
                     {
                         allowedRoutes.map((route, i) => {
 
@@ -52,6 +40,7 @@ export default function RenderRoutes() {
                             )
                         })
                     }
+                    <Route path="*" element={<Navigate to="/login" replace />} />
                 </Routes>
             )
     }
