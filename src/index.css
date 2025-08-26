@@ -26,3 +26,54 @@ button.primary {
     background-color: var(--color-error);
     color: var(--color-text-light);
 }
+
+.aside_wrapper {
+    width: 5%;
+    min-width: 60px;
+    float: left;
+    height: 100vh;
+}
+
+.aside {
+    width: 5%;
+    width: 5%;
+    padding: 1rem;
+    height: 100vh;
+    position: fixed;
+    overflow: hidden;
+    transition: width 0.5s;
+
+    .aside_text {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s;
+        white-space: nowrap;
+
+    }
+
+    a {
+        color: var(--color-text);
+        text-decoration: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s;
+        display: flex;
+        align-items: center;
+
+
+        &:hover {
+            color: var(--color-primary);
+        }
+    }
+
+    &:hover {
+        width: 25%;
+        max-width: 25%;
+
+        .aside_text,
+        a {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
