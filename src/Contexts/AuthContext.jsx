@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Role } from "../Js/Roles";
 
 const AuthContext = createContext()
@@ -59,9 +59,14 @@ function AuthProvider({ children }) {
                     })
                 })
         } else {
-            return;
+            redoLogin(user)
         }
 
+    }
+
+    function redoLogin(user) {
+        localStorage.removeItem('token')
+        login(user)
     }
 
     function logout() {

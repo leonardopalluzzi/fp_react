@@ -2,6 +2,7 @@ export default function RegisterFormUi({ user, onsubmit, onchange }) {
     return (
         <>
             <div className="container my-5">
+                <h1>Register</h1>
                 <form onSubmit={(e) => { e.preventDefault(); onsubmit() }}>
                     <div class="mb-3">
                         <label for="" class="form-label">Username</label>

@@ -1,7 +1,7 @@
 export default function LoginFormUi({ user, onchange, onsubmit }) {
     return (
         <>
-            <div className="container">
+            <div className="container my-5">
                 <h1>Login</h1>
                 <form action="" onSubmit={(e) => { e.preventDefault(); onsubmit() }}>
                     <div class="mb-3 my-4">
@@ -33,13 +33,11 @@ export default function LoginFormUi({ user, onchange, onsubmit }) {
                         </div>
 
                     </div>
-                    <button className="btn btn-primary" type="submit">Login</button>
+                    <div className="d-flex align-items-center justify-content-center">
+                        <button className="btn btn-primary fs-4" type="submit">Login</button>
 
+                    </div>
                 </form>
-                <div className="actions d-flex align-items-center justify-content-center gap-4">
-                    <button className="btn btn-primary">Register</button>
-                    <button className="btn btn-primary">Recover Password</button>
-                </div>
             </div>
         </>
     )
