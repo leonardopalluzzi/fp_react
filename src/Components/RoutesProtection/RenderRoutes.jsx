@@ -15,6 +15,9 @@ export default function RenderRoutes() {
                 </>
             )
         case 'error':
+            if (!currentUser.token) {
+                return <Navigate to={'/login'} />
+            }
             return (
                 <>
                     <h1>Error</h1>
