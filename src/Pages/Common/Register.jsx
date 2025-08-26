@@ -20,6 +20,9 @@ export default function Register() {
     }
 
     function handleSubmit() {
+        if (user.password == '' || user.username == '' || user.email == '') {
+            return throwMessage('error', ['fill all the required fields'])
+        }
         register(user);
     }
     return (

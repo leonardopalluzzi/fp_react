@@ -17,6 +17,7 @@ export default function LoginFormUi({ user, onchange, onsubmit }) {
                             id=""
                             aria-describedby="helpId"
                             placeholder="mario rossi"
+                            required
                         />
                         <small id="helpId" class="form-text text-muted">Type your username</small>
                         <div class="mb-3 my-4">
@@ -30,6 +31,7 @@ export default function LoginFormUi({ user, onchange, onsubmit }) {
                                 id=""
                                 aria-describedby="helpId"
                                 placeholder="SafePass01"
+                                required
                             />
                             <small id="helpId" class="form-text text-muted">Type your password</small>
                         </div>
