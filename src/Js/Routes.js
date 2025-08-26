@@ -5,6 +5,7 @@ import { Role } from "./Roles";
 import AdminDashboard from "../Pages/Admin/AdminDashboard";
 import EmployeeDashboard from "../Pages/Employee/EmployeeDashboard";
 import CustomerDashboard from "../Pages/Customer/CustomerDashboard";
+import Profile from "../Pages/Common/Profile";
 
 export const routes = [
     {
@@ -15,6 +16,11 @@ export const routes = [
             {
                 path: 'dashboard',
                 component: AdminDashboard,
+                roles: [Role.ADMIN, Role.SUPERADMIN]
+            },
+            {
+                path: 'profile',
+                component: Profile,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             }
         ]
@@ -28,6 +34,11 @@ export const routes = [
                 path: 'dashboard',
                 component: EmployeeDashboard,
                 roles: [Role.EMPLOYEE, Role.SUPERADMIN]
+            },
+            {
+                path: 'profile',
+                component: Profile,
+                roles: [Role.EMPLOYEE, Role.SUPERADMIN]
             }
         ]
     },
@@ -39,6 +50,11 @@ export const routes = [
             {
                 path: 'dashboard',
                 component: CustomerDashboard,
+                roles: [Role.CUSTOMER, Role.SUPERADMIN]
+            },
+            {
+                path: 'profile',
+                component: Profile,
                 roles: [Role.CUSTOMER, Role.SUPERADMIN]
             }
         ]

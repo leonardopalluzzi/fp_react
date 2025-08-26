@@ -1,2 +1,28 @@
 @import 'bootstrap';
 @import 'bootstrap-icons';
+
+:root {
+    --color-primary: #4A90E2;
+    --color-secondary: #50E3C2;
+    --color-accent: #F5A623;
+    --color-success: #7ED321;
+    --color-error: #D0021B;
+    --color-background: #F2F2F2;
+    --color-text: #4A4A4A;
+    --color-text-light: #FFFFFF;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
+button.primary {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+.alert.error {
+    background-color: var(--color-error);
+    color: var(--color-text-light);
+}
