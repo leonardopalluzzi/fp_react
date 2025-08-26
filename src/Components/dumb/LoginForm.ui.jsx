@@ -1,8 +1,15 @@
+import { useMessageContext } from "../../Contexts/MessageContext";
+
+
 export default function LoginFormUi({ user, onchange, onsubmit }) {
+    const { throwMessage } = useMessageContext()
+    const errors = []
+    errors.push('errorematto')
     return (
         <>
             <div className="container my-5">
                 <h1>Login</h1>
+                <button onClick={() => throwMessage('error', errors)}>lancia errore</button>
                 <form action="" onSubmit={(e) => { e.preventDefault(); onsubmit() }}>
                     <div class="mb-3 my-4">
                         <label for="" class="form-label">Username</label>

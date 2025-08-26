@@ -5,6 +5,8 @@ import { AuthProvider } from "./Contexts/AuthContext"
 import Logout from "./Pages/Common/Logout"
 import RenderRoutes from "./Components/RoutesProtection/RenderRoutes"
 import GuestLayout from "./Layouts/GuestLayout"
+import { MessageProvider } from "./Contexts/MessageContext"
+import MessageHandler from "./Components/smart/MessageHandler"
 
 
 
@@ -14,19 +16,22 @@ function App() {
     <>
 
       <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route Component={GuestLayout}>
-              <Route path="/login" Component={Login} />
-              <Route path="/register" Component={Register} />
-              <Route path="/logout" Component={Logout} />
-            </Route>
+        <MessageProvider>
+          <AuthProvider>
+            <MessageHandler />
+            <Routes>
+              <Route Component={GuestLayout}>
+                <Route path="/login" Component={Login} />
+                <Route path="/register" Component={Register} />
+                <Route path="/logout" Component={Logout} />
+              </Route>
 
-            {/* renderizzo rotte dinamicamente in base ai ruoli */}
-            <Route path="/*" Component={RenderRoutes} />
+              {/* renderizzo rotte dinamicamente in base ai ruoli */}
+              <Route path="/*" Component={RenderRoutes} />
 
-          </Routes>
-        </AuthProvider>
+            </Routes>
+          </AuthProvider>
+        </MessageProvider>
       </BrowserRouter >
 
     </>
