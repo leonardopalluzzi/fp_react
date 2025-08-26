@@ -1,6 +1,7 @@
 import { useNavigate, Link, NavLink } from "react-router-dom"
 export default function AsideUi({ menuVoices, currentUser }) {
     const navigate = useNavigate();
+    const roleprefix = 'admin' //problema ruoli multipli
     return (
         <>
             <div className="aside_wrapper">
@@ -15,7 +16,7 @@ export default function AsideUi({ menuVoices, currentUser }) {
                             (
                                 <>
                                     <>
-                                        <li className="my-3"><NavLink className={voice.style} to={voice.path}>{voice.name}</NavLink></li>
+                                        <li className="my-3"><NavLink className={voice.style} to={`/${roleprefix}/${voice.path}`}>{voice.name}</NavLink></li>
                                     </>
                                 </>
                             ))
