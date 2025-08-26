@@ -2,6 +2,7 @@ import { useAuthContext } from "../../Contexts/AuthContext";
 import { Route, Routes } from "react-router-dom";
 import { routes } from '../../Js/Routes';
 import { Navigate } from "react-router-dom";
+import LoaderUi from "../dumb/Loader.ui";
 
 export default function RenderRoutes() {
 
@@ -11,7 +12,7 @@ export default function RenderRoutes() {
         case 'loading':
             return (
                 <>
-                    <h1>Loading</h1>
+                    <LoaderUi />
                 </>
             )
         case 'error':

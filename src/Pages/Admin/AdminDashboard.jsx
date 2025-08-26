@@ -1,5 +1,4 @@
 export default function AdminDashboard() {
-    console.log('adminm');
 
     return (
         <>
