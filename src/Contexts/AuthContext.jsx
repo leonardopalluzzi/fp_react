@@ -2,11 +2,13 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Role } from "../Js/Roles";
+import { useMessageContext } from "./MessageContext";
 
 const AuthContext = createContext()
 
 function AuthProvider({ children }) {
 
+    const {throwMessage} = useMessageContext()
     const [currentUser, setCurrentUser] = useState({
         state: 'loading'
     })
@@ -53,10 +55,13 @@ function AuthProvider({ children }) {
 
                 })
                 .catch(err => {
+                    console.log(err.message);
+                    
                     setCurrentUser({
                         state: 'error',
                         message: err.message
                     })
+                    throwMessage('error', [err.message])
                 })
         } else {
             redoLogin(user)

@@ -15,7 +15,7 @@ export default function AdminDashboard() {
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/stats/company`, {
-            methodt: 'GET',
+            method: 'GET',
             headers: {
                 'Authorization': `Bearer ${currentUser.token}`
             }
