@@ -185,13 +185,24 @@ export default function AdminDashboard() {
                                                 clockWise
                                                 dataKey="value"
                                                 nameKey="name"
-                                                label={{ position: 'insideStart', fill: '#fff', formatter: (value) => value }}
+                                                label={({ name, value }) => `${name}: ${value}`}
+
                                             >
                                                 {stats.usersData.map((entry, index) => (
                                                     <Cell key={`cell-${index}`} fill={entry.color} />
                                                 ))}
+
                                             </RadialBar>
-                                            <Tooltip formatter={(value, name) => [`${value}`, name]} />
+                                            <Legend
+                                                payload={stats.usersData.map((item, index) => ({
+                                                    value: `${item.name}`,
+                                                    type: "square",
+                                                    id: item.name,
+                                                    color: item.color
+                                                }))}
+                                            />
+
+                                            <Tooltip formatter={(value, name, props) => [`${value}`, `${props.payload.name}`]} />
                                         </RadialBarChart>
                                     </ResponsiveContainer>
                                     <Link to={'/admin/users'} className="btn btn-outline-dark no-drag">Details</Link>
