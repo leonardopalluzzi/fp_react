@@ -31,8 +31,8 @@ export default function DashBoard({ servicesData, ticketsData, usersData, role }
     return(
     <>
     <div className="container py-5">
+        <h1>Dashboard</h1>
                             <button className="btn btn-outline-dark " onClick={resetLayout}>Reset Layout</button>
-                            <h1>admin dashboard</h1>
                             <ResponsiveGridLayout
                                 key={refreshkey}
                                 className="layout"
@@ -66,7 +66,7 @@ export default function DashBoard({ servicesData, ticketsData, usersData, role }
                                 <div key="users" className="bg-white shadow rounded p-3">
                                     <h3>Employees / Customers Statistics</h3>
                                     {
-                                        role == Role.ADMIN ? <RadialGraphUi data={usersData} action={`/${prefix}/users`}/> : (<></>)
+                                        role == Role.ADMIN ? <RadialGraphUi data={usersData} action={`/${prefix}/users`}/> : null
                                     } 
                                 </div>    
                             </ResponsiveGridLayout >
