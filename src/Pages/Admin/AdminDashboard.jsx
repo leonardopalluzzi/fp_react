@@ -163,7 +163,7 @@ export default function AdminDashboard() {
                                         </BarChart>
 
                                     </ResponsiveContainer>
-                                    <Link to={'/admin/services'} className="btn btn-outline-dark no-drag">Details</Link>
+                                    <Link to={'/admin/tickets'} className="btn btn-outline-dark no-drag">Details</Link>
                                 </div>
                             </div>
 
@@ -194,6 +194,8 @@ export default function AdminDashboard() {
                                             <Tooltip formatter={(value, name) => [`${value}`, name]} />
                                         </RadialBarChart>
                                     </ResponsiveContainer>
+                                    <Link to={'/admin/users'} className="btn btn-outline-dark no-drag">Details</Link>
+
 
                                 </div>
                             </div>
