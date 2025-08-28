@@ -7,32 +7,60 @@ export default function ShowService({ roles, service }) {
 
     const navigate = useNavigate()
 
+    const routesConfig = {
+        admin: {
+            usershow: id => `/admin/users/${id}`,
+            userEdit: id => `/admin/users/edit/${id}`,
+            ticketShow: id => `/admin/ticket/${id}`,
+            ticketEdit: id => `/admin/ticket/edit/${id}`
+        },
+        employee: {
+            usershow: id => `/employee/users/${id}`,
+            userEdit: id => `/employee/users/edit/${id}`,
+            ticketShow: id => `/employee/ticket/${id}`,
+            ticketEdit: id => `/employee/ticket/edit/${id}`
+        },
+        customer: {
+            usershow: id => `/customer/users/${id}`,
+            userEdit: id => `/customer/users/edit/${id}`,
+            ticketShow: id => `/customer/ticket/${id}`,
+            ticketEdit: id => `/customer/ticket/edit/${id}`
+        }
+    }
+
+    const roleConfig = roles.includes(Role.ADMIN) && 'admin' || roles.includes(Role.EMPLOYEE) && 'employee' || roles.includes(Role.CUSTOMER) && 'customer'
+
+    const routeConfig = routesConfig[roleConfig]
+
     console.log(service.customers);
 
 
+    // operators
     function handleOperatorDelete(itemId) {
         console.log('operator delete');
     }
 
     function handleOperatorEdit(itemId) {
-        return navigate(`/admin/user/edit/${itemId}`)
+        return navigate(routeConfig.userEdit(itemId))
     }
 
     function handleOperatorShow(itemId) {
-        return navigate(`/admin/user/${itemId}`)
+        return navigate(routeConfig.usershow(itemId))
     }
 
+
+    //tickets
     function handleTicketDelete(itemId) {
         console.log('ticket delete');
 
     }
 
     function handleTicketEdit(itemId) {
-        return navigate(`/admin/ticket/edit/${itemId}`)
+        return navigate(routeConfig.ticketEdit(itemId))
     }
 
     function handleTicketShow(itemId) {
-        return navigate(`/admin/ticket/${itemId}`)
+        return navigate(routeConfig.ticketShow(itemId))
     }
 
     return (
