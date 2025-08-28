@@ -5,7 +5,7 @@ import { Role } from "./Roles";
 import AdminDashboard from "../Pages/Admin/AdminDashboard";
 import EmployeeDashboard from "../Pages/Employee/EmployeeDashboard";
 import CustomerDashboard from "../Pages/Customer/CustomerDashboard";
-import Profile from "../Pages/Common/Profile";
+import Profile from "../Pages/Common/ShowProfile";
 
 export const routes = [
     {
