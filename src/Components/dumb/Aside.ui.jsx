@@ -7,7 +7,7 @@ export default function AsideUi({ menuVoices, currentUser }) {
 
     return (
         <>
-            <div className="aside_wrapper">
+            <div className="aside_wrapper shadow">
                 <aside className="bg-light aside">
                     <div className="d-flex align-items-center justify-content-center"><i class="bi bi-speedometer2 fs-1 aside_icon"></i></div>
 
