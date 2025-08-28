@@ -41,6 +41,7 @@ button.primary {
     position: absolute;
     overflow: hidden;
     transition: width 0.5s;
+    z-index: 10000;
 
     .aside_text {
         opacity: 0;
