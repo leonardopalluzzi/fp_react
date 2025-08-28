@@ -53,7 +53,7 @@ export default function ShowService({ roles, service }) {
                     <label className="mt-3" htmlFor="">Status:</label>
                     <h4>{service.status}</h4>
                     {
-                        roles.includes(Role.ADMIN) || roles.includes(Role.EMPLOYEE) ? (
+                        (roles.includes(Role.ADMIN) || roles.includes(Role.EMPLOYEE)) && (
                             <>
                                 <label className="mt-3" htmlFor="">Created At:</label>
                                 <h4>{service.createdAt}</h4>
@@ -69,13 +69,13 @@ export default function ShowService({ roles, service }) {
                                     }
                                 </ul>
                             </>
-                        ) : (<></>)
+                        )
                     }
 
                 </div>
 
                 {
-                    roles.includes(Role.ADMIN) ? (
+                    (roles.includes(Role.ADMIN)) && (
                         <>
                             <ShowServiceAdminListUi
                                 customers={service.customers}
@@ -86,11 +86,11 @@ export default function ShowService({ roles, service }) {
                             />
 
                         </>
-                    ) : (<></>)
+                    )
                 }
 
                 {
-                    roles.includes(Role.ADMIN) || roles.includes(Role.EMPLOYEE) ? (
+                    (roles.includes(Role.ADMIN) || roles.includes(Role.EMPLOYEE)) && (
                         <>
                             <ShowServiceTicketListUi
                                 tickets={service.tickets}
@@ -99,7 +99,7 @@ export default function ShowService({ roles, service }) {
                                 handleTicketEdit={handleTicketEdit}
                             />
                         </>
-                    ) : (<></>)
+                    )
                 }
             </div>
         </>
