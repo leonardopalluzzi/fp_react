@@ -21,13 +21,13 @@ export default function AdminDashboard() {
     const [stats, setStats] = useState({
         state: 'loading',
         servicesData: [
-            { name: 'No Data', value: 1, color: '#1b1b1bff' }
+            { name: 'No Data', value: 1, fill: '#1b1b1bff' }
         ],
         ticketsData: [
-            { name: 'No Data', value: 1, color: '#00C49F' }
+            { name: 'No Data', value: 1, fill: '#00C49F' }
         ],
         usersData: [
-            { name: 'No Data', value: 1, color: '#00C49F' }
+            { name: 'No Data', value: 1, fill: '#00C49F' }
         ]
     })
 
@@ -50,16 +50,16 @@ export default function AdminDashboard() {
                 setStats({
                     state: 'success',
                     servicesData: [
-                        { name: 'Active Services', value: data.activeServices, color: '#00C49F' },
-                        { name: 'Inactive Services', value: data.allServices - data.activeServices, color: '#af1919ff' }
+                        { name: 'Active Services', value: data.activeServices, fill: '#00C49F' },
+                        { name: 'Inactive Services', value: data.allServices - data.activeServices, fill: '#af1919ff' }
                     ],
                     ticketsData: [
-                        { name: 'Open Tickets', value: data.openTickets, color: '#00C49F' },
-                        { name: 'Pending Tickets', value: data.pendingTickets, color: '#ddc702ff' }
+                        { name: 'Open Tickets', value: data.openTickets, fill: '#00C49F' },
+                        { name: 'Pending Tickets', value: data.pendingTickets, fill: '#ddc702ff' }
                     ],
                     usersData: [
-                        { name: 'Customers Number', value: data.customerNumber, color: '#00C49F' },
-                        { name: 'Employees Number', value: data.employeeNumber, color: '#00C49F' }
+                        { name: 'Customers Number', value: data.customerNumber, fill: '#00a6ffff' },
+                        { name: 'Employees Number', value: data.employeeNumber, fill: '#00C49F' }
                     ]
                 })
                 if (data.error) {
@@ -132,7 +132,7 @@ export default function AdminDashboard() {
                                                 label
                                             >
                                                 {stats.servicesData.map((entry, index) => (
-                                                    <Cell key={index} fill={stats.servicesData[index].color} />
+                                                    <Cell key={index} fill={stats.servicesData[index].fill} />
                                                 ))}
                                             </Pie>
                                             <Tooltip />
@@ -156,7 +156,7 @@ export default function AdminDashboard() {
                                             <Bar dataKey={'value'}>
                                                 {
                                                     stats.ticketsData.map((item, i) => (
-                                                        <Cell key={`cell-${i}`} fill={`${item.color}`} />
+                                                        <Cell key={`cell-${i}`} fill={`${item.fill}`} />
                                                     ))
                                                 }
                                             </Bar>
@@ -189,18 +189,36 @@ export default function AdminDashboard() {
 
                                             >
                                                 {stats.usersData.map((entry, index) => (
-                                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                                    <Cell key={`cell-${index}`} fill={entry.fill} />
                                                 ))}
 
                                             </RadialBar>
                                             <Legend
-                                                payload={stats.usersData.map((item, index) => ({
-                                                    value: `${item.name}`,
-                                                    type: "square",
-                                                    id: item.name,
-                                                    color: item.color
-                                                }))}
-                                            />
+                                                layout="vertical"
+                                                align="right"
+                                                verticalAlign="middle"
+                                                iconSize={12}
+                                                content={({ payload }) => (
+                                                    <ul style={{ listStyle: 'none', padding: 0 }}>
+                                                    {payload.map((entry, index) => (
+                                                        <li key={`legend-${index}`} style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
+                                                        <div
+                                                        className=""
+                                                            style={{
+                                                            width: 12,
+                                                            height: 12,
+                                                            backgroundColor: entry.color,
+                                                            marginRight: 8,
+                                                            borderRadius: 2
+                                                            }}
+                                                        />
+                                                        <span style={{ fontSize: '14px' }}>{entry.value}</span>
+                                                        </li>
+                                                    ))}
+                                                    </ul>
+                                                )}
+                                                />
+
 
                                             <Tooltip formatter={(value, name, props) => [`${value}`, `${props.payload.name}`]} />
                                         </RadialBarChart>
@@ -211,9 +229,6 @@ export default function AdminDashboard() {
                                 </div>
                             </div>
                         </ResponsiveGridLayout >
-
-
-
                     </div >
                 </>
             )
