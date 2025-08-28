@@ -6,7 +6,9 @@ export default function GuestLayout() {
     return (
         <>
             <Guestheader />
-            <Outlet />
+            <div id="site_main">
+                <Outlet />
+            </div>
         </>
     )
 }

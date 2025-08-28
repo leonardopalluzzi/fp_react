@@ -8,7 +8,9 @@ export default function AdminLayout() {
         <>
             <AdminHeader />
             <Aside />
-            <Outlet />
+            <div id="site_main">
+                <Outlet />
+            </div>
             <Footer />
 
         </>

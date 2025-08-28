@@ -15,7 +15,7 @@ export default function DeleteModalUi({ itemId, deleteFunction }) {
             <div
                 class="modal fade"
                 id="modalId"
-                tabindex="-1"
+                tabIndex="-1"
                 data-bs-backdrop="static"
                 data-bs-keyboard="false"
 

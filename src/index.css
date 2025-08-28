@@ -17,6 +17,18 @@ body {
     color: var(--color-text);
 }
 
+#site_main {
+    height: 100vh;
+    overflow: scroll;
+    padding-top: 80px;
+}
+
+#site_header {
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+}
+
 button.primary {
     background-color: var(--color-primary);
     color: var(--color-text-light);

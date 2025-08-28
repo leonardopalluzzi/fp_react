@@ -8,7 +8,9 @@ export default function CustomerLayout() {
         <>
             <CustomerHeader />
             <Aside />
-            <Outlet />
+            <div id="site_main">
+                <Outlet />
+            </div>
             <Footer />
 
         </>

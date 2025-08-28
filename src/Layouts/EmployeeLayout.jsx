@@ -8,7 +8,9 @@ export default function EmployeeLayout() {
         <>
             <EmployeeHeader />
             <Aside />
-            <Outlet />
+            <div id="site_main">
+                <Outlet />
+            </div>
             <Footer />
         </>
     )

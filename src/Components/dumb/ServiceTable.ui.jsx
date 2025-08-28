@@ -5,20 +5,10 @@ export default function ServiceTableUi({ config, data, onDelete, onEdit, onShow 
     function getValue(obj, path) {
         return path.split(".").reduce((acc, key) => acc?.[key], obj);
     }
-    console.log('cacca');
-    console.log(config);
-    console.log(data);
-
-
-
 
     return (
         <>
-            <div className="container my-5">
-
-                <div>
-                    <button className="btn btn-outline-primary">Create Service</button>
-                </div>
+            <div className="my-5">
                 <div className="table-responsive">
                     <table class="table table-light">
                         <thead>
@@ -60,7 +50,7 @@ export default function ServiceTableUi({ config, data, onDelete, onEdit, onShow 
                                                                 {
                                                                     config.actions.includes('view') && (
                                                                         <>
-                                                                            <button className="btn btn-primary">
+                                                                            <button onClick={() => onShow(row.id)} className="btn btn-primary">
                                                                                 <i className="bi bi-eye-fill"></i>
                                                                             </button>
                                                                         </>
@@ -69,7 +59,7 @@ export default function ServiceTableUi({ config, data, onDelete, onEdit, onShow 
                                                                 {
                                                                     config.actions.includes('update') && (
                                                                         <>
-                                                                            <button className="btn btn-warning">
+                                                                            <button onClick={() => onEdit(row.id)} className="btn btn-warning">
                                                                                 <i className="bi bi-pencil-square"></i>
                                                                             </button>
                                                                         </>
