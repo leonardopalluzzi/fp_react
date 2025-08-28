@@ -65,7 +65,9 @@ export default function DashBoard({ servicesData, ticketsData, usersData, role }
                                 {/* users stats  */}
                                 <div key="users" className="bg-white shadow rounded p-3">
                                     <h3>Employees / Customers Statistics</h3>
-                                    <RadialGraphUi data={usersData} action={`/${prefix}/users`}/> 
+                                    {
+                                        role == Role.ADMIN ? <RadialGraphUi data={usersData} action={`/${prefix}/users`}/> : (<></>)
+                                    } 
                                 </div>    
                             </ResponsiveGridLayout >
                         </div >
