@@ -1,6 +1,6 @@
-import DeleteModalUi from "./DeleteModal.ui";
+import DeleteModalUi from "../dumb/DeleteModal.ui";
 
-export default function ServiceTableUi({ config, data, onDelete, onEdit, onShow }) {
+export default function ServiceTable({ config, data, onDelete, onEdit, onShow }) {
 
     function getValue(obj, path) {
         return path.split(".").reduce((acc, key) => acc?.[key], obj);

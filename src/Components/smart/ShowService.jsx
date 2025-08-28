@@ -2,35 +2,14 @@ import { Role } from "../../Js/Roles";
 import ShowServiceAdminListUi from "../dumb/ShowServiceAdminLists.ui";
 import ShowServiceTicketListUi from "../dumb/ShowServiceTicketList.ui";
 import { useNavigate } from "react-router-dom";
+import { crudRoutesConfig } from "../../Js/CrudRoutesConfig";
 
 export default function ShowService({ roles, service }) {
 
     const navigate = useNavigate()
 
-    const routesConfig = {
-        admin: {
-            usershow: id => `/admin/users/${id}`,
-            userEdit: id => `/admin/users/edit/${id}`,
-            ticketShow: id => `/admin/ticket/${id}`,
-            ticketEdit: id => `/admin/ticket/edit/${id}`
-        },
-        employee: {
-            usershow: id => `/employee/users/${id}`,
-            userEdit: id => `/employee/users/edit/${id}`,
-            ticketShow: id => `/employee/ticket/${id}`,
-            ticketEdit: id => `/employee/ticket/edit/${id}`
-        },
-        customer: {
-            usershow: id => `/customer/users/${id}`,
-            userEdit: id => `/customer/users/edit/${id}`,
-            ticketShow: id => `/customer/ticket/${id}`,
-            ticketEdit: id => `/customer/ticket/edit/${id}`
-        }
-    }
-
-    const roleConfig = roles.includes(Role.ADMIN) && 'admin' || roles.includes(Role.EMPLOYEE) && 'employee' || roles.includes(Role.CUSTOMER) && 'customer'
-
-    const routeConfig = routesConfig[roleConfig]
+    const roleConfig = roles.includes(Role.ADMIN) && 'admin' || roles.includes(Role.EMPLOYEE) && 'employee' || roles.includes(Role.CUSTOMER) && 'customer';
+    const routeConfig = crudRoutesConfig[roleConfig]
 
     console.log(service.customers);
 

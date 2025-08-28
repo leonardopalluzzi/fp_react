@@ -2,9 +2,10 @@ import { useState, useEffect } from "react"
 import { useAuthContext } from '../../../Contexts/AuthContext';
 import { useMessageContext } from "../../../Contexts/MessageContext";
 import LoaderUi from "../../../Components/dumb/Loader.ui";
-import ServiceTableUi from "../../../Components/dumb/ServiceTable.ui";
+import ServiceTable from "../../../Components/smart/ServiceTable";
 import { serviceTableConfig } from "../../../Js/ServiceTableConfig";
 import { useNavigate } from "react-router-dom";
+import { crudRoutesConfig } from "../../../Js/CrudRoutesConfig";
 
 export default function AdminServices() {
     const { throwMessage } = useMessageContext();
@@ -54,17 +55,19 @@ export default function AdminServices() {
             })
     }, [])
 
+    const routeConfig = crudRoutesConfig['admin']
+
     function handleDelete(itemId) {
         console.log('delete');
     }
 
     function handleUpdate(itemId) {
-        console.log('update');
+        console.log(routeConfig.serviceEdit(itemId));
 
     }
 
     function handleShow(itemId) {
-        return navigate(`/admin/service/${itemId}`)
+        return navigate(routeConfig.serviceShow(itemId))
 
     }
 
@@ -88,7 +91,7 @@ export default function AdminServices() {
                         <div>
                             <button className="btn btn-outline-primary">Create Service</button>
                         </div>
-                        <ServiceTableUi config={config} data={services.result} onDelete={handleDelete} onEdit={handleUpdate} onShow={handleShow} />
+                        <ServiceTable config={config} data={services.result} onDelete={handleDelete} onEdit={handleUpdate} onShow={handleShow} />
 
                     </div>
                 </>
