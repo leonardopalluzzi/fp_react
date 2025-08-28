@@ -51,14 +51,14 @@ export default function AdminDashboard() {
                         { name: 'Employees Number', value: data.employeeNumber, fill: '#00a6ffff' }
                     ]
                 })
-                if (data.state && data.state == "expired"){
+                if (data.state && data.state == "expired") {
                     throwMessage('expired', [data.error])
 
                 } else if (data.error) {
                     throwMessage('error', [JSON.stringify(data)])
                 }
             })
-            .catch(err => {                
+            .catch(err => {
                 setStats({
                     state: 'error',
                     message: err.message
@@ -68,7 +68,7 @@ export default function AdminDashboard() {
 
     }, [])
 
-    
+
 
     switch (stats.state) {
         case 'loading':
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
             return (
                 <>
 
-                    <DashBoard 
+                    <DashBoard
                         servicesData={stats.servicesData}
                         ticketsData={stats.ticketsData}
                         usersData={stats.usersData}

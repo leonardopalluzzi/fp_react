@@ -6,6 +6,7 @@ import AdminDashboard from "../Pages/Admin/AdminDashboard";
 import EmployeeDashboard from "../Pages/Employee/EmployeeDashboard";
 import CustomerDashboard from "../Pages/Customer/CustomerDashboard";
 import Profile from "../Pages/Common/ShowProfile";
+import AdminServices from '../Pages/Admin/Services/AdminServices';
 
 export const routes = [
     {
@@ -21,6 +22,11 @@ export const routes = [
             {
                 path: 'profile',
                 component: Profile,
+                roles: [Role.ADMIN, Role.SUPERADMIN]
+            },
+            {
+                path: 'services',
+                component: AdminServices,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             }
         ]

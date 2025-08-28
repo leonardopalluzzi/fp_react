@@ -77,3 +77,9 @@ button.primary {
         }
     }
 }
+
+.table_custom {
+    background-color: transparent;
+    display: block;
+    width: 100%;
+}
