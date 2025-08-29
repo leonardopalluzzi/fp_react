@@ -16,16 +16,45 @@ export default function AdminCreateService(){
         state: 'loading'
     })
 
-    //fetch per tipologiche
+    //fetch per tipologiche (endpoint da fare)
 
     //handlers change e submit
+    function handleChange(key, value){
+        setNewService({
+            ...newService,
+            [key]: value
+        })
+    }
+
+    function handleSubmit(){
+        console.log('submit');
+
+        const serviceToSend = {...newService}
+
+        //fetch
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services/store`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(serviceToSend)
+        })
+        .then(Res => resizeBy.json())
+        .then(data => {
+            throwMessage('success', data)
+        })
+        .catch(err =>{
+            throwMessage('error', err.message)
+        })
+        
+    }
 
     return(
         <>
         <div className="container p-5">
             <h1>Create a new service</h1>
             <p>Here you can define the basic details of your service, later you will be able to configure it</p>
-            <form action="">
+            <form onSubmit={(e) => {e.preventDefault(); handleSubmit()}}>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Service Name</span>
                     <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"/>
