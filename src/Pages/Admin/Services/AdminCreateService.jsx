@@ -5,6 +5,7 @@ import { useAuthContext } from "../../../Contexts/AuthContext"
 export default function AdminCreateService(){
     const {throwMessage} = useMessageContext()
     const {currentUser} = useAuthContext()
+    const token = currentUser.token
 
     const [newService, setNewService] = useState({
         name: '',
@@ -26,6 +27,17 @@ export default function AdminCreateService(){
         })
     }
 
+    function onChangeTicketTypes(index, value){
+        const updatedArray = [...newService.ticketTypes]
+        updatedArray[index] = value
+
+        setNewService({
+            ...newService,
+            ticketTypes: updatedArray
+        })
+    }
+
+
     function handleSubmit(){
         console.log('submit');
 
@@ -39,7 +51,7 @@ export default function AdminCreateService(){
             },
             body: JSON.stringify(serviceToSend)
         })
-        .then(Res => resizeBy.json())
+        .then(res => res.json())
         .then(data => {
             throwMessage('success', data)
         })
@@ -77,15 +89,25 @@ export default function AdminCreateService(){
 
                 <div className="bg-white rounded rounded-3 p-3">
                     <h5>Add Ticket Types</h5>
-                    <div class="input-group my-3">
-                        <span class="input-group-text" id="basic-addon1">Ticket Type</span>
-                        <input type="text" class="form-control" placeholder="Ticket Type" aria-label="Username" aria-describedby="basic-addon1"/>
-                    </div>
+                    {
+                        newService.ticketTypes.map((item, i) => (
+                            <>
+                            <div key={i}>
+                                <div class="input-group my-3">
+                                    <span class="input-group-text" id="basic-addon1">Ticket Type</span>
+                                    <input value={item} name={`newService.ticketTypes[${i}]`} onChange={(e) => onChangeTicketTypes(i, e.target.value)} type="text" class="form-control" placeholder="Ticket Type" aria-label="Username" aria-describedby="basic-addon1"/>
+                                </div>
 
-                    <div className="d-flex aling-items-center justify-content-center gap-3">
-                        <button type="button" className="btn btn-primary"><i class="bi bi-file-plus"></i></button>
-                        <button type="button" className="btn btn-danger"><i class="bi bi-file-x"></i></button>
-                    </div>
+                                <div className="d-flex aling-items-center justify-content-center gap-3">
+                                    <button type="button" className="btn btn-primary"><i class="bi bi-file-plus"></i></button>
+                                    <button type="button" className="btn btn-danger"><i class="bi bi-file-x"></i></button>
+                                </div>
+                            </div>
+                               
+                            </>
+                        ))
+                    }
+                    
                 </div>
 
                 <div className="d-flex">
