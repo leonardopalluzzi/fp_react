@@ -3,12 +3,13 @@ import { useMessageContext } from "../../../Contexts/MessageContext"
 import { useAuthContext } from "../../../Contexts/AuthContext"
 import LoaderUi from '../../../Components/dumb/Loader.ui'
 import { useNavigate } from "react-router-dom"
+import CreateServiceFormBasicUi from "../../../Components/dumb/CreateServiceFormBasic.ui"
 
 export default function AdminCreateService() {
     const { throwMessage } = useMessageContext()
     const { currentUser } = useAuthContext()
     const token = currentUser.token
-    const naviagte = useNavigate()
+    const navigate = useNavigate()
 
     const [newService, setNewService] = useState({
         name: '',
@@ -30,7 +31,7 @@ export default function AdminCreateService() {
         })
     }
 
-    function onChangeTicketTypes(index, value) {
+    function handleTTchange(index, value) {
         const updatedArray = [...newService.ticketTypes]
         updatedArray[index] = value
 
@@ -94,6 +95,7 @@ export default function AdminCreateService() {
                     throwMessage('error', [data.error])
                 }
                 throwMessage('success', ['Service added Correctly'])
+                return navigate('/admin/services')
             })
             .catch(err => {
                 throwMessage('error', [err.message])
@@ -105,13 +107,12 @@ export default function AdminCreateService() {
                     serviceTypeId: 0,
                     ticketTypes: ['']
                 })
-                //fare redirect se success
 
             })
 
     }
 
-    function deleteServiceType(index) {
+    function deleteTTtype(index) {
         const updatedArray = newService.ticketTypes
         updatedArray.length == 1 ? throwMessage('error', ['You must insert at least one ticket type']) : updatedArray.splice(index, 1)
         setNewService({
@@ -120,7 +121,7 @@ export default function AdminCreateService() {
         })
     }
 
-    function addserviceType() {
+    function addTTtype() {
         const updatedArray = newService.ticketTypes
         updatedArray.length == 4 ? throwMessage('error', ['You can insert a maximum of 4 tycket types']) : updatedArray.push('')
         setNewService({
@@ -146,67 +147,15 @@ export default function AdminCreateService() {
         case 'success':
             return (
                 <>
-                    <div className="container p-5">
-                        <h1>Create a new service</h1>
-                        <p>Here you can define the basic details of your service, later you will be able to configure it</p>
-                        <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">Service Name</span>
-                                <input value={newService.name} name="name" onChange={(e) => handleChange(e.target.name, e.target.value)} type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required />
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">With textarea</span>
-                                <textarea value={newService.description} name="description" onChange={(e) => handleChange(e.target.name, e.target.value)} class="form-control" aria-label="With textarea" placeholder="Description" required></textarea>
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <label class="input-group-text" for="inputGroupSelect01">Service Type</label>
-                                <select value={newService.serviceTypeId} name="serviceTypeId" onChange={(e) => handleChange(e.target.name, e.target.value)} class="form-select" id="inputGroupSelect01" required>
-                                    <option selected>Choose...</option>
-                                    {
-                                        serviceTypes.result.map((item, i) => (
-                                            <>
-                                                <option value={item.id}>{item.name}</option>
-
-                                            </>
-                                        ))
-                                    }
-                                </select>
-                            </div>
-
-                            <div className="bg-white rounded rounded-3 p-3">
-                                <h5>Add Ticket Types</h5>
-                                {
-                                    newService.ticketTypes.map((item, i) => (
-                                        <>
-                                            <div key={i}>
-                                                <div class="input-group my-3">
-                                                    <span class="input-group-text" id="basic-addon1">Ticket Type</span>
-                                                    <input value={item} name={`newService.ticketTypes[${i}]`} onChange={(e) => onChangeTicketTypes(i, e.target.value)} type="text" class="form-control" placeholder="Ticket Type" aria-label="Username" aria-describedby="basic-addon1" required />
-                                                </div>
-
-                                                <div className="d-flex aling-items-center justify-content-center gap-3">
-                                                    {
-                                                        i == newService.ticketTypes.length - 1 && <button onClick={() => addserviceType()} type="button" className="btn btn-primary"><i class="bi bi-file-plus"></i></button>
-                                                    }
-
-                                                    <button onClick={() => deleteServiceType(i)} type="button" className="btn btn-danger"><i class="bi bi-file-x"></i></button>
-                                                </div>
-                                            </div>
-
-                                        </>
-                                    ))
-                                }
-
-                            </div>
-
-                            <div className="d-flex">
-                                <button type="submit" className="btn btn-outline-success my-5 w-100">Save</button>
-                            </div>
-                        </form>
-
-                    </div>
+                    <CreateServiceFormBasicUi
+                        onchange={handleChange}
+                        onsubmit={handleSubmit}
+                        onTTadd={addTTtype}
+                        onTTdelete={deleteTTtype}
+                        onTTchange={handleTTchange}
+                        service={newService}
+                        serviceTypeList={serviceTypes}
+                    />
                 </>
             )
     }
