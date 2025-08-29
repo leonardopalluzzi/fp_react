@@ -7,11 +7,13 @@ export default function AdminHeader() {
         <>
             <div id="site_header">
                 <nav
-                    className="navbar navbar-expand-sm navbar-light bg-light"
+                    className="navbar navbar-expand-sm navbar-light bg-light h-100 w-100"
                 >
                     <div className="container">
 
-                        <Link className="navbar-brand" to={'/admin/dashboard'}><img src="/logo.svg" alt="" /></Link>
+                        <Link className="navbar-brand" to={'/admin/dashboard'}>
+                            <img className="site_logo" src="/logo.svg" alt="Site Logo" />
+                        </Link>
                         <button
                             className="navbar-toggler d-lg-none"
                             type="button"

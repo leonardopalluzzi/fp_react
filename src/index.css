@@ -10,11 +10,13 @@
     --color-background: #F2F2F2;
     --color-text: #4A4A4A;
     --color-text-light: #FFFFFF;
+    --header-height: 90px; 
 }
 
 body {
     background-color: var(--color-background);
     color: var(--color-text);
+    max-height: 100vh;
 }
 
 #site_main {
@@ -25,8 +27,16 @@ body {
 
 #site_header {
     position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     width: 100%;
     z-index: 10;
+    height: var(--header-height);
+
+    .site_logo{
+        max-width: 100%;
+    }
 }
 
 button.primary {
@@ -40,17 +50,20 @@ button.primary {
 }
 
 .aside_wrapper {
-    width: 5%;
+    width: 2%;
     min-width: 60px;
     float: left;
-    height: 100vh;
+    max-height: calc(100vh - var(--header-height));
+
 }
 
 .aside {
     width: 5%;
     padding: 1rem;
-    height: 100%;
-    position: absolute;
+    max-height: calc(100vh - var(--header-height));
+    position: fixed;
+    top: calc(0px + var(--header-height));
+    bottom: 0;
     overflow: hidden;
     transition: width 0.5s;
     z-index: 10000;

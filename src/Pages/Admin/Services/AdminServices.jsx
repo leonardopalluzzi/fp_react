@@ -58,7 +58,20 @@ export default function AdminServices() {
     const routeConfig = crudRoutesConfig['admin']
 
     function handleDelete(itemId) {
-        console.log('delete');
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services/delete/${itemId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            
+        })
+        .catch(err => {
+            throwMessage('error', [err.message])
+        })
     }
 
     function handleUpdate(itemId) {
@@ -89,7 +102,7 @@ export default function AdminServices() {
                 <>
                     <div className="container my-5">
                         <div>
-                            <button className="btn btn-outline-primary">Create Service</button>
+                            <button onClick={()=> navigate(`/admin/service/create`)} className="btn btn-outline-primary">Create Service</button>
                         </div>
                         <ServiceTable config={config} data={services.result} onDelete={handleDelete} onEdit={handleUpdate} onShow={handleShow} />
 

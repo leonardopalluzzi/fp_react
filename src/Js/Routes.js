@@ -8,6 +8,7 @@ import CustomerDashboard from "../Pages/Customer/CustomerDashboard";
 import Profile from "../Pages/Common/ShowProfile";
 import AdminServices from '../Pages/Admin/Services/AdminServices';
 import AdminShowService from "../Pages/Admin/Services/AdminShowService";
+import AdminCreateService from '../Pages/Admin/Services/AdminCreateService'
 
 export const routes = [
     {
@@ -33,6 +34,11 @@ export const routes = [
             {
                 path: 'service/:id',
                 component: AdminShowService,
+                roles: [Role.ADMIN, Role.SUPERADMIN]
+            },
+            {
+                path: 'service/create',
+                component: AdminCreateService,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             }
         ]
