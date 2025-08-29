@@ -12,15 +12,15 @@ function MessageProvider({ children }) {
 
     const timeoutRef = useRef(null);
 
-    useEffect(()=>{
-        if(messages.state == "expired"){
+    useEffect(() => {
+        if (messages.state == "expired") {
             setRedirect(true)
         }
 
     }, [messages.state])
 
-    if(redirect){
-            return <Navigate to={'/login'} replace/>
+    if (redirect) {
+        return <Navigate to={'/login'} />
 
     }
 
