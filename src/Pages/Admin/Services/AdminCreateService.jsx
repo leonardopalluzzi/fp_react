@@ -15,7 +15,7 @@ export default function AdminCreateService() {
         name: '',
         description: '',
         serviceTypeId: 0,
-        ticketTypes: ['']
+        ticketType: ['']
     })
     const [serviceTypes, setServiceTypes] = useState({
         state: 'loading'
@@ -32,12 +32,12 @@ export default function AdminCreateService() {
     }
 
     function handleTTchange(index, value) {
-        const updatedArray = [...newService.ticketTypes]
+        const updatedArray = [...newService.ticketType]
         updatedArray[index] = value
 
         setNewService({
             ...newService,
-            ticketTypes: updatedArray
+            ticketType: updatedArray
         })
     }
 
@@ -105,7 +105,7 @@ export default function AdminCreateService() {
                     name: '',
                     description: '',
                     serviceTypeId: 0,
-                    ticketTypes: ['']
+                    ticketType: ['']
                 })
 
             })
@@ -113,20 +113,20 @@ export default function AdminCreateService() {
     }
 
     function deleteTTtype(index) {
-        const updatedArray = newService.ticketTypes
+        const updatedArray = newService.ticketType
         updatedArray.length == 1 ? throwMessage('error', ['You must insert at least one ticket type']) : updatedArray.splice(index, 1)
         setNewService({
             ...newService,
-            ticketTypes: updatedArray
+            ticketType: updatedArray
         })
     }
 
     function addTTtype() {
-        const updatedArray = newService.ticketTypes
+        const updatedArray = newService.ticketType
         updatedArray.length == 4 ? throwMessage('error', ['You can insert a maximum of 4 tycket types']) : updatedArray.push('')
         setNewService({
             ...newService,
-            ticketTypes: updatedArray
+            ticketType: updatedArray
         })
 
     }

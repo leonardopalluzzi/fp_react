@@ -33,17 +33,17 @@ export default function CreateServiceFormBasicUi({ onchange, onsubmit, onTTadd, 
                     <div className="bg-white rounded rounded-3 p-3">
                         <h5>Add Ticket Types</h5>
                         {
-                            service.ticketTypes.map((item, i) => (
+                            service.ticketType.map((item, i) => (
                                 <>
                                     <div key={i}>
                                         <div class="input-group my-3">
                                             <span class="input-group-text" id="basic-addon1">Ticket Type</span>
-                                            <input value={item} name={`service.ticketTypes[${i}]`} onChange={(e) => onTTchange(i, e.target.value)} type="text" class="form-control" placeholder="Ticket Type" aria-label="Username" aria-describedby="basic-addon1" required />
+                                            <input value={item} name={`service.ticketType[${i}]`} onChange={(e) => onTTchange(i, e.target.value)} type="text" class="form-control" placeholder="Ticket Type" aria-label="Username" aria-describedby="basic-addon1" required />
                                         </div>
 
                                         <div className="d-flex aling-items-center justify-content-center gap-3">
                                             {
-                                                i == service.ticketTypes.length - 1 && <button onClick={() => onTTadd()} type="button" className="btn btn-primary"><i class="bi bi-file-plus"></i></button>
+                                                i == service.ticketType.length - 1 && <button onClick={() => onTTadd()} type="button" className="btn btn-primary"><i class="bi bi-file-plus"></i></button>
                                             }
 
                                             <button onClick={() => onTTdelete(i)} type="button" className="btn btn-danger"><i class="bi bi-file-x"></i></button>
