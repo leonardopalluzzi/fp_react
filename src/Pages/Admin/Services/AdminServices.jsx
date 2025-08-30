@@ -67,6 +67,9 @@ export default function AdminServices() {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
+                if (data.status == 'OK') {
+                    throwMessage('success', ['Item Deleted Correctly'])
+                }
 
             })
             .catch(err => {
