@@ -15,7 +15,9 @@ export default function AdminCreateService() {
         name: '',
         description: '',
         serviceTypeId: 0,
-        ticketType: ['']
+        ticketTypes: [
+            { name: '' }
+        ]
     })
     const [serviceTypes, setServiceTypes] = useState({
         state: 'loading'
@@ -31,15 +33,7 @@ export default function AdminCreateService() {
         })
     }
 
-    function handleTTchange(index, value) {
-        const updatedArray = [...newService.ticketType]
-        updatedArray[index] = value
 
-        setNewService({
-            ...newService,
-            ticketType: updatedArray
-        })
-    }
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tipologies/servicetypes`, {
@@ -105,7 +99,7 @@ export default function AdminCreateService() {
                     name: '',
                     description: '',
                     serviceTypeId: 0,
-                    ticketType: ['']
+                    ticketTypes: [{ name: '' }]
                 })
 
             })
@@ -113,22 +107,32 @@ export default function AdminCreateService() {
     }
 
     function deleteTTtype(index) {
-        const updatedArray = newService.ticketType
+        const updatedArray = newService.ticketTypes
         updatedArray.length == 1 ? throwMessage('error', ['You must insert at least one ticket type']) : updatedArray.splice(index, 1)
         setNewService({
             ...newService,
-            ticketType: updatedArray
+            ticketTypes: updatedArray
         })
     }
 
     function addTTtype() {
-        const updatedArray = newService.ticketType
-        updatedArray.length == 4 ? throwMessage('error', ['You can insert a maximum of 4 tycket types']) : updatedArray.push('')
+        const updatedArray = newService.ticketTypes
+        updatedArray.length == 4 ? throwMessage('error', ['You can insert a maximum of 4 tycket types']) : updatedArray.push({ name: '' })
         setNewService({
             ...newService,
-            ticketType: updatedArray
+            ticketTypes: updatedArray
         })
 
+    }
+
+    function handleTTchange(index, value) {
+        const updatedArray = [...newService.ticketTypes]
+        updatedArray[index].name = value
+
+        setNewService({
+            ...newService,
+            ticketTypes: updatedArray
+        })
     }
 
     switch (serviceTypes.state) {
@@ -147,6 +151,10 @@ export default function AdminCreateService() {
         case 'success':
             return (
                 <>
+                    <div className="container my-5">
+                        <h1>Create a new service</h1>
+                        <p>Here you can define the basic details of your service, later you will be able to configure it</p>
+                    </div>
                     <CreateServiceFormBasicUi
                         onchange={handleChange}
                         onsubmit={handleSubmit}
@@ -154,7 +162,7 @@ export default function AdminCreateService() {
                         onTTdelete={deleteTTtype}
                         onTTchange={handleTTchange}
                         service={newService}
-                        serviceTypeList={serviceTypes}
+                        serviceTypeList={serviceTypes.result}
                     />
                 </>
             )

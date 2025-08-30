@@ -20,21 +20,20 @@ function MessageProvider({ children }) {
     }, [messages.state])
 
     if (redirect) {
-        return <Navigate to={'/login'} />
-
+        return <Navigate to={'/login'} replace />
     }
 
-    function throwMessage(state, messages) {
+    function throwMessage(state, msgList) {
         setMessages({
             state: state,
-            getList: [...messages]
+            getList: [...msgList]
         })
-        if (messages.state !== 'empty') {
+        if (msgList.state !== 'empty') {
             timeoutRef.current = setTimeout(() => setMessages({
                 state: 'empty',
                 getList: []
             }), 4000)
-        }
+        } else if (msgList.state == 'expired') return;
     }
 
     function closeMessage() {

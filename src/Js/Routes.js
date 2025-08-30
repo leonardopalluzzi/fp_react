@@ -9,6 +9,7 @@ import Profile from "../Pages/Common/ShowProfile";
 import AdminServices from '../Pages/Admin/Services/AdminServices';
 import AdminShowService from "../Pages/Admin/Services/AdminShowService";
 import AdminCreateService from '../Pages/Admin/Services/AdminCreateService'
+import AdminEditService from "../Pages/Admin/Services/AdminEditService";
 
 export const routes = [
     {
@@ -34,6 +35,11 @@ export const routes = [
             {
                 path: 'service/:id',
                 component: AdminShowService,
+                roles: [Role.ADMIN, Role.SUPERADMIN]
+            },
+            {
+                path: 'service/edit/:id',
+                component: AdminEditService,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             },
             {
