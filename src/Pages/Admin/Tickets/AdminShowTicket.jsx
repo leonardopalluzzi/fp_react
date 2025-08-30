@@ -6,6 +6,7 @@ import LoaderUi from "../../../Components/dumb/Loader.ui"
 import { useNavigate } from "react-router-dom"
 import ShowTicketFullUi from "../../../Components/dumb/ShowTicketFull.ui"
 import TicketHistoryTasbleUi from "../../../Components/dumb/TicketHistoryTable.ui"
+import TicketManager from "../../../Components/smart/TicketManager"
 
 export default function AdminShowTicket() {
     const { throwMessage } = useMessageContext()
@@ -48,7 +49,7 @@ export default function AdminShowTicket() {
                 ])
 
                 //setto
-                console.log(ticketHistory);
+                console.log(ticket);
 
                 setTicket({
                     state: 'success',
@@ -91,7 +92,9 @@ export default function AdminShowTicket() {
                         <ShowTicketFullUi
                             ticket={ticket.result}
                         />
-
+                        <TicketManager
+                            currentUser={currentUser}
+                        />
                         <TicketHistoryTasbleUi
                             history={ticket.history}
                         />

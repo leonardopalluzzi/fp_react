@@ -8,8 +8,8 @@ export default function ShowService({ roles, service }) {
 
     const navigate = useNavigate()
 
-    const roleConfig = roles.includes(Role.ADMIN) && 'admin' || roles.includes(Role.EMPLOYEE) && 'employee' || roles.includes(Role.CUSTOMER) && 'customer';
-    const routeConfig = crudRoutesConfig[roleConfig]
+    const roleConfigPrefix = roles.includes(Role.ADMIN) && 'admin' || roles.includes(Role.EMPLOYEE) && 'employee' || roles.includes(Role.CUSTOMER) && 'customer';
+    const routeConfig = crudRoutesConfig[roleConfigPrefix]
 
     console.log(service.customers);
 
@@ -46,7 +46,11 @@ export default function ShowService({ roles, service }) {
         <>
 
             <div className="container my-5">
-                <h1>Service Info</h1>
+                <div className="d-flex aling-items-center justify-content-between my-4">
+                    <h1>Service Info</h1>
+                    <button onClick={() => navigate(`/${roleConfigPrefix}/ticket/create/${service.id}`)} className="btn btn-outline-success">+ Create Ticket</button>
+
+                </div>
                 <div className="card border-0 p-4 shadow">
                     <label className="mt-3" htmlFor="">Name:</label>
                     <h3>{service.name}</h3>

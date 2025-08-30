@@ -20,7 +20,7 @@ export default function CreateServiceFormBasicUi({ onchange, onsubmit, onTTadd, 
                     </div>
 
                     <div class="input-group mb-3">
-                        <span class="input-group-text">With textarea</span>
+                        <span class="input-group-text">Description</span>
                         <textarea value={service.description} name="description" onChange={(e) => onchange(e.target.name, e.target.value)} class="form-control" aria-label="With textarea" placeholder="Description" required></textarea>
                     </div>
 

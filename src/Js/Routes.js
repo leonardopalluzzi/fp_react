@@ -13,6 +13,7 @@ import AdminEditService from "../Pages/Admin/Services/AdminEditService";
 import AdminTickets from "../Pages/Admin/Tickets/AdminTickets";
 import AdminShowTicket from '../Pages/Admin/Tickets/AdminShowTicket';
 import AdminEditTicket from '../Pages/Admin/Tickets/AdminEditTicket';
+import CreateTicket from "../Pages/Common/CreateTicket";
 
 export const routes = [
     {
@@ -63,6 +64,11 @@ export const routes = [
             {
                 path: 'ticket/edit/:id',
                 component: AdminEditTicket,
+                roles: [Role.ADMIN, Role.SUPERADMIN]
+            },
+            {
+                path: 'ticket/create/:id',
+                component: CreateTicket,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             }
         ]
