@@ -83,7 +83,9 @@ export default function AdminTickets() {
         case 'success':
             return (
                 <>
-                    <div className="container">
+                    <div className="container my-5">
+                        <h1>Assigned Tickets</h1>
+                        <p>Here you can see all the currently assigned tickets</p>
                         <ShowServiceTicketListUi
                             tickets={tickets.result}
                             handleTicketEdit={handleTicketEdit}

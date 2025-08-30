@@ -74,7 +74,7 @@ export default function AdminTicketsPool() {
                         <h1>Tickets Pool</h1>
                         <p>Here you can see all the open tickets that are note assigned to an operator</p>
                         <ShowServiceTicketListUi
-                            tickets={tickets.result.content}
+                            tickets={tickets.result}
                             handleTicketEdit={handleTicketEdit}
                             handleTicketShow={handleTicketShow}
                             handleTicketsDelete={handleTicketDelete}

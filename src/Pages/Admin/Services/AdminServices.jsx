@@ -106,8 +106,9 @@ export default function AdminServices() {
             return (
                 <>
                     <div className="container my-5">
+                        <h1>Services</h1>
                         <div>
-                            <button onClick={() => navigate(`/admin/service/create`)} className="btn btn-outline-primary">Create Service</button>
+                            <button onClick={() => navigate(`/admin/service/create`)} className="btn btn-outline-success">+ Create Service</button>
                         </div>
                         <ServiceTable config={config} data={services.result} onDelete={handleDelete} onEdit={handleUpdate} onShow={handleShow} />
 
