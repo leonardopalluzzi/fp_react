@@ -58,6 +58,8 @@ export default function AdminServices() {
     const routeConfig = crudRoutesConfig['admin']
 
     function handleDelete(itemId) {
+        console.log(`cancellazione servizio: ${itemId}`);
+
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services/delete/${itemId}`, {
             method: 'DELETE',
             headers: {

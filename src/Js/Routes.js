@@ -10,6 +10,9 @@ import AdminServices from '../Pages/Admin/Services/AdminServices';
 import AdminShowService from "../Pages/Admin/Services/AdminShowService";
 import AdminCreateService from '../Pages/Admin/Services/AdminCreateService'
 import AdminEditService from "../Pages/Admin/Services/AdminEditService";
+import AdminTickets from "../Pages/Admin/Tickets/AdminTickets";
+import AdminShowTicket from '../Pages/Admin/Tickets/AdminShowTicket';
+import AdminEditTicket from '../Pages/Admin/Tickets/AdminEditTicket';
 
 export const routes = [
     {
@@ -45,6 +48,21 @@ export const routes = [
             {
                 path: 'service/create',
                 component: AdminCreateService,
+                roles: [Role.ADMIN, Role.SUPERADMIN]
+            },
+            {
+                path: 'tickets',
+                component: AdminTickets,
+                roles: [Role.ADMIN, Role.SUPERADMIN]
+            },
+            {
+                path: 'ticket/:id',
+                component: AdminShowTicket,
+                roles: [Role.ADMIN, Role.SUPERADMIN]
+            },
+            {
+                path: 'ticket/edit/:id',
+                component: AdminEditTicket,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             }
         ]

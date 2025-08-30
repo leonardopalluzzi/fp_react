@@ -42,8 +42,6 @@ export default function AdminEditService() {
     }
 
 
-
-    // trasformare con async await
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -173,8 +171,8 @@ export default function AdminEditService() {
                 <>
 
                     <div className="container my-5">
-                        <h1>Create a new service</h1>
-                        <p>Here you can define the basic details of your service, later you will be able to configure it</p>
+                        <h1>Configure Service</h1>
+                        <p>Here you can configure your service details</p>
                         <CreateServiceFormBasicUi
                             service={service.result}
                             onchange={handleDetailsChange}
@@ -183,6 +181,7 @@ export default function AdminEditService() {
                             onTTchange={handleTTchange}
                             onTTdelete={handleTTdelete}
                             serviceTypeList={service.serviceTypeList}
+                            disableStatusSelect={false}
                         />
                         <ShowServiceAdminLits
                             customers={service.result.customers}

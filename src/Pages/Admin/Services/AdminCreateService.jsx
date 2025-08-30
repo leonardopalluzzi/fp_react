@@ -4,6 +4,7 @@ import { useAuthContext } from "../../../Contexts/AuthContext"
 import LoaderUi from '../../../Components/dumb/Loader.ui'
 import { useNavigate } from "react-router-dom"
 import CreateServiceFormBasicUi from "../../../Components/dumb/CreateServiceFormBasic.ui"
+import { Status } from "../../../Js/ServiceStatus"
 
 export default function AdminCreateService() {
     const { throwMessage } = useMessageContext()
@@ -17,7 +18,8 @@ export default function AdminCreateService() {
         serviceTypeId: 0,
         ticketTypes: [
             { name: '' }
-        ]
+        ],
+        status: Status.INACTIVE
     })
     const [serviceTypes, setServiceTypes] = useState({
         state: 'loading'
@@ -163,6 +165,7 @@ export default function AdminCreateService() {
                         onTTchange={handleTTchange}
                         service={newService}
                         serviceTypeList={serviceTypes.result}
+                        disableStatusSelect={true}
                     />
                 </>
             )

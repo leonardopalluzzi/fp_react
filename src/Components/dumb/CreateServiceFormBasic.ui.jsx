@@ -1,5 +1,13 @@
-export default function CreateServiceFormBasicUi({ onchange, onsubmit, onTTadd, onTTdelete, onTTchange, service, serviceTypeList }) {
-    console.log(serviceTypeList);
+import { Status } from "../../Js/ServiceStatus";
+
+export default function CreateServiceFormBasicUi({ onchange, onsubmit, onTTadd, onTTdelete, onTTchange, service, serviceTypeList, disableStatusSelect }) {
+    console.log(service);
+
+    const statusArray = []
+
+    for (const key in Status) {
+        statusArray.push(key)
+    }
 
     return (
         <>
@@ -30,6 +38,21 @@ export default function CreateServiceFormBasicUi({ onchange, onsubmit, onTTadd, 
                             }
                         </select>
                     </div>
+
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect01">Service Status</label>
+                        <select disabled={disableStatusSelect} value={service.status} name="status" onChange={(e) => onchange(e.target.name, e.target.value)} class="form-select" id="inputGroupSelect01" required>
+                            <option value={0} selected>Choose...</option>
+                            {
+                                statusArray.map((item, i) => (
+                                    <>
+                                        <option value={item}>{item}</option>
+                                    </>
+                                ))
+                            }
+                        </select>
+                    </div>
+
 
                     <div className="bg-white rounded rounded-3 p-3">
                         <h5>Add Ticket Types</h5>
