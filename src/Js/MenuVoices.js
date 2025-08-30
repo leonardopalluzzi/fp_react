@@ -18,7 +18,7 @@ export const menuVoices = [
     {
         name: 'Tickets Pool',
         path: '/ticketspool', // aggiungere il path in base al ruolo come prefisso
-        roles: [Role.EMPLOYEE, Role.SUPERADMIN],
+        roles: [Role.EMPLOYEE, Role.SUPERADMIN, Role.ADMIN],
         style: ''
 
     },

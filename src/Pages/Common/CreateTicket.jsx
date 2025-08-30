@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom"
 import LoaderUi from "../../Components/dumb/Loader.ui"
 import { useNavigate } from "react-router-dom"
 import { Role } from "../../Js/Roles"
+import CreatTicketFormUi from "../../Components/dumb/CreateTicketForm.ui"
 
 
 export default function CreateTicket() {
@@ -103,50 +104,12 @@ export default function CreateTicket() {
         case 'success':
             return (
                 <>
-                    <div className="container my-5">
-                        <h1 className="my-5">Create ticket for service: service_name</h1>
-                        <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }} >
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">Title</span>
-                                <input value={newTicket.title} name="title" onChange={(e) => handleChange(e.target.name, e.target.value)} type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
-                            </div>
-
-                            <div class="input-group mb-3 d-none">
-                                <label class="input-group-text" for="inputGroupFile01">Attachment</label>
-                                <input value={newTicket.attachment} name="attachments" onChange={(e) => handleChange(e.target.name, e.target.value)} type="file" class="form-control" id="inputGroupFile01" />
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">Description</span>
-                                <textarea value={newTicket.description} name="description" onChange={(e) => handleChange(e.target.name, e.target.value)} class="form-control" aria-label="With textarea"></textarea>
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <label class="input-group-text" for="inputGroupSelect01">Ticket Type</label>
-                                <select value={newTicket.typeId} name="typeId" onChange={(e) => handleChange(e.target.name, e.target.value)} class="form-select" id="inputGroupSelect01">
-                                    <option selected>Choose...</option>
-                                    {
-                                        serviceTypeList.result.map((item, i) => (
-                                            <>
-                                                <option value={item.id}>{item.name}</option>
-                                            </>
-                                        ))
-                                    }
-                                </select>
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">Notes</span>
-                                <textarea value={newTicket.notes} name="notes" onChange={(e) => handleChange(e.target.name, e.target.value)} class="form-control" aria-label="With textarea"></textarea>
-                            </div>
-
-                            <div className="d-flex align-items-center justify-content-center">
-                                <button className="btn btn-outline-success w-100">Create</button>
-                            </div>
-
-                        </form>
-                    </div>
-
+                    <CreatTicketFormUi
+                        ticket={newTicket}
+                        onchange={handleChange}
+                        onsubmit={handleSubmit}
+                        typeList={serviceTypeList.result}
+                    />
                 </>
             )
     }

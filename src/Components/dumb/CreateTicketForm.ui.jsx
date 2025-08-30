@@ -1,4 +1,4 @@
-export default function CreatTicketFormUi({ ticket, onchange, onsubmit }) {
+export default function CreatTicketFormUi({ ticket, onchange, onsubmit, typeList }) {
     return (
         <>
             <div className="container my-5">
@@ -24,7 +24,7 @@ export default function CreatTicketFormUi({ ticket, onchange, onsubmit }) {
                         <select value={ticket.typeId} name="typeId" onChange={(e) => onchange(e.target.name, e.target.value)} class="form-select" id="inputGroupSelect01">
                             <option selected>Choose...</option>
                             {
-                                serviceTypeList.result.map((item, i) => (
+                                typeList.map((item, i) => (
                                     <>
                                         <option value={item.id}>{item.name}</option>
                                     </>
