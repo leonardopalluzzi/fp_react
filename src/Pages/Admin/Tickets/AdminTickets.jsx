@@ -38,7 +38,7 @@ export default function AdminTickets() {
                     message: err.message
                 })
             })
-    })
+    }, [])
 
     function handleTicketEdit(tId) {
         return navigate(`/admin/ticket/edit/${tId}`)

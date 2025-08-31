@@ -3,6 +3,7 @@ import ShowServiceAdminListUi from "../dumb/ShowServiceAdminLists.ui";
 import ShowServiceTicketListUi from "../dumb/ShowServiceTicketList.ui";
 import { useNavigate } from "react-router-dom";
 import { crudRoutesConfig } from "../../Js/CrudRoutesConfig";
+import AdminServiceManagerUi from "../dumb/AdminServiceManager.ui";
 
 export default function ShowService({ roles, service }) {
 
@@ -88,6 +89,7 @@ export default function ShowService({ roles, service }) {
                 {
                     (roles.includes(Role.ADMIN)) && (
                         <>
+                            <AdminServiceManagerUi serviceId={service.id} />
                             <ShowServiceAdminListUi
                                 customers={service.customers}
                                 operators={service.operators}

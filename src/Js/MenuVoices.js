@@ -22,13 +22,13 @@ export const menuVoices = [
         style: ''
 
     },
-    {
-        name: 'Company info',
-        path: '/company', // aggiungere il path in base al ruolo come prefisso
-        roles: [Role.ADMIN, Role.SUPERADMIN],
-        style: ''
+    // { // rest controller mancante
+    //     name: 'Company info',
+    //     path: '/company', // aggiungere il path in base al ruolo come prefisso
+    //     roles: [Role.ADMIN, Role.SUPERADMIN],
+    //     style: ''
 
-    },
+    // },
     {
         name: 'Tickets',
         path: '/tickets', // aggiungere il path in base al ruolo come prefisso

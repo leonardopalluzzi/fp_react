@@ -27,11 +27,15 @@ export default function Register() {
     }
     return (
         <>
-            <RegisterFormUi
-                user={user}
-                onchange={handleChange}
-                onsubmit={handleSubmit}
-            />
+            <div className="container my-5">
+                <h1>Register</h1>
+                <RegisterFormUi
+                    user={user}
+                    onchange={handleChange}
+                    onsubmit={handleSubmit}
+                />
+            </div>
+
         </>
     )
 }

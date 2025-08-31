@@ -18,6 +18,7 @@ import AdminTicketsPool from "../Pages/Admin/Tickets/AdminTicketsPool";
 import AdminUsers from "../Pages/Admin/Users/AdminUsers";
 import AdminShowUser from "../Pages/Admin/Users/AdminShowUser";
 import AdminEditUser from "../Pages/Admin/Users/AdminEditUser";
+import AdminCreateUser from "../Pages/Admin/Users/AdminCreateUser";
 
 export const routes = [
     {
@@ -93,6 +94,11 @@ export const routes = [
             {
                 path: 'user/edit/:id',
                 component: AdminEditUser,
+                roles: [Role.ADMIN, Role.SUPERADMIN]
+            },
+            {
+                path: 'user/create/:id',
+                component: AdminCreateUser,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             }
         ]
