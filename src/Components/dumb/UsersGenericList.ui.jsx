@@ -1,6 +1,9 @@
 
+import { Role } from "../../Js/Roles"
 import DeleteModalUi from "./DeleteModal.ui"
-export default function UsersGenericListUi({ users, title, onedit, onshow, ondelete }) {
+export default function UsersGenericListUi({ users, title, onedit, onshow, ondelete, disableShow, disableEdit, disableDelete }) {
+    console.log(users);
+
     return (
         <>
             <div className="col">
@@ -30,9 +33,11 @@ export default function UsersGenericListUi({ users, title, onedit, onshow, ondel
                                                 <td>{c.createdAt}</td>
                                                 <td>
                                                     <div className="d-flex align-items-center justify-content-center gap-2">
-                                                        <button onClick={() => onshow(c.id)} className="btn btn-primary"><i class="bi bi-eye-fill"></i></button>
-                                                        <button onClick={() => onedit(c.id)} className="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
-                                                        <DeleteModalUi itemId={c.id} deleteFunction={ondelete} />
+                                                        <button disabled={disableShow} onClick={() => onshow(c.id)} className="btn btn-primary"><i class="bi bi-eye-fill"></i></button>
+                                                        <button disabled={disableEdit} onClick={() => onedit(c.id)} className="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
+                                                        {
+                                                            !disableDelete && <DeleteModalUi itemId={c.id} deleteFunction={ondelete} />
+                                                        }
                                                     </div>
 
                                                 </td>

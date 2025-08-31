@@ -157,8 +157,6 @@ export default function AdminShowUser() {
                                 />
                             </div>
                         </div>
-
-
                     </div>
                 </>
             )

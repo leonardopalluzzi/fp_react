@@ -119,6 +119,9 @@ export default function AdminUsers() {
                             ondelete={handleOperatorDelete}
                             onedit={handleOperatorEdit}
                             onshow={handleOperatorShow}
+                            disableEdit={true}
+                            disableShow={false}
+                            disableDelete={true}
                         />
 
                     </div>
