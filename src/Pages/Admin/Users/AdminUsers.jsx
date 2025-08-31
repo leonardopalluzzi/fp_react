@@ -4,12 +4,14 @@ import { useAuthContext } from "../../../Contexts/AuthContext"
 import { useState, useEffect } from "react"
 import LoaderUi from "../../../Components/dumb/Loader.ui"
 import UsersGenericListUi from "../../../Components/dumb/UsersGenericList.ui"
+import { useNavigate } from "react-router-dom"
 
 
 export default function AdminUsers() {
     const { throwMessage } = useMessageContext()
     const { currentUser } = useAuthContext()
     const token = currentUser.token
+    const navigate = useNavigate();
 
     const [users, setUsers] = useState({
         state: 'loading'
@@ -19,6 +21,10 @@ export default function AdminUsers() {
 
 
     useEffect(() => {
+        handleFetch()
+    }, [])
+
+    function handleFetch() {
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users?page=${page}`, {
             method: 'GET',
             headers: {
@@ -47,25 +53,38 @@ export default function AdminUsers() {
                 })
                 throwMessage('error', [err.message])
             })
-
-    }, [])
+    }
 
 
     function handleOperatorShow(uId) {
-
+        return navigate(`/admin/user/${uId}`)
     }
 
     function handleOperatorEdit(uId) {
-
+        return navigate(`/admin/user/edit/${uId}`)
     }
 
     function handleOperatorDelete(uId) {
-
+        fetch(`${import.meta.env.VITE_BACK_URL}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.state && (data.state == 'error' || data.state == 'expired')) {
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('success', ['User deleted'])
+                    handleFetch()
+                }
+            })
+            .catch(err => {
+                throwMessage('error', [err.message])
+            })
     }
 
-
-
-    //fetch dati
     switch (users.state) {
         case 'loading':
             return (
