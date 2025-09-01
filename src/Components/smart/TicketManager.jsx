@@ -40,7 +40,7 @@ export default function TicketManager({ currentUser, serviceId, ticketId, ticket
                         </div>
                         <div className="col text-center">
                             <div className="border rounded rounded-3 p-4 h-100">
-                                <button onClick={() => navigate(`/admin/ticket/edit/${ticketId}`)} className="btn btn-warning"><i class="bi bi-pencil-square"></i> Edit Ticket</button>
+                                <button onClick={() => navigate(`/admin/ticket/edit/${ticketId}/service/${serviceId}`)} className="btn btn-warning"><i class="bi bi-pencil-square"></i> Edit Ticket</button>
                             </div>
                         </div>
                     </div>

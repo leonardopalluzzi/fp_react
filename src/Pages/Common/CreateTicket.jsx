@@ -109,6 +109,8 @@ export default function CreateTicket() {
                         onchange={handleChange}
                         onsubmit={handleSubmit}
                         typeList={serviceTypeList.result}
+                        showNotes={true}
+                        actionName={'Create'}
                     />
                 </>
             )

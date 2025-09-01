@@ -67,7 +67,7 @@ export const routes = [
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             },
             {
-                path: 'ticket/edit/:id',
+                path: 'ticket/edit/:ticketId/service/:serviceId',
                 component: AdminEditTicket,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             },
