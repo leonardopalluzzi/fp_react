@@ -1,81 +1,51 @@
-import { useMessageContext } from "../../Contexts/MessageContext"
-import { useState, useEffect } from "react"
-import LoaderUi from "../dumb/Loader.ui"
+import AssignTIcketToOperator from "./AssignTicketToOperator"
+import UpdateTicketHistory from "./UpdateTicketHistory"
+import { Role } from '../../Js/Roles'
+import { useNavigate } from "react-router-dom"
 
-export default function TicketManager({ currentUser, serviceId, ticketId }) {
-    //logica con funzioni handle per interagire con i ticket come riassegnazioni ecc..
-    const { throwMessage } = useMessageContext()
-    const token = currentUser.token
+export default function TicketManager({ currentUser, serviceId, ticketId, ticketStatus, currentAssignee }) {
+    //logica di role check
+    const isSuperAdmin = currentUser.details.roles.includes(Role.SUPERADMIN)
+    const isAdmin = currentUser.details.roles.includes(Role.ADMIN)
+    const isEmployee = currentUser.details.roles.includes(Role.EMPLOYEE)
+    const isCustomer = currentUser.details.roles.includes(Role.CUSTOMER)
 
-    const [operators, setOperators] = useState({
-        state: 'loading'
-    })
+    const navigate = useNavigate()
 
-    //recupero lista di operatori per servizio dalla index, a partire dal ticket id
-
-    // nella back ho fatto le specification per users per hasService e hasRole, e sono gia integrate, ma alla fine ho fatto endpoin dedicato con metodo getoperatorbyservice
-    useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/${serviceId}`, { //ricorsione infinita lato back
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.state && (data.state == 'error' || data.state == 'expired')) {
-                    throwMessage(data.state, [data.message])
-                } else {
-                    setOperators({
-                        state: 'success',
-                        result: data
-                    })
-                }
-            })
-            .catch(err => {
-                throwMessage('error', [err.message])
-                setOperators({
-                    state: 'error',
-                    message: err.message
-                })
-            })
-    }, [])
-
-
-    function assignTicketToOperator(ticketId, operatorId) {
-        //endpoint apposito creato in back
-    }
-
-
-    switch (operators.state) {
-        case 'loading':
-            return <LoaderUi />
-        case 'error':
-            return (
-                <>
-                    <p>{operators.message}</p>
-                </>
-            )
-        case 'success':
-            return (
-                <>
-                <div className="card border-0 shadow p-4">
-                    <h3>ticket manager</h3>
-                    {/* componenti ui per la gestione, renderizzabili in base al ruolo  */}
-                    <div>
-                        admin: riassegna ticket, cambia stato ticket, update ticket, aggiungi note (storico)
-                        impiegato: riassegna ticket, cambia stato ticket, aggiungi note
-                        cliente: aggiungi note
-
-                        <ul>
-                            <li>riassegna tt</li>
-                            <li>update storico (cambia stato inserisci note)</li>
-                            <li>tasto per pagina di edit</li>
-                        </ul>
+    if (isAdmin || isSuperAdmin) {
+        return (
+            <>
+                <div className="card border-0 shadow p-4 my-5">
+                    <h3 className="mb-5">Manage Ticket</h3>
+                    <div className="row row-cols-1 row-cols-md-3 align-items-center">
+                        <div className="col align-items-center justify-content-center">
+                            <div className="border rounded rounded-3 p-4 h-100">
+                                <label className="mb-3">Assign ticket to an operator</label>
+                                <AssignTIcketToOperator
+                                    currentUser={currentUser}
+                                    serviceId={serviceId}
+                                    ticketId={ticketId}
+                                    currentAssignee={currentAssignee}
+                                />
+                            </div>
+                        </div>
+                        <div className="col d-flex align-items-center justify-content-center">
+                            <div className="border rounded rounded-3 p-4 h-100">
+                                <UpdateTicketHistory
+                                    currentUser={currentUser}
+                                    ticketId={ticketId}
+                                    ticketStatus={ticketStatus}
+                                />
+                            </div>
+                        </div>
+                        <div className="col text-center">
+                            <div className="border rounded rounded-3 p-4 h-100">
+                                <button onClick={() => navigate(`/admin/ticket/edit/${ticketId}`)} className="btn btn-warning"><i class="bi bi-pencil-square"></i> Edit Ticket</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                    
-                </>
-            )
+            </>
+        )
     }
 }

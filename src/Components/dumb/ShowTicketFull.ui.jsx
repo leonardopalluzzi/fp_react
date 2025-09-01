@@ -53,13 +53,20 @@ export default function ShowTicketFullUi({ ticket }) {
                     <div className="col">
                         <div className="border rounded rounded-4 p-3 bg-light shadow">
                             <h3 htmlFor="">Assigned To:</h3>
-                            <div className="container">
-                                <label htmlFor="">Username:</label>
-                                <h5>{ticket.assignedTo.username}</h5>
+                            {
+                                ticket.assignedTo != null ? (
+                                    <>
+                                        <div className="container">
+                                            <label htmlFor="">Username:</label>
+                                            <h5>{ticket.assignedTo.username}</h5>
 
-                                <label htmlFor="">Email:</label>
-                                <h5>{ticket.assignedTo.email}</h5>
-                            </div>
+                                            <label htmlFor="">Email:</label>
+                                            <h5>{ticket.assignedTo.email}</h5>
+                                        </div>
+                                    </>
+                                ) : (<>-</>)
+                            }
+
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,6 @@
 export default function TicketHistoryTasbleUi({ history }) {
+    console.log(history);
+
     return (
         <>
             <div className="card my-5 p-4 border-0 shadow">
@@ -14,6 +16,7 @@ export default function TicketHistoryTasbleUi({ history }) {
                                 <th scope="col">Notes</th>
                                 <th scope="col">Changed At</th>
                                 <th scope="col">Changed By</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -24,6 +27,7 @@ export default function TicketHistoryTasbleUi({ history }) {
                                             <td>{item.notes}</td>
                                             <td>{item.changedAt}</td>
                                             <td>{item.changedBy.username}</td>
+                                            <td>{item.status}</td>
                                         </tr>
                                     </>
                                 ))

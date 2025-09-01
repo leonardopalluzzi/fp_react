@@ -57,7 +57,7 @@ export default function AdminShowTicket() {
                     result: ticket,
                     history: {
                         get: ticketHistory.content,
-                        pagination: ticketHistory.pageable
+                        pagination: ticketHistory
                     }
                 })
 
@@ -97,6 +97,8 @@ export default function AdminShowTicket() {
                             currentUser={currentUser}
                             serviceId={ticket.result.service.id}
                             ticketId={id}
+                            ticketStatus={ticket.result.status}
+                            currentAssignee={ticket.result.assignedTo != null ? ticket.result.assignedTo.id : ""}
                         />
                         <TicketHistoryTasbleUi
                             history={ticket.history}
