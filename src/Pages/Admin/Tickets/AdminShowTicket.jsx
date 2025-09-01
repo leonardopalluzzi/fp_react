@@ -21,6 +21,7 @@ export default function AdminShowTicket() {
 
     const [page, setPage] = useState(0)
 
+
     const urlTicketFetch = `${import.meta.env.VITE_BACK_URL}/api/v1/tickets/${id}`
     const urlTicketHistoryFetch = `${import.meta.env.VITE_BACK_URL}/api/v1/tickets/manage/history/${id}?page=${page}`
 
@@ -32,9 +33,9 @@ export default function AdminShowTicket() {
     }
 
     useEffect(() => {
+        console.log("ID ticket:", id, "Page:", page);
 
         const ticketFetch = async () => {
-
             try {
                 const [tt, th] = await Promise.all([
                     fetch(urlTicketFetch, options),
@@ -94,6 +95,8 @@ export default function AdminShowTicket() {
                         />
                         <TicketManager
                             currentUser={currentUser}
+                            serviceId={ticket.result.service.id}
+                            ticketId={id}
                         />
                         <TicketHistoryTasbleUi
                             history={ticket.history}
