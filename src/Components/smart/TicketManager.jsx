@@ -59,8 +59,22 @@ export default function TicketManager({ currentUser, serviceId, ticketId }) {
         case 'success':
             return (
                 <>
+                <div className="card border-0 shadow p-4">
                     <h3>ticket manager</h3>
                     {/* componenti ui per la gestione, renderizzabili in base al ruolo  */}
+                    <div>
+                        admin: riassegna ticket, cambia stato ticket, update ticket, aggiungi note (storico)
+                        impiegato: riassegna ticket, cambia stato ticket, aggiungi note
+                        cliente: aggiungi note
+
+                        <ul>
+                            <li>riassegna tt</li>
+                            <li>update storico (cambia stato inserisci note)</li>
+                            <li>tasto per pagina di edit</li>
+                        </ul>
+                    </div>
+                </div>
+                    
                 </>
             )
     }
