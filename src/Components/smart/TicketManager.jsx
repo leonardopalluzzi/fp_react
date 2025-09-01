@@ -48,4 +48,57 @@ export default function TicketManager({ currentUser, serviceId, ticketId, ticket
             </>
         )
     }
+
+    if (isEmployee) {
+        return (
+            <>
+                <div className="card border-0 shadow p-4 my-5">
+                    <h3 className="mb-5">Manage Ticket</h3>
+                    <div className="row row-cols-1 row-cols-md-2 align-items-center">
+                        <div className="col align-items-center justify-content-center">
+                            <div className="border rounded rounded-3 p-4 h-100">
+                                <label className="mb-3">Assign ticket to an operator</label>
+                                <AssignTIcketToOperator
+                                    currentUser={currentUser}
+                                    serviceId={serviceId}
+                                    ticketId={ticketId}
+                                    currentAssignee={currentAssignee}
+                                />
+                            </div>
+                        </div>
+                        <div className="col d-flex align-items-center justify-content-center">
+                            <div className="border rounded rounded-3 p-4 h-100">
+                                <UpdateTicketHistory
+                                    currentUser={currentUser}
+                                    ticketId={ticketId}
+                                    ticketStatus={ticketStatus}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+    if (isCustomer) {
+        return (
+            <>
+                <div className="card border-0 shadow p-4 my-5">
+                    <h3 className="mb-5">Manage Ticket</h3>
+                    <div className="row row-cols-1 align-items-center">
+                        <div className="col d-flex align-items-center justify-content-center">
+                            <div className="border rounded rounded-3 p-4 h-100">
+                                <UpdateTicketHistory
+                                    currentUser={currentUser}
+                                    ticketId={ticketId}
+                                    ticketStatus={ticketStatus}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
 }
