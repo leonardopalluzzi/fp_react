@@ -100,8 +100,8 @@ export default function AdminTickets() {
             })
     }, [page, filters])
 
-    function handleTicketEdit(tId) {
-        return navigate(`/admin/ticket/edit/${tId}`)
+    function handleTicketEdit(tId, sId) {
+        return navigate(`/admin/ticket/edit/${tId}/service/${sId}`)
 
     }
 
