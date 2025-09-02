@@ -52,16 +52,8 @@ export default function AdminTickets() {
 
     }, [tickets, filters, services])
 
-    let query = '';
-
-    for (const key in filters) {
-        if (filters[key] != undefined && filters[key] != '') {
-            query += `&${key}=${filters[key]}`
-        }
-    }
-
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services`, {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services/manage`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -69,6 +61,8 @@ export default function AdminTickets() {
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
+
                 if (data.state && (data.state == 'error' || data.state == 'expired')) {
                     throwMessage(data.state, [data.message])
                     return

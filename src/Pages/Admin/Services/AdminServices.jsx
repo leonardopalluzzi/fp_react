@@ -6,12 +6,17 @@ import ServiceTable from "../../../Components/smart/ServiceTable";
 import { serviceTableConfig } from "../../../Js/ServiceTableConfig";
 import { useNavigate } from "react-router-dom";
 import { crudRoutesConfig } from "../../../Js/CrudRoutesConfig";
+import DataWrapper from "../../../Components/smart/DataWrapper";
+import { useFiltersContext } from "../../../Contexts/FiltersContext";
+import { Status } from "../../../Js/ServiceStatus";
 
 export default function AdminServices() {
     const { throwMessage } = useMessageContext();
     const { currentUser } = useAuthContext();
+    const { setFiltersConfig, buildQuery } = useFiltersContext()
     const navigate = useNavigate();
     const token = currentUser.token;
+
 
     //configrazione table
     const config = serviceTableConfig['admin'];
@@ -20,9 +25,75 @@ export default function AdminServices() {
         state: 'loading'
     })
 
+
+    //configurazione filtri
+    const [page, setPage] = useState(0)
+    const [filters, setFilters] = useState({})
+    const [serviceTypes, setServiceTypes] = useState({
+        state: 'loading'
+    })
+
+    useEffect(() => {
+        if (services.state == 'success' && serviceTypes.state == 'success') {
+
+            const statusOptions = []
+
+            for (const key in Status) {
+                const option = { key: key, label: key }
+                statusOptions.push(option)
+            }
+
+            const fields = [
+                { key: 'name', label: 'Name', type: 'text' },
+                { key: 'description', label: 'Description', type: 'text' },
+                { key: 'status', label: 'Status', type: 'option', options: statusOptions },
+                { key: 'createdAt', label: 'Created At', type: 'date' },
+                { key: 'serviceType', label: 'Service Type', type: 'select', options: serviceTypes.result },
+                { key: 'code', label: 'Code', type: 'text' },
+            ]
+            setFiltersConfig(3, page, services.pagination.totalPages, setPage, fields, filters, setFilters)
+
+        }
+
+    }, [services, serviceTypes, filters])
+
+
+    //fetch per tipologica service type
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tipologies/servicetypes`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.state && data.state == 'expired') {
+                    throwMessage('expired', [data.error])
+                } else if (data.state && data.state == 'error') {
+                    throwMessage('error', [data.error])
+                }
+                console.log(data);
+
+                setServiceTypes({
+                    state: 'success',
+                    result: data.map(s => (
+                        { key: s.id, label: s.name }
+                    ))
+                })
+            })
+            .catch(err => {
+                setServiceTypes({
+                    state: 'error',
+                    message: err.message
+                })
+                throwMessage('error', [err.message])
+            })
+    }, [])
+
     // fetch dati
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services`, {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services?page=${page}${buildQuery(filters)}`, {
             method: 'GET',
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -37,9 +108,12 @@ export default function AdminServices() {
                     throwMessage('error', [JSON.stringify(data)])
                 }
                 if (data.state != 'error' && data.state != 'expired') {
+                    console.log(data);
+
                     setServices({
                         state: 'success',
-                        result: data
+                        result: data.content,
+                        pagination: data
                     })
                 } else {
                     throwMessage(data.state, [JSON.stringify(data)])
@@ -53,7 +127,7 @@ export default function AdminServices() {
                 })
                 throwMessage('error', [err.message])
             })
-    }, [])
+    }, [filters])
 
     const routeConfig = crudRoutesConfig['admin']
 
@@ -110,7 +184,10 @@ export default function AdminServices() {
                         <div>
                             <button onClick={() => navigate(`/admin/service/create`)} className="btn btn-outline-success">+ Create Service</button>
                         </div>
-                        <ServiceTable config={config} data={services.result} onDelete={handleDelete} onEdit={handleUpdate} onShow={handleShow} />
+                        <DataWrapper css={'mt-5'} list={3}>
+                            <ServiceTable config={config} data={services.result} onDelete={handleDelete} onEdit={handleUpdate} onShow={handleShow} />
+                        </DataWrapper>
+
 
                     </div>
                 </>
