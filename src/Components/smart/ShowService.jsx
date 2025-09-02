@@ -4,15 +4,78 @@ import ShowServiceTicketListUi from "../dumb/ShowServiceTicketList.ui";
 import { useNavigate } from "react-router-dom";
 import { crudRoutesConfig } from "../../Js/CrudRoutesConfig";
 import AdminServiceManagerUi from "../dumb/AdminServiceManager.ui";
+import DataWrapper from "./DataWrapper";
+import { useState, useEffect } from "react";
+import { Status } from "../../Js/TicketStatus";
+import { useAuthContext } from "../../Contexts/AuthContext";
 
 export default function ShowService({ roles, service }) {
+    const { currentUser } = useAuthContext()
+    const token = currentUser.token
 
     const navigate = useNavigate()
 
     const roleConfigPrefix = roles.includes(Role.ADMIN) && 'admin' || roles.includes(Role.EMPLOYEE) && 'employee' || roles.includes(Role.CUSTOMER) && 'customer';
     const routeConfig = crudRoutesConfig[roleConfigPrefix]
 
-    console.log(service.customers);
+
+    const [tickets, setTickets] = useState({
+        state: 'loading'
+    })
+
+    //filtri e paginazione
+    const [page, setPage] = useState(0)
+    const [filters, setFilters] = useState({
+        serviceId: service.id
+    })
+
+    let query = ''
+
+    const statusOptions = []
+
+    for (const key in Status) {
+        const option = { value: key, label: key }
+        statusOptions.push(option)
+    }
+
+    for (const key in filters) {
+        if (filters[key] != undefined && filters[key] != '') {
+            query += `&${key}=${filters[key]}`
+        }
+    }
+
+    const fields = [
+        { key: 'status', label: 'Ticket Status', type: 'select', options: statusOptions },
+        { key: 'title', label: 'Title', type: 'text' },
+        { key: 'description', label: 'Description', type: 'text' },
+        { key: 'createdAt', label: 'Created At', type: 'date' }
+    ]
+
+
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}${query}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+
+                setTickets({
+                    state: 'success',
+                    pagination: data,
+                    result: data.content
+                })
+            })
+            .catch(err => {
+                setTickets({
+                    state: 'error',
+                    message: err.message
+                })
+            })
+    }, [page, filters])
 
 
     // operators
@@ -97,7 +160,6 @@ export default function ShowService({ roles, service }) {
                                 handleOperatorEdit={handleOperatorEdit}
                                 handleOperatorDelete={handleOperatorDelete}
                             />
-
                         </>
                     )
                 }
@@ -105,16 +167,25 @@ export default function ShowService({ roles, service }) {
                 {
                     (roles.includes(Role.ADMIN) || roles.includes(Role.EMPLOYEE)) && (
                         <>
-                            <ShowServiceTicketListUi
-                                tickets={service.tickets}
-                                handleTicketsDelete={handleTicketDelete}
-                                handleTicketShow={handleTicketShow}
-                                handleTicketEdit={handleTicketEdit}
-                            />
+                            {
+                                tickets.state == 'success' && (
+                                    <>
+                                        <DataWrapper setPage={setPage} pageNumber={tickets.pagination.totalPages} fields={fields} values={filters} onChange={setFilters} currentPage={page}>
+                                            <ShowServiceTicketListUi
+                                                tickets={tickets.result}
+                                                handleTicketsDelete={handleTicketDelete}
+                                                handleTicketShow={handleTicketShow}
+                                                handleTicketEdit={handleTicketEdit}
+                                            />
+                                        </DataWrapper>
+                                    </>
+                                )
+                            }
+
                         </>
                     )
                 }
-            </div>
+            </div >
         </>
     )
 }

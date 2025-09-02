@@ -34,25 +34,13 @@ export default function AdminTickets() {
         statusOptions.push(option)
     }
 
-    function getServices() {
-        const services = tickets.result.map(t => t.service)
-        return services.map(s => {
-            return { value: s.id, label: s.name }
-        })
-    }
-
-    let filtersToSend = '';
+    let query = '';
 
     for (const key in filters) {
         if (filters[key] != undefined && filters[key] != '') {
-            filtersToSend += `&${key}=${filters[key]}`
+            query += `&${key}=${filters[key]}`
         }
     }
-
-    `status=${filters.status}&title=${filters.title}&description=${filters.description}&createdAt=${filters.createdAt}&serviceId=${filters.serviceId}`
-
-    console.log(filtersToSend);
-
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services`, {
@@ -88,7 +76,7 @@ export default function AdminTickets() {
     //fetch dati
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}${filtersToSend}`, {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}${query}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
