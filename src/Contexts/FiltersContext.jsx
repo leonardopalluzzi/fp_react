@@ -50,11 +50,23 @@ function FiltersProvider({ children }) {
         }))
     }
 
+    function buildQuery(filters) {
+        let query = ''
+
+        for (const key in filters) {
+            if (filters[key] != undefined && filters[key] != '') {
+                query += `&${key}=${filters[key]}`
+            }
+        }
+
+        return query
+    }
+
 
 
     return (
         <>
-            <FiltersContext.Provider value={{ config, setFiltersConfig }}>
+            <FiltersContext.Provider value={{ config, setFiltersConfig, buildQuery }}>
                 {children}
             </FiltersContext.Provider>
         </>

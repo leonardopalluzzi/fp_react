@@ -6,10 +6,12 @@ import ShowServiceTicketListUi from "../../../Components/dumb/ShowServiceTicketL
 import { useNavigate } from "react-router-dom"
 import DataWrapper from "../../../Components/smart/DataWrapper"
 import { Status } from '../../../Js/TicketStatus'
+import { useFiltersContext } from "../../../Contexts/FiltersContext"
 
 export default function AdminTickets() {
     const { throwMessage } = useMessageContext()
     const { currentUser } = useAuthContext()
+    const { setFiltersConfig, buildQuery } = useFiltersContext()
     const token = currentUser.token
     const navigate = useNavigate()
 
@@ -33,6 +35,22 @@ export default function AdminTickets() {
         const option = { value: key, label: key }
         statusOptions.push(option)
     }
+
+    useEffect(() => {
+        if (tickets.state == 'success' && services.state == 'success') {
+
+            const fields = [
+                { key: 'status', label: 'Ticket Status', type: 'select', options: statusOptions },
+                { key: 'title', label: 'Title', type: 'text' },
+                { key: 'description', label: 'Description', type: 'text' },
+                { key: 'createdAt', label: 'Created At', type: 'date' },
+                { key: 'serviceId', label: 'Service', type: 'select', options: services.result }
+            ]
+
+            setFiltersConfig(1, page, tickets.pagination.totalPages, setPage, fields, filters, setFilters)
+        }
+
+    }, [tickets, filters, services])
 
     let query = '';
 
@@ -76,7 +94,7 @@ export default function AdminTickets() {
     //fetch dati
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}${query}`, {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}${buildQuery(filters)}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -141,25 +159,12 @@ export default function AdminTickets() {
                 </>
             )
         case 'success':
-
-            let fields = []
-
-            if (services.state == 'success') {
-                fields = [
-                    { key: 'status', label: 'Ticket Status', type: 'select', options: statusOptions },
-                    { key: 'title', label: 'Title', type: 'text' },
-                    { key: 'description', label: 'Description', type: 'text' },
-                    { key: 'createdAt', label: 'Created At', type: 'date' },
-                    { key: 'serviceId', label: 'Service', type: 'select', options: services.result }
-                ]
-            }
-
             return (
                 <>
                     <div className="container my-5">
                         <h1>Assigned Tickets</h1>
                         <p>Here you can see all the currently assigned tickets</p>
-                        <DataWrapper page={page} setPage={setPage} pageNumber={tickets.pagination.totalPages} currentPage={page} fields={fields} values={filters} onChange={setFilters}>
+                        <DataWrapper css={''} list={1}>
 
                             <ShowServiceTicketListUi
                                 tickets={tickets.result}

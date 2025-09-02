@@ -8,9 +8,9 @@ export default function DataWrapper({ children, css, list }) {
     const { config } = useFiltersContext()
 
     const { setPage, pageNumber, fields = [], values = {}, onChange = () => { }, currentPage = 0 } = config[list]
-    console.log(fields);
+
     function handleChange(key, value) {
-        onChange({ ...values, [key]: value })
+        onChange(prev => ({ ...prev, [key]: value }))
     }
 
     function resetFilters() {

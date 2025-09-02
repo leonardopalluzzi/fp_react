@@ -11,7 +11,7 @@ import { useFiltersContext } from "../../../Contexts/FiltersContext"
 export default function AdminUsers() {
     const { throwMessage } = useMessageContext()
     const { currentUser } = useAuthContext()
-    const { setFiltersConfig } = useFiltersContext()
+    const { setFiltersConfig, buildQuery } = useFiltersContext()
     const token = currentUser.token
     const navigate = useNavigate();
 
@@ -41,18 +41,6 @@ export default function AdminUsers() {
 
     const [operatorsFilters, setOperatorsFilters] = useState({})
     const [customersFilters, setCustomersFilters] = useState({})
-
-    function buildQuery(filters) {
-        let query = ''
-
-        for (const key in filters) {
-            if (filters[key] != undefined && filters[key] != '') {
-                query += `&${key}=${filters[key]}`
-            }
-        }
-
-        return query
-    }
 
     //configurazioni per filtri
     useEffect(() => {
