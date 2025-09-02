@@ -1,25 +1,19 @@
 import DeleteModalUi from "./DeleteModal.ui";
 import DataWrapper from "../smart/DataWrapper";
 
-export default function ShowServiceAdminListUi({ customers, operators, handleOperatorShow, handleOperatorEdit, handleOperatorDelete, wrapperConfig }) {
-
-    const { operatorsConfig, customersConfig } = wrapperConfig
+export default function ShowServiceAdminListUi({ customers, operators, handleOperatorShow, handleOperatorEdit, handleOperatorDelete }) {
 
     return (
         <>
             <div className="w-100">
                 <div className="row row-cols-1 row-cols-md-2">
+                    <div className="col">
+                        <DataWrapper
+                            css={''}
+                            list={1}
+                        >
+                            {/* tabella clienti  */}
 
-                    <DataWrapper
-                        setPage={customersConfig.setPage}
-                        pageNumber={customersConfig.pageNumber}
-                        currentPage={customersConfig.page}
-                        onChange={customersConfig.setFilters}
-                        values={customersConfig.filters}
-                        fields={customersConfig.fields}
-                    >
-                        {/* tabella clienti  */}
-                        <div className="col">
                             <div className="my-5 bg-white rounded rounded-4 p-3 shadow">
                                 <h4>Customers</h4>
                                 <div
@@ -50,21 +44,16 @@ export default function ShowServiceAdminListUi({ customers, operators, handleOpe
                                     </table>
                                 </div>
                             </div>
-                        </div>
-
-                    </DataWrapper>
-
+                        </DataWrapper>
+                    </div>
 
 
-                    <DataWrapper
-                        setPage={operatorsConfig.setPage}
-                        pageNumber={operatorsConfig.pageNumber}
-                        currentPage={operatorsConfig.page}
-                        onChange={operatorsConfig.setFilters}
-                        values={operatorsConfig.filters}
-                        fields={operatorsConfig.fields}>
-                        {/* tabella operatori  */}
-                        <div className="col">
+                    <div className="col">
+                        <DataWrapper
+                            css={''}
+                            list={2}
+                        >
+                            {/* tabella operatori  */}
                             <div className="my-5 bg-white rounded rounded-4 p-3 shadow">
                                 <h4 className="p-2">Operators</h4>
                                 <div
@@ -106,12 +95,12 @@ export default function ShowServiceAdminListUi({ customers, operators, handleOpe
                                     </table>
                                 </div>
                             </div>
-                        </div>
 
-                    </DataWrapper>
 
+                        </DataWrapper>
+                    </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

@@ -5,11 +5,13 @@ import { useState, useEffect } from "react"
 import LoaderUi from "../../../Components/dumb/Loader.ui"
 import UsersGenericListUi from "../../../Components/dumb/UsersGenericList.ui"
 import { useNavigate } from "react-router-dom"
+import { useFiltersContext } from "../../../Contexts/FiltersContext"
 
 
 export default function AdminUsers() {
     const { throwMessage } = useMessageContext()
     const { currentUser } = useAuthContext()
+    const { setFiltersConfig } = useFiltersContext()
     const token = currentUser.token
     const navigate = useNavigate();
 
@@ -40,31 +42,6 @@ export default function AdminUsers() {
     const [operatorsFilters, setOperatorsFilters] = useState({})
     const [customersFilters, setCustomersFilters] = useState({})
 
-
-    const config = {
-        operatorsConfig: {
-            page: operatorsPage,
-            setPage: setOperatorsPage,
-            filters: operatorsFilters,
-            setFilters: setOperatorsFilters,
-            fields: [
-                { key: "username", label: "Username", type: "text" }
-            ],
-            pageNumber: 0
-
-        },
-        customersConfig: {
-            page: customersPage,
-            setPage: setCustomersPage,
-            filters: customersFilters,
-            setFilters: setCustomersFilters,
-            fields: [
-                { key: "username", label: "Username", type: "text" }
-            ],
-            pageNumber: 0
-        }
-    }
-
     function buildQuery(filters) {
         let query = ''
 
@@ -76,13 +53,41 @@ export default function AdminUsers() {
 
         return query
     }
-    //------------------
 
+    //configurazioni per filtri
+    useEffect(() => {
+        if (fetchState == 'success') {
+            const fields = [{ key: 'username', label: 'Username', type: 'text' }];
+
+            setFiltersConfig(
+                1,
+                customersPage,
+                customers.pagination.totalPages,
+                setCustomersPage,
+                fields,
+                customersFilters,
+                setCustomersFilters
+            );
+
+            setFiltersConfig(
+                2,
+                operatorsPage,
+                operators.pagination.totalPages,
+                setOperatorsPage,
+                fields,
+                operatorsFilters,
+                setOperatorsFilters
+            );
+        }
+
+    }, [fetchState, operatorsFilters, customersFilters]);
+    //------------------
 
 
     //seprare i 3 fetch per operators, customers e admins, lato back è gia settato
     useEffect(() => {
         handleFetch('operators', setOperators, operatorsPage, buildQuery(operatorsFilters))
+
     }, [operatorsFilters])
 
     useEffect(() => {
@@ -101,6 +106,11 @@ export default function AdminUsers() {
             setFetchState("error")
         }
     }, [operators, customers, admins])
+
+
+
+
+
 
 
 
@@ -180,10 +190,6 @@ export default function AdminUsers() {
                 </>
             )
         case 'success':
-
-            config.operatorsConfig.pageNumber = operators.result.totalpages
-            config.customersConfig.pageNumber = customers.result.totalpages
-
             return (
                 <>
                     <div className="container my-5">
@@ -195,7 +201,6 @@ export default function AdminUsers() {
                             handleOperatorShow={handleOperatorShow}
                             handleOperatorEdit={handleOperatorEdit}
                             handleOperatorDelete={handleOperatorDelete}
-                            wrapperConfig={config}
                         />
 
 

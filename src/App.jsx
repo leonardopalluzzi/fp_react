@@ -7,6 +7,7 @@ import RenderRoutes from "./Components/RoutesProtection/RenderRoutes"
 import GuestLayout from "./Layouts/GuestLayout"
 import { MessageProvider } from "./Contexts/MessageContext"
 import MessageHandler from "./Components/smart/MessageHandler"
+import { FiltersProvider } from "./Contexts/FiltersContext"
 
 
 
@@ -26,8 +27,17 @@ function App() {
                 <Route path="/logout" Component={Logout} />
               </Route>
 
-              {/* renderizzo rotte dinamicamente in base ai ruoli */}
-              <Route path="/*" Component={RenderRoutes} />
+
+              <Route path="/*" element={(
+                <>
+                  <FiltersProvider>
+                    {/* renderizzo rotte dinamicamente in base ai ruoli */}
+                    <RenderRoutes />
+                  </FiltersProvider>
+                </>
+              )} />
+
+
 
             </Routes>
           </AuthProvider>

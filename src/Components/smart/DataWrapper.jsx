@@ -1,7 +1,14 @@
-export default function DataWrapper({ children, setPage, pageNumber, fields, values, onChange, currentPage }) {
+import { useFiltersContext } from "../../Contexts/FiltersContext";
+
+export default function DataWrapper({ children, css, list }) {
+
+    'setPage, pageNumber, fields, values, onChange, currentPage,'
+
+
+    const { config } = useFiltersContext()
+
+    const { setPage, pageNumber, fields = [], values = {}, onChange = () => { }, currentPage = 0 } = config[list]
     console.log(fields);
-
-
     function handleChange(key, value) {
         onChange({ ...values, [key]: value })
     }
@@ -19,7 +26,7 @@ export default function DataWrapper({ children, setPage, pageNumber, fields, val
     return (
         <>
             <div>
-                <div className="row row-cols-1 row-cols-md-4">
+                <div className={css}>
                     {
                         fields.map(f => (
                             <>
