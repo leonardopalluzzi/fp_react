@@ -1,6 +1,7 @@
 import DeleteModalUi from "./DeleteModal.ui";
+import DataWrapper from "../smart/DataWrapper";
 
-export default function ShowServiceAdminListUi({ customers, operators, handleOperatorShow, handleOperatorEdit, handleOperatorDelete }) {
+export default function ShowServiceAdminListUi({ customers, operators, handleOperatorShow, handleOperatorEdit, handleOperatorDelete, wrapperInfo }) {
     console.log(customers);
 
     return (
@@ -8,6 +9,7 @@ export default function ShowServiceAdminListUi({ customers, operators, handleOpe
             <div className="w-100">
                 <div className="row row-cols-1 row-cols-md-2">
 
+                <DataWrapper setPage={wrapperInfo.setPage} pageNumber={wrapperInfo.customersPageNumber} currentPage={wrapperInfo.page} onChange={wrapperInfo.setFilters} values={wrapperInfo.filters} fields={wrapperInfo.fields}>
                     {/* tabella clienti  */}
                     <div className="col">
                         <div className="my-5 bg-white rounded rounded-4 p-3 shadow">
@@ -42,7 +44,11 @@ export default function ShowServiceAdminListUi({ customers, operators, handleOpe
                         </div>
                     </div>
 
+                </DataWrapper>
+                    
 
+
+                <DataWrapper setPage={wrapperInfo.setPage} pageNumber={wrapperInfo.operatorsPageNumber} currentPage={wrapperInfo.page} onChange={wrapperInfo.setFilters} values={wrapperInfo.filters} fields={wrapperInfo.fields}>
                     {/* tabella operatori  */}
                     <div className="col">
                         <div className="my-5 bg-white rounded rounded-4 p-3 shadow">
@@ -86,8 +92,10 @@ export default function ShowServiceAdminListUi({ customers, operators, handleOpe
                                 </table>
                             </div>
                         </div>
-
                     </div>
+
+                </DataWrapper>
+                    
                 </div>
             </div>
         </>

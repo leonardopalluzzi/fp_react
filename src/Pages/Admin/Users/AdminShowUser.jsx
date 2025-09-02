@@ -138,7 +138,7 @@ export default function AdminShowUser() {
 
                         <div className="row row-cols-1 row-cols-md-2">
                             <div className="col my-5">
-                                <h2 className="mb-0">Admin Tickets:</h2>
+                                <h2 className="mb-0">Assigned Tickets:</h2>
                                 <ShowServiceTicketListUi
                                     tickets={user.result.adminTickets}
                                     handleTicketEdit={handleTicketEdit}
@@ -148,7 +148,7 @@ export default function AdminShowUser() {
                             </div>
 
                             <div className="col my-5">
-                                <h2 className="mb-0">User Tickets:</h2>
+                                <h2 className="mb-0">Requested Tickets:</h2>
                                 <ShowServiceTicketListUi
                                     tickets={user.result.userTickets}
                                     handleTicketEdit={handleTicketEdit}

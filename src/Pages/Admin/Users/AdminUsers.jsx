@@ -13,19 +13,90 @@ export default function AdminUsers() {
     const token = currentUser.token
     const navigate = useNavigate();
 
-    const [users, setUsers] = useState({
+    //state e variabili per fetch
+    //----------
+    const [operators, setOperators] = useState({
         state: 'loading'
     })
 
-    const [page, setPage] = useState(0)
+    const [customers, setCustomers] = useState({
+        state: 'loading'
+    })
 
+    const [admins, setAdmins] = useState({
+        state: 'loading'
+    })
+
+    const [fetchState, setFetchState] = useState('loading')
+    //------------------
+
+
+
+    // config per wrapper paginazione e filtri
+    //------------------
+    const [operatorsFilters, setOperatorsFilters] = useState({
+        page: 0,
+        filters: {},
+        fields: [
+            {key: "username", label: "Username", type: "text"}
+        ],
+        pageNumber: 0,
+    })
+
+    const [customersFilters, setCustomersFilters] = useState({
+        page: 0,
+        filters: {},
+        fields: [
+            {key: "username", label: "Username", type: "text"}
+        ],
+        pageNumber: 0
+    })
+
+    const fields = [
+        {key: 'username', label: 'Search By Username', type: 'text'}
+    ]
+
+    function buildQuery(filters){
+        let query = ''
+
+        for (const key in filters) {
+            if(filters[key] != undefined && filters[key] != ''){
+                query += `&${key}=${filters[key]}`
+            }
+        }
+
+        return query
+    }
+    //------------------
+
+    
+
+    //seprare i 3 fetch per operators, customers e admins, lato back è gia settato
+    useEffect(() => {
+        handleFetch('operators', setOperators, operatorsFilters.page, buildQuery(operatorsFilters.filters))
+    }, [operatorsFilters])
 
     useEffect(() => {
-        handleFetch()
+        handleFetch('customers', setCustomers, customersFilters.page, buildQuery(customersFilters.filters))
+    }, [customersFilters])
+
+    useEffect(() => {
+        handleFetch('admins', setAdmins, 0, null)
     }, [])
 
-    function handleFetch() {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users?page=${page}`, {
+    //state per controllo rendering
+    useEffect(()=>{
+        if(operators.state =='success' && customers.state =='success' && admins.state =='success'){
+            setFetchState("success")
+        } else if (operators.state =='error' || customers.state =='error' || admins.state =='error'){
+            setFetchState("error")
+        }
+    }, [operators, customers, admins])
+
+    
+
+    function handleFetch(listType, setter, page, query) {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users?list=${listType}&page=${page}${query}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -36,22 +107,22 @@ export default function AdminUsers() {
                 console.log(data);
 
                 if (data.state && (data.state == 'error' || data.state == 'expired')) {
-                    throwMessage(data.state, [data.message])
+                    throwMessage(`${data.state} on ${listType}`, [data.message])
+                    return;
                 } else {
-                    setUsers({
+                    setter({
                         state: 'success',
-                        customers: data.customers,
-                        operators: data.employees,
-                        companyAdmins: data.companyAdmins,
+                        result: data.content,
+                        pagination: data
                     })
                 }
             })
             .catch(err => {
-                setUsers({
+                setter({
                     state: 'error',
                     message: err.message
                 })
-                throwMessage('error', [err.message])
+                throwMessage(`error on ${listType}`, [err.message])
             })
     }
 
@@ -65,7 +136,7 @@ export default function AdminUsers() {
     }
 
     function handleOperatorDelete(uId) {
-        fetch(`${import.meta.env.VITE_BACK_URL}`, {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/delete/${uId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -85,7 +156,7 @@ export default function AdminUsers() {
             })
     }
 
-    switch (users.state) {
+    switch (fetchState) {
         case 'loading':
             return (
                 <>
@@ -104,17 +175,18 @@ export default function AdminUsers() {
                         <h1>Employees / Customers /Admins</h1>
                         <p>Here you can have an overview of all the people connected to your services</p>
                         <ShowServiceAdminListUi
-                            customers={users.customers.content}
-                            operators={users.operators.content}
+                            customers={customers.result}
+                            operators={operators.result}
                             handleOperatorShow={handleOperatorShow}
                             handleOperatorEdit={handleOperatorEdit}
                             handleOperatorDelete={handleOperatorDelete}
+                            wrapperInfo={wrapperInfo}
                         />
 
 
                         {/* tabella admin  */}
                         <UsersGenericListUi
-                            users={users.companyAdmins}
+                            users={admins.result}
                             title={'Company Admins'}
                             ondelete={handleOperatorDelete}
                             onedit={handleOperatorEdit}
