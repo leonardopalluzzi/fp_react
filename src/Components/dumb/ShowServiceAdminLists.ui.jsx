@@ -1,101 +1,115 @@
 import DeleteModalUi from "./DeleteModal.ui";
 import DataWrapper from "../smart/DataWrapper";
 
-export default function ShowServiceAdminListUi({ customers, operators, handleOperatorShow, handleOperatorEdit, handleOperatorDelete, wrapperInfo }) {
-    console.log(customers);
+export default function ShowServiceAdminListUi({ customers, operators, handleOperatorShow, handleOperatorEdit, handleOperatorDelete, wrapperConfig }) {
+
+    const { operatorsConfig, customersConfig } = wrapperConfig
 
     return (
         <>
             <div className="w-100">
                 <div className="row row-cols-1 row-cols-md-2">
 
-                <DataWrapper setPage={wrapperInfo.setPage} pageNumber={wrapperInfo.customersPageNumber} currentPage={wrapperInfo.page} onChange={wrapperInfo.setFilters} values={wrapperInfo.filters} fields={wrapperInfo.fields}>
-                    {/* tabella clienti  */}
-                    <div className="col">
-                        <div className="my-5 bg-white rounded rounded-4 p-3 shadow">
-                            <h4>Customers</h4>
-                            <div
-                                className="table-responsive"
-                            >
-                                <table
-                                    className="table table-white"
+                    <DataWrapper
+                        setPage={customersConfig.setPage}
+                        pageNumber={customersConfig.pageNumber}
+                        currentPage={customersConfig.page}
+                        onChange={customersConfig.setFilters}
+                        values={customersConfig.filters}
+                        fields={customersConfig.fields}
+                    >
+                        {/* tabella clienti  */}
+                        <div className="col">
+                            <div className="my-5 bg-white rounded rounded-4 p-3 shadow">
+                                <h4>Customers</h4>
+                                <div
+                                    className="table-responsive"
                                 >
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Username</th>
-                                            <th scope="col">Email</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            customers.map(c => (
-                                                <>
-                                                    <tr className="">
-                                                        <td>{c.username}</td>
-                                                        <td>{c.email}</td>
-                                                    </tr>
-                                                </>
-                                            ))
-                                        }
+                                    <table
+                                        className="table table-white"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Username</th>
+                                                <th scope="col">Email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                customers.map(c => (
+                                                    <>
+                                                        <tr className="">
+                                                            <td>{c.username}</td>
+                                                            <td>{c.email}</td>
+                                                        </tr>
+                                                    </>
+                                                ))
+                                            }
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                </DataWrapper>
-                    
+                    </DataWrapper>
 
 
-                <DataWrapper setPage={wrapperInfo.setPage} pageNumber={wrapperInfo.operatorsPageNumber} currentPage={wrapperInfo.page} onChange={wrapperInfo.setFilters} values={wrapperInfo.filters} fields={wrapperInfo.fields}>
-                    {/* tabella operatori  */}
-                    <div className="col">
-                        <div className="my-5 bg-white rounded rounded-4 p-3 shadow">
-                            <h4 className="p-2">Operators</h4>
-                            <div
-                                className="table-responsive"
-                            >
-                                <table
-                                    className="table table-white"
+
+                    <DataWrapper
+                        setPage={operatorsConfig.setPage}
+                        pageNumber={operatorsConfig.pageNumber}
+                        currentPage={operatorsConfig.page}
+                        onChange={operatorsConfig.setFilters}
+                        values={operatorsConfig.filters}
+                        fields={operatorsConfig.fields}>
+                        {/* tabella operatori  */}
+                        <div className="col">
+                            <div className="my-5 bg-white rounded rounded-4 p-3 shadow">
+                                <h4 className="p-2">Operators</h4>
+                                <div
+                                    className="table-responsive"
                                 >
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Username</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Created At</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            operators.map(c => (
-                                                <>
-                                                    <tr className="">
-                                                        <td>{c.username}</td>
-                                                        <td>{c.email}</td>
-                                                        <td>{c.createdAt}</td>
-                                                        <td>
-                                                            <div className="d-flex align-items-center justify-content-center gap-2">
-                                                                <button onClick={() => handleOperatorShow(c.id)} className="btn btn-primary"><i class="bi bi-eye-fill"></i></button>
-                                                                <button onClick={() => handleOperatorEdit(c.id)} className="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
-                                                                <DeleteModalUi itemId={c.id} deleteFunction={handleOperatorDelete} />
-                                                            </div>
+                                    <table
+                                        className="table table-white"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Username</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Created At</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                operators.map(c => (
+                                                    <>
+                                                        <tr className="">
+                                                            <td>{c.username}</td>
+                                                            <td>{c.email}</td>
+                                                            <td>{c.createdAt}</td>
+                                                            <td>
+                                                                <div className="d-flex align-items-center justify-content-center gap-2">
+                                                                    <button onClick={() => handleOperatorShow(c.id)} className="btn btn-primary"><i class="bi bi-eye-fill"></i></button>
+                                                                    <button onClick={() => handleOperatorEdit(c.id)} className="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
+                                                                    <DeleteModalUi itemId={c.id} deleteFunction={handleOperatorDelete} />
+                                                                </div>
 
-                                                        </td>
-                                                    </tr>
-                                                </>
-                                            ))
-                                        }
+                                                            </td>
+                                                        </tr>
+                                                    </>
+                                                ))
+                                            }
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                </DataWrapper>
-                    
+                    </DataWrapper>
+
                 </div>
             </div>
         </>

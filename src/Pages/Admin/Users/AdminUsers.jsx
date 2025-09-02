@@ -34,33 +34,42 @@ export default function AdminUsers() {
 
     // config per wrapper paginazione e filtri
     //------------------
-    const [operatorsFilters, setOperatorsFilters] = useState({
-        page: 0,
-        filters: {},
-        fields: [
-            {key: "username", label: "Username", type: "text"}
-        ],
-        pageNumber: 0,
-    })
+    const [operatorsPage, setOperatorsPage] = useState(0)
+    const [customersPage, setCustomersPage] = useState(0)
 
-    const [customersFilters, setCustomersFilters] = useState({
-        page: 0,
-        filters: {},
-        fields: [
-            {key: "username", label: "Username", type: "text"}
-        ],
-        pageNumber: 0
-    })
+    const [operatorsFilters, setOperatorsFilters] = useState({})
+    const [customersFilters, setCustomersFilters] = useState({})
 
-    const fields = [
-        {key: 'username', label: 'Search By Username', type: 'text'}
-    ]
 
-    function buildQuery(filters){
+    const config = {
+        operatorsConfig: {
+            page: operatorsPage,
+            setPage: setOperatorsPage,
+            filters: operatorsFilters,
+            setFilters: setOperatorsFilters,
+            fields: [
+                { key: "username", label: "Username", type: "text" }
+            ],
+            pageNumber: 0
+
+        },
+        customersConfig: {
+            page: customersPage,
+            setPage: setCustomersPage,
+            filters: customersFilters,
+            setFilters: setCustomersFilters,
+            fields: [
+                { key: "username", label: "Username", type: "text" }
+            ],
+            pageNumber: 0
+        }
+    }
+
+    function buildQuery(filters) {
         let query = ''
 
         for (const key in filters) {
-            if(filters[key] != undefined && filters[key] != ''){
+            if (filters[key] != undefined && filters[key] != '') {
                 query += `&${key}=${filters[key]}`
             }
         }
@@ -69,33 +78,35 @@ export default function AdminUsers() {
     }
     //------------------
 
-    
+
 
     //seprare i 3 fetch per operators, customers e admins, lato back è gia settato
     useEffect(() => {
-        handleFetch('operators', setOperators, operatorsFilters.page, buildQuery(operatorsFilters.filters))
+        handleFetch('operators', setOperators, operatorsPage, buildQuery(operatorsFilters))
     }, [operatorsFilters])
 
     useEffect(() => {
-        handleFetch('customers', setCustomers, customersFilters.page, buildQuery(customersFilters.filters))
+        handleFetch('customers', setCustomers, customersPage, buildQuery(customersFilters))
     }, [customersFilters])
 
     useEffect(() => {
-        handleFetch('admins', setAdmins, 0, null)
+        handleFetch('admins', setAdmins, 0, '')
     }, [])
 
     //state per controllo rendering
-    useEffect(()=>{
-        if(operators.state =='success' && customers.state =='success' && admins.state =='success'){
+    useEffect(() => {
+        if (operators.state == 'success' && customers.state == 'success' && admins.state == 'success') {
             setFetchState("success")
-        } else if (operators.state =='error' || customers.state =='error' || admins.state =='error'){
+        } else if (operators.state == 'error' || customers.state == 'error' || admins.state == 'error') {
             setFetchState("error")
         }
     }, [operators, customers, admins])
 
-    
+
 
     function handleFetch(listType, setter, page, query) {
+        console.log(query);
+
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users?list=${listType}&page=${page}${query}`, {
             method: 'GET',
             headers: {
@@ -122,7 +133,7 @@ export default function AdminUsers() {
                     state: 'error',
                     message: err.message
                 })
-                throwMessage(`error on ${listType}`, [err.message])
+                throwMessage(`error`, [`error on ${listType}`, err.message])
             })
     }
 
@@ -169,6 +180,10 @@ export default function AdminUsers() {
                 </>
             )
         case 'success':
+
+            config.operatorsConfig.pageNumber = operators.result.totalpages
+            config.customersConfig.pageNumber = customers.result.totalpages
+
             return (
                 <>
                     <div className="container my-5">
@@ -180,7 +195,7 @@ export default function AdminUsers() {
                             handleOperatorShow={handleOperatorShow}
                             handleOperatorEdit={handleOperatorEdit}
                             handleOperatorDelete={handleOperatorDelete}
-                            wrapperInfo={wrapperInfo}
+                            wrapperConfig={config}
                         />
 
 
