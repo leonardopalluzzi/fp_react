@@ -72,11 +72,21 @@ export default function ModalServiceManager({ token, function: action, title, la
 
     switch (users.state) {
         case 'loading':
-            return <LoaderMiniUi />
+            return (
+                <>
+                    <div className="modal_container">
+                        <div className="bg-light p-4 rounded rounded-4">
+                            < LoaderMiniUi />
+                        </div>
+                    </div>
+
+
+                </>
+            )
         case 'error':
             return (
                 <>
-                    <div className="container position-absolute">
+                    <div className="modal_container">
                         <button onClick={() => setDisplay(false)}>close</button>
                         <h1>{users.message}</h1>
                     </div>
@@ -87,22 +97,28 @@ export default function ModalServiceManager({ token, function: action, title, la
                 <>
 
                     <div className="modal_container">
-                        <button className="btn btn-outline-danger" onClick={() => setDisplay(false)}><i class="bi bi-x-square"></i></button>
-                        <h1>{title}</h1>
-                        <DataWrapper css={'row row-cols-2'} list={1}>
-                            <div className="row row-cols-1">
-                                {
-                                    users.result.map(item => (
-                                        <>
-                                            <div onClick={() => handleSubmit(item.id)} className="col">
-                                                {item.username} - {item.email}
-                                            </div>
-                                        </>
-                                    ))
-                                }
-
+                        <div className="bg-light p-4 rounded rounded-4">
+                            <div className="d-flex w-100 align-items-center justify-content-end">
+                                <button className="btn btn-outline-danger" onClick={() => setDisplay(false)}><i class="bi bi-x-square"></i></button>
                             </div>
-                        </DataWrapper>
+
+                            <h1 className="mb-5">{title}</h1>
+                            <DataWrapper css={'row row-cols-2'} list={1}>
+                                <div className="row row-cols-1 my-4">
+                                    {
+                                        users.result.length == 0 ? <h3>No Data -</h3> : users.result.map(item => (
+                                            <>
+                                                <div onClick={() => handleSubmit(item.id)} className="col btn btn-outline-dark text-start my-1 p-2">
+                                                    {item.username} - {item.email}
+                                                </div>
+                                            </>
+                                        ))
+                                    }
+
+                                </div>
+                            </DataWrapper>
+                        </div>
+
                     </div>
                 </>
             )
