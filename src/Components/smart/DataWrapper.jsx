@@ -1,11 +1,9 @@
 import { useFiltersContext } from "../../Contexts/FiltersContext";
+import { useMessageContext } from "../../Contexts/MessageContext";
 
 export default function DataWrapper({ children, css, list }) {
-
-    'setPage, pageNumber, fields, values, onChange, currentPage,'
-
-
-    const { config } = useFiltersContext()
+    const { config, handleRefresh } = useFiltersContext()
+    const { setLoader } = useMessageContext()
 
     const { setPage, pageNumber, fields = [], values = {}, onChange = () => { }, currentPage = 0 } = config[list]
     console.log(pageNumber);
@@ -15,12 +13,29 @@ export default function DataWrapper({ children, css, list }) {
         onChange(prev => ({ ...prev, [key]: value }))
     }
 
+    function handleNextPage() {
+        setLoader(true)
+        setPage(prev => prev + 1)
+
+    }
+
+    function handlePrevPage() {
+        setLoader(true)
+        setPage(prev => prev - 1)
+    }
+
+    function handlePageClick(index) {
+        setLoader(true)
+        setPage(index)
+    }
+
     function resetFilters() {
         const resetValues = {}
         fields.forEach(f => {
             resetValues[f.key] = "";
         })
         onChange(resetValues)
+        handleRefresh()
     }
 
     const pages = Array.from({ length: pageNumber })
@@ -38,9 +53,9 @@ export default function DataWrapper({ children, css, list }) {
                                         {
                                             f.type == 'select' && (
                                                 <>
-                                                    <div class="input-group mb-3">
-                                                        <label class="input-group-text" for="inputGroupSelect01">{f.label}</label>
-                                                        <select value={values[f.key]} name={f.key} onChange={(e) => handleChange(e.target.name, e.target.value)} class="form-select" id="inputGroupSelect01">
+                                                    <div className="input-group mb-3">
+                                                        <label className="input-group-text" for="inputGroupSelect01">{f.label}</label>
+                                                        <select value={values[f.key]} name={f.key} onChange={(e) => handleChange(e.target.name, e.target.value)} className="form-select" id="inputGroupSelect01">
                                                             <option value="">All</option>
                                                             {
                                                                 f.options.map(o => (
@@ -69,9 +84,9 @@ export default function DataWrapper({ children, css, list }) {
                                         {
                                             f.type == 'date' && (
                                                 <>
-                                                    <div class="input-group mb-3">
-                                                        <span class="input-group-text" id="basic-addon1">{f.label}</span>
-                                                        <input value={values[f.key]} name={f.key} onChange={(e) => handleChange(e.target.name, e.target.value)} type="datetime-local" class="form-control" placeholder={f.label} aria-label="Username" aria-describedby="basic-addon1" />
+                                                    <div className="input-group mb-3">
+                                                        <span className="input-group-text" id="basic-addon1">{f.label}</span>
+                                                        <input value={values[f.key]} name={f.key} onChange={(e) => handleChange(e.target.name, e.target.value)} type="datetime-local" className="form-control" placeholder={f.label} aria-label="Username" aria-describedby="basic-addon1" />
                                                     </div>
                                                 </>
                                             )
@@ -83,8 +98,9 @@ export default function DataWrapper({ children, css, list }) {
                         ))
                     }
                 </div>
-                <div>
-                    <button onClick={() => resetFilters()} className="btn btn-outline-danger">Reset Filters</button>
+                <div className="d-flex gap-4">
+                    <div className=""><button className="btn btn-success" onClick={() => handleRefresh()}>Apply Filters</button></div>
+                    <div className=""><button onClick={() => resetFilters()} className="btn btn-outline-danger">Reset Filters</button></div>
                 </div>
             </div>
 
@@ -95,10 +111,10 @@ export default function DataWrapper({ children, css, list }) {
             {
                 pageNumber > 1 && <div className="w-100 d-flex align-items-center justify-content-center">
                     <nav aria-label="Page navigation example">
-                        <ul class="pagination">
+                        <ul className="pagination">
                             {
-                                currentPage > 0 && <li class="page-item">
-                                    <a class="page-link" onClick={() => setPage(prev => prev - 1)} aria-label="Previous">
+                                currentPage > 0 && <li className="page-item">
+                                    <a className="page-link" onClick={() => handlePrevPage()} aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
@@ -107,13 +123,13 @@ export default function DataWrapper({ children, css, list }) {
                             {
                                 pages.map((item, i) => (
                                     <>
-                                        <li class="page-item"><a class="page-link" onClick={() => setPage(i)}>{i + 1}</a></li>
+                                        <li className={`page-item ${currentPage == i && 'active'}`}><button disabled={currentPage == i} className="page-link" onClick={() => handlePageClick(i)}>{i + 1}</button></li>
                                     </>
                                 ))
                             }
                             {
-                                currentPage < pageNumber - 1 && <li class="page-item">
-                                    <a class="page-link" onClick={() => setPage(prev => prev + 1)} aria-label="Next">
+                                currentPage < pageNumber - 1 && <li className="page-item">
+                                    <a className="page-link" onClick={() => handleNextPage()} aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>

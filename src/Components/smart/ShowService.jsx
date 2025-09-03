@@ -8,10 +8,15 @@ import DataWrapper from "./DataWrapper";
 import { useState, useEffect } from "react";
 import { Status } from "../../Js/TicketStatus";
 import { useAuthContext } from "../../Contexts/AuthContext";
+import { useFiltersContext } from "../../Contexts/FiltersContext";
+import { useMessageContext } from "../../Contexts/MessageContext";
+import ServiceManager from "./ServiceManager";
 
 export default function ShowService({ roles, service }) {
     const { currentUser } = useAuthContext()
     const token = currentUser.token
+    const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
+    const { setLoader } = useMessageContext()
 
     const navigate = useNavigate()
 
@@ -29,31 +34,33 @@ export default function ShowService({ roles, service }) {
         serviceId: service.id
     })
 
-    let query = ''
+    useEffect(() => {
+        if (tickets.state == 'success') {
 
-    const statusOptions = []
+            const statusOptions = []
 
-    for (const key in Status) {
-        const option = { value: key, label: key }
-        statusOptions.push(option)
-    }
+            for (const key in Status) {
+                const option = { key: key, label: key }
+                statusOptions.push(option)
+            }
 
-    for (const key in filters) {
-        if (filters[key] != undefined && filters[key] != '') {
-            query += `&${key}=${filters[key]}`
+            const fields = [
+                { key: 'status', label: 'Ticket Status', type: 'select', options: statusOptions },
+                { key: 'title', label: 'Title', type: 'text' },
+                { key: 'description', label: 'Description', type: 'text' },
+                { key: 'createdAt', label: 'Created At', type: 'date' }
+            ]
+
+            setFiltersConfig(1, page, tickets.pagination.totalPages, setPage, fields, filters, setFilters)
+
+
         }
-    }
 
-    const fields = [
-        { key: 'status', label: 'Ticket Status', type: 'select', options: statusOptions },
-        { key: 'title', label: 'Title', type: 'text' },
-        { key: 'description', label: 'Description', type: 'text' },
-        { key: 'createdAt', label: 'Created At', type: 'date' }
-    ]
+    }, [tickets, filters])
 
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}${query}`, {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}${buildQuery(filters)}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -75,7 +82,10 @@ export default function ShowService({ roles, service }) {
                     message: err.message
                 })
             })
-    }, [page, filters])
+            .finally(() => {
+                setLoader(false)
+            })
+    }, [page, refreshKey])
 
 
     // operators
@@ -149,6 +159,8 @@ export default function ShowService({ roles, service }) {
 
                 </div>
 
+                <ServiceManager currentUser={currentUser} serviceId={service.id} />
+
                 {
                     (roles.includes(Role.ADMIN)) && (
                         <>
@@ -170,7 +182,7 @@ export default function ShowService({ roles, service }) {
                             {
                                 tickets.state == 'success' && (
                                     <>
-                                        <DataWrapper setPage={setPage} pageNumber={tickets.pagination.totalPages} fields={fields} values={filters} onChange={setFilters} currentPage={page}>
+                                        <DataWrapper css={'my-4'} list={1}>
                                             <ShowServiceTicketListUi
                                                 tickets={tickets.result}
                                                 handleTicketsDelete={handleTicketDelete}

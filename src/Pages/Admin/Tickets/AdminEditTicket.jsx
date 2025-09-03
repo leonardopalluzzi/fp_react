@@ -7,7 +7,7 @@ import LoaderUi from "../../../Components/dumb/Loader.ui"
 import CreateTicketFormUi from '../../../Components/dumb/CreateTicketForm.ui'
 
 export default function AdminEditTicket() {
-    const { throwMessage } = useMessageContext()
+    const { throwMessage, setLoader } = useMessageContext()
     const { currentUser } = useAuthContext()
     const token = currentUser.token
     const { ticketId, serviceId } = useParams()
@@ -83,7 +83,7 @@ export default function AdminEditTicket() {
     }
 
     function handleSubmit() {
-
+        setLoader(true)
         const ticketToSend = {
             id: ticketId,
             attachment: [],

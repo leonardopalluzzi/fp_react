@@ -9,9 +9,9 @@ import { useFiltersContext } from "../../../Contexts/FiltersContext"
 
 
 export default function AdminUsers() {
-    const { throwMessage } = useMessageContext()
+    const { throwMessage, setLoader } = useMessageContext()
     const { currentUser } = useAuthContext()
-    const { setFiltersConfig, buildQuery } = useFiltersContext()
+    const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
     const token = currentUser.token
     const navigate = useNavigate();
 
@@ -45,14 +45,23 @@ export default function AdminUsers() {
     //configurazioni per filtri
     useEffect(() => {
         if (fetchState == 'success') {
-            const fields = [{ key: 'username', label: 'Username', type: 'text' }];
+
+            const customersFields = [
+                { key: 'username', label: 'Username', type: 'text' },
+                { key: 'email', label: 'Email', type: 'text' },
+            ];
+            const operatorsFields = [
+                { key: 'username', label: 'Username', type: 'text' },
+                { key: 'email', label: 'Email', type: 'text' }
+            ];
+
 
             setFiltersConfig(
                 1,
                 customersPage,
                 customers.pagination.totalPages,
                 setCustomersPage,
-                fields,
+                customersFields,
                 customersFilters,
                 setCustomersFilters
             );
@@ -62,7 +71,7 @@ export default function AdminUsers() {
                 operatorsPage,
                 operators.pagination.totalPages,
                 setOperatorsPage,
-                fields,
+                operatorsFields,
                 operatorsFilters,
                 setOperatorsFilters
             );
@@ -76,11 +85,11 @@ export default function AdminUsers() {
     useEffect(() => {
         handleFetch('operators', setOperators, operatorsPage, buildQuery(operatorsFilters))
 
-    }, [operatorsFilters])
+    }, [refreshKey])
 
     useEffect(() => {
         handleFetch('customers', setCustomers, customersPage, buildQuery(customersFilters))
-    }, [customersFilters])
+    }, [refreshKey])
 
     useEffect(() => {
         handleFetch('admins', setAdmins, 0, '')
@@ -132,6 +141,9 @@ export default function AdminUsers() {
                     message: err.message
                 })
                 throwMessage(`error`, [`error on ${listType}`, err.message])
+            })
+            .finally(() => {
+                setLoader(false)
             })
     }
 

@@ -8,6 +8,7 @@ import GuestLayout from "./Layouts/GuestLayout"
 import { MessageProvider } from "./Contexts/MessageContext"
 import MessageHandler from "./Components/smart/MessageHandler"
 import { FiltersProvider } from "./Contexts/FiltersContext"
+import GlobalLoader from "./Components/smart/GlobalLoader"
 
 
 
@@ -20,6 +21,7 @@ function App() {
         <MessageProvider>
           <AuthProvider>
             <MessageHandler />
+            <GlobalLoader />
             <Routes>
               <Route Component={GuestLayout}>
                 <Route path="/login" Component={Login} />

@@ -8,9 +8,9 @@ import { Status } from "../../../Js/TicketStatus"
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
 
 export default function AdminTicketsPool() {
-    const { throwMessage } = useMessageContext()
+    const { throwMessage, setLoader } = useMessageContext()
     const { currentUser } = useAuthContext()
-    const { setFiltersConfig, buildQuery } = useFiltersContext()
+    const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
     const token = currentUser.token
 
     const [tickets, setTickets] = useState({
@@ -108,7 +108,10 @@ export default function AdminTicketsPool() {
                 })
                 throwMessage('error', [err.message])
             })
-    }, [])
+            .finally(() => {
+                setLoader(false)
+            })
+    }, [page, refreshKey])
 
     function handleTicketEdit(tId) {
 

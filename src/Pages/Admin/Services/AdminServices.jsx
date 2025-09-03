@@ -11,9 +11,9 @@ import { useFiltersContext } from "../../../Contexts/FiltersContext";
 import { Status } from "../../../Js/ServiceStatus";
 
 export default function AdminServices() {
-    const { throwMessage } = useMessageContext();
+    const { throwMessage, setLoader } = useMessageContext();
     const { currentUser } = useAuthContext();
-    const { setFiltersConfig, buildQuery } = useFiltersContext()
+    const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
     const navigate = useNavigate();
     const token = currentUser.token;
 
@@ -127,7 +127,10 @@ export default function AdminServices() {
                 })
                 throwMessage('error', [err.message])
             })
-    }, [filters])
+            .finally(() => {
+                setLoader(false)
+            })
+    }, [page, refreshKey])
 
     const routeConfig = crudRoutesConfig['admin']
 

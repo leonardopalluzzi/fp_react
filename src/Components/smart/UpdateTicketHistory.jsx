@@ -1,12 +1,14 @@
 import { useState } from "react"
 import { useMessageContext } from "../../Contexts/MessageContext"
 import { Status } from '../../Js/TicketStatus'
+import { useFiltersContext } from "../../Contexts/FiltersContext";
 
 export default function UpdateTicketHistory({ currentUser, ticketId, ticketStatus }) {
     console.log(ticketStatus);
 
-    const { throwMessage } = useMessageContext()
+    const { throwMessage, setLoader } = useMessageContext()
     const token = currentUser.token
+    const { handleRefresh } = useFiltersContext()
 
     const statusArray = []
 
@@ -34,7 +36,7 @@ export default function UpdateTicketHistory({ currentUser, ticketId, ticketStatu
     }
 
     function handleSubmit() {
-
+        setLoader(true)
         const updateToSend = {
             ...historyUpdate,
             changedAt: formatDateForSpring(new Date())
@@ -68,6 +70,10 @@ export default function UpdateTicketHistory({ currentUser, ticketId, ticketStatu
             })
             .catch(err => {
                 throwMessage('error', [err.message])
+            })
+            .finally(() => {
+                setLoader(false)
+                handleRefresh()
             })
     }
 

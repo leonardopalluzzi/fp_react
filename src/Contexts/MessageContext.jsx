@@ -9,6 +9,7 @@ function MessageProvider({ children }) {
         getList: []
     });
     const [redirect, setRedirect] = useState(false)
+    const [loader, setLoader] = useState(false)
 
     const timeoutRef = useRef(null);
 
@@ -45,7 +46,7 @@ function MessageProvider({ children }) {
     }
 
     return (
-        <MessageContext.Provider value={{ messages, throwMessage, closeMessage }} >
+        <MessageContext.Provider value={{ messages, throwMessage, closeMessage, loader, setLoader }} >
             {children}
         </MessageContext.Provider>
     )

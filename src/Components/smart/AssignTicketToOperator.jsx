@@ -1,10 +1,12 @@
 import { useMessageContext } from "../../Contexts/MessageContext"
 import { useState, useEffect } from "react"
-import LoaderUi from "../dumb/Loader.ui"
+import LoaderMiniUi from "../dumb/LoaderMini.ui"
+import { useFiltersContext } from "../../Contexts/FiltersContext"
 
 export default function AssignTIcketToOperator({ currentUser, serviceId, ticketId, currentAssignee }) {
-    const { throwMessage } = useMessageContext()
+    const { throwMessage, setLoader } = useMessageContext()
     const token = currentUser.token
+    const { handleRefresh } = useFiltersContext()
 
     const [operators, setOperators] = useState({
         state: 'loading'
@@ -46,7 +48,7 @@ export default function AssignTIcketToOperator({ currentUser, serviceId, ticketI
 
 
     function handleSubmit() {
-
+        setLoader(true)
         const url = operatorId == null ? `${import.meta.env.VITE_BACK_URL}/api/v1/tickets/manage/assign/ticket/${ticketId}` : `${import.meta.env.VITE_BACK_URL}/api/v1/tickets/manage/assign/ticket/${ticketId}?operatorId=${operatorId}`;
 
         fetch(url, {
@@ -66,6 +68,10 @@ export default function AssignTIcketToOperator({ currentUser, serviceId, ticketI
             .catch(err => {
                 throwMessage('error', [err.message])
             })
+            .finally(() => {
+                setLoader(false)
+                handleRefresh()
+            })
     }
 
     function handleChange(value) {
@@ -76,7 +82,7 @@ export default function AssignTIcketToOperator({ currentUser, serviceId, ticketI
 
     switch (operators.state) {
         case 'loading':
-            return <LoaderUi />
+            return <LoaderMiniUi />
         case 'error':
             return (
                 <>

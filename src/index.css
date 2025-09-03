@@ -10,7 +10,7 @@
     --color-background: #F2F2F2;
     --color-text: #4A4A4A;
     --color-text-light: #FFFFFF;
-    --header-height: 90px; 
+    --header-height: 90px;
 }
 
 body {
@@ -34,7 +34,7 @@ body {
     z-index: 10;
     height: var(--header-height);
 
-    .site_logo{
+    .site_logo {
         max-width: 100%;
     }
 }
@@ -107,4 +107,33 @@ button.primary {
     background-color: transparent;
     display: block;
     width: 100%;
+}
+
+.spinner_container {
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(75, 75, 75, 0.185);
+}
+
+.global_loader_container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 10000;
+}
+
+.modal_container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

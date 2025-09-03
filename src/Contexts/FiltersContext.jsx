@@ -1,9 +1,17 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { useMessageContext } from "./MessageContext";
 
 const FiltersContext = createContext()
 
 function FiltersProvider({ children }) {
 
+    const [refreshKey, setRefreshKey] = useState(0)
+    const { setLoader } = useMessageContext()
+
+    function handleRefresh() {
+        setRefreshKey(prev => (prev + 1))
+        setLoader(true)
+    }
 
     const [config, setConfig] = useState({
         1: {
@@ -66,7 +74,7 @@ function FiltersProvider({ children }) {
 
     return (
         <>
-            <FiltersContext.Provider value={{ config, setFiltersConfig, buildQuery }}>
+            <FiltersContext.Provider value={{ config, setFiltersConfig, buildQuery, refreshKey, handleRefresh }}>
                 {children}
             </FiltersContext.Provider>
         </>

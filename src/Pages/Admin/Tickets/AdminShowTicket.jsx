@@ -7,13 +7,15 @@ import { useNavigate } from "react-router-dom"
 import ShowTicketFullUi from "../../../Components/dumb/ShowTicketFull.ui"
 import TicketHistoryTasbleUi from "../../../Components/dumb/TicketHistoryTable.ui"
 import TicketManager from "../../../Components/smart/TicketManager"
+import { useFiltersContext } from "../../../Contexts/FiltersContext"
 
 export default function AdminShowTicket() {
-    const { throwMessage } = useMessageContext()
+    const { throwMessage, setLoader } = useMessageContext()
     const { currentUser } = useAuthContext()
     const { id } = useParams()
     const token = currentUser.token
     const navigate = useNavigate()
+    const { refreshKey } = useFiltersContext()
 
     const [ticket, setTicket] = useState({
         state: 'error',
@@ -66,11 +68,13 @@ export default function AdminShowTicket() {
                     state: 'error',
                     message: err.message
                 })
+            } finally {
+                setLoader(false)
             }
         }
 
         ticketFetch()
-    }, [])
+    }, [refreshKey])
 
 
     switch (ticket.state) {

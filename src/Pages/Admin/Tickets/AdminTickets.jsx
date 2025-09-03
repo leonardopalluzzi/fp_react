@@ -9,9 +9,9 @@ import { Status } from '../../../Js/TicketStatus'
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
 
 export default function AdminTickets() {
-    const { throwMessage } = useMessageContext()
+    const { throwMessage, setLoader } = useMessageContext()
     const { currentUser } = useAuthContext()
-    const { setFiltersConfig, buildQuery } = useFiltersContext()
+    const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
     const token = currentUser.token
     const navigate = useNavigate()
 
@@ -85,8 +85,9 @@ export default function AdminTickets() {
             })
     }, [])
 
-    //fetch dati
 
+
+    //fetch dati
     useEffect(() => {
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}${buildQuery(filters)}`, {
             method: 'GET',
@@ -110,7 +111,10 @@ export default function AdminTickets() {
                     message: err.message
                 })
             })
-    }, [page, filters])
+            .finally(() => {
+                setLoader(false)
+            })
+    }, [page, refreshKey])
 
     function handleTicketEdit(tId, sId) {
         return navigate(`/admin/ticket/edit/${tId}/service/${sId}`)
