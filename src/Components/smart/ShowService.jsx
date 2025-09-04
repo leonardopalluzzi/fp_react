@@ -3,7 +3,6 @@ import ShowServiceAdminListUi from "../dumb/ShowServiceAdminLists.ui";
 import ShowServiceTicketListUi from "../dumb/ShowServiceTicketList.ui";
 import { useNavigate } from "react-router-dom";
 import { crudRoutesConfig } from "../../Js/CrudRoutesConfig";
-import AdminServiceManagerUi from "../dumb/AdminServiceManager.ui";
 import DataWrapper from "./DataWrapper";
 import { useState, useEffect } from "react";
 import { Status } from "../../Js/TicketStatus";
@@ -158,13 +157,14 @@ export default function ShowService({ roles, service }) {
                     }
 
                 </div>
-
-                <ServiceManager currentUser={currentUser} serviceId={service.id} />
+                <div className="my-5">
+                    <h1>Manage Service</h1>
+                    <ServiceManager currentUser={currentUser} serviceId={service.id} />
+                </div>
 
                 {
                     (roles.includes(Role.ADMIN)) && (
                         <>
-                            <AdminServiceManagerUi serviceId={service.id} />
                             <ShowServiceAdminListUi
                                 customers={service.customers}
                                 operators={service.operators}

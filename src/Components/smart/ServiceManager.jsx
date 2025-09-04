@@ -1,9 +1,11 @@
 import { useState } from "react"
 import { assignOperatorToService, deleteOperatorFromService, registerCustomerToService, deleteCustomerFromService } from '../../Js/FetchFunctions'
 import ModalServiceManager from "./ModalServiceManager"
+import { useNavigate } from "react-router-dom"
 
 export default function ServiceManager({ currentUser, serviceId }) {
     const token = currentUser.token
+    const navigate = useNavigate()
 
     const [modalConfig, setModalConfig] = useState({})
     const [display, setDisplay] = useState(false)
@@ -46,15 +48,22 @@ export default function ServiceManager({ currentUser, serviceId }) {
     return (
         <>
             <div className="card border-0 shadow p-4">
-                <div className="row row-cols-1 row-cols-md-3">
+                <div className="row row-cols-1 row-cols-md-4">
+                    <div className="col">
+                        <button className="btn btn-outline-success" onClick={() => navigate(`/admin/user/create/${serviceId}`)}>+ Add Operator</button>
+                        <label className="mt-3 text-muted">Create a new operator</label>
+                    </div>
                     <div className="col">
                         <button className="btn btn-outline-success" onClick={() => handleShowModal('assignOperator')}>add operator to service</button>
+                        <label className="mt-3 text-muted">Add an existing operator</label>
                     </div>
                     <div className="col">
                         <button className="btn btn-outline-danger" onClick={() => handleShowModal('deleteOperator')}>delete operator from service</button>
+                        <label className="mt-3 text-muted">Detach an operator from this service</label>
                     </div>
                     <div className="col">
                         <button className="btn btn-outline-danger" onClick={() => handleShowModal('deleteCustomer')}>delete customer from service</button>
+                        <label className="mt-3 text-muted">Detach a customer from this service</label>
                     </div>
                 </div>
 
