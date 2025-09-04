@@ -4,9 +4,12 @@ import { useMessageContext } from "../../Contexts/MessageContext"
 import { useFiltersContext } from "../../Contexts/FiltersContext"
 import DataWrapper from "./DataWrapper"
 
-export default function ModalServiceManager({ token, function: action, title, label, setDisplay, list, serviceId }) {
+export default function ModalServiceManager({ token, function: action, title, label, setDisplay, list, serviceId, companyId, endpoint }) {
     const { throwMessage, setLoader } = useMessageContext()
     const { setFiltersConfig, buildQuery, refreshKey, handleRefresh } = useFiltersContext()
+
+    console.log(endpoint);
+
 
     const [users, setUsers] = useState({
         state: 'loading'
@@ -34,7 +37,7 @@ export default function ModalServiceManager({ token, function: action, title, la
 
     // fetch lista utenti in base al bottone cliccato
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users?list=${list}&page=${page}${buildQuery(filters)}`, {
+        fetch(`${endpoint}page=${page}${buildQuery(filters)}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -42,14 +45,21 @@ export default function ModalServiceManager({ token, function: action, title, la
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
+
                 if (data.state && (data.state == 'error' || data.state == 'expired')) {
                     throwMessage(data.state, [data.message])
-                } else {
+                } else if (data.state && data.state == 'success') {
                     setUsers({
                         state: 'success',
-                        result: data.content,
-                        pagination: data
+                        result: data.result.content,
+                        pagination: data.result
                     })
+                } else {
+                    setLoader(false)
+                    setDisplay(false)
+                    throwMessage('error', ['Unknown error'])
+                    return
                 }
             })
             .catch(err => {

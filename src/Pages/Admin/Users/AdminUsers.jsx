@@ -11,7 +11,7 @@ import { useFiltersContext } from "../../../Contexts/FiltersContext"
 export default function AdminUsers() {
     const { throwMessage, setLoader } = useMessageContext()
     const { currentUser } = useAuthContext()
-    const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
+    const { setFiltersConfig, buildQuery, refreshKey, handleRefresh } = useFiltersContext()
     const token = currentUser.token
     const navigate = useNavigate();
 
@@ -174,6 +174,10 @@ export default function AdminUsers() {
             })
             .catch(err => {
                 throwMessage('error', [err.message])
+            })
+            .finally(() => {
+                setLoader(true)
+                handleRefresh()
             })
     }
 

@@ -3,15 +3,20 @@ import { assignOperatorToService, deleteOperatorFromService, registerCustomerToS
 import ModalServiceManager from "./ModalServiceManager"
 import { useNavigate } from "react-router-dom"
 
-export default function ServiceManager({ currentUser, serviceId }) {
+export default function ServiceManager({ currentUser, serviceId, companyId }) {
     const token = currentUser.token
     const navigate = useNavigate()
 
     const [modalConfig, setModalConfig] = useState({})
     const [display, setDisplay] = useState(false)
+    const [endpoint, setEndpoint] = useState('')
 
     function handleShowModal(config) {
         setDisplay(true)
+        setEndpoint(
+            config == 'assignOperator' && `${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byCompany/${companyId}/service/${serviceId}?exclude=true&` ||
+            config == 'deleteOperator' && `${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byService/${serviceId}?` //mettere qui enpoint che restituisce tutti users del servizio
+        )
         setModalConfig(propsConfig[config])
     }
 
@@ -69,7 +74,7 @@ export default function ServiceManager({ currentUser, serviceId }) {
 
                 {/* modal */}
                 {
-                    display && <ModalServiceManager {...modalConfig} />
+                    display && <ModalServiceManager {...modalConfig} companyId={companyId} endpoint={endpoint} />
                 }
 
             </div>

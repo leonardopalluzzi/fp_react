@@ -17,6 +17,9 @@ export default function ShowService({ roles, service }) {
     const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
     const { setLoader } = useMessageContext()
 
+    console.log(service);
+
+
     const navigate = useNavigate()
 
     const roleConfigPrefix = roles.includes(Role.ADMIN) && 'admin' || roles.includes(Role.EMPLOYEE) && 'employee' || roles.includes(Role.CUSTOMER) && 'customer';
@@ -159,7 +162,7 @@ export default function ShowService({ roles, service }) {
                 </div>
                 <div className="my-5">
                     <h1>Manage Service</h1>
-                    <ServiceManager currentUser={currentUser} serviceId={service.id} />
+                    <ServiceManager currentUser={currentUser} serviceId={service.id} companyId={service.companyId} />
                 </div>
 
                 {

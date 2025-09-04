@@ -13,7 +13,7 @@ const assignOperatorToService = async (token, serviceId, operatorId, setLoader, 
         }
 
         const data = await response.json()
-
+        throwMessage('success', ['Operator added to service correctly'])
         return data
 
     } catch (err) {
@@ -41,7 +41,7 @@ const deleteOperatorFromService = async (token, serviceId, operatorId, setLoader
         }
 
         const data = await response.json()
-
+        throwMessage('success', ['Operator detached from service correctly'])
         return data
 
     } catch (err) {
@@ -69,7 +69,7 @@ const deleteCustomerFromService = async (token, serviceId, customerId, setLoader
         }
 
         const data = await response.json()
-
+        throwMessage('success', ['Customer detached from service correctly'])
         return data
 
     } catch (err) {
@@ -99,7 +99,7 @@ const registerCustomerToService = async (token, payload, setLoader, throwMessage
         }
 
         const data = await response.json()
-
+        throwMessage('success', ['Customer registered to service correctly'])
         return data
 
     } catch (err) {
