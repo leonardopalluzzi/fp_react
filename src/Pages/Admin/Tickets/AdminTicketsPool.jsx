@@ -144,7 +144,7 @@ export default function AdminTicketsPool() {
                     <div className="container my-5">
                         <h1>Tickets Pool</h1>
                         <p>Here you can see all the open tickets that are note assigned to an operator</p>
-                        <DataWrapper css={''} list={1}>
+                        <DataWrapper css={''} id={1}>
                             <ShowServiceTicketListUi
                                 tickets={tickets.result}
                                 handleTicketEdit={handleTicketEdit}

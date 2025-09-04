@@ -46,19 +46,17 @@ export default function ShowService({ roles, service }) {
                 statusOptions.push(option)
             }
 
-            const fields = [
+            const ticketsFields = [
                 { key: 'status', label: 'Ticket Status', type: 'select', options: statusOptions },
                 { key: 'title', label: 'Title', type: 'text' },
                 { key: 'description', label: 'Description', type: 'text' },
                 { key: 'createdAt', label: 'Created At', type: 'date' }
             ]
 
-            setFiltersConfig(1, page, tickets.pagination.totalPages, setPage, fields, filters, setFilters)
-
-
+            setFiltersConfig('ticketConfig', page, tickets.pagination.totalPages, setPage, ticketsFields, filters, setFilters)
         }
 
-    }, [tickets, filters])
+    }, [tickets, filters, service])
 
 
     useEffect(() => {
@@ -185,7 +183,7 @@ export default function ShowService({ roles, service }) {
                             {
                                 tickets.state == 'success' && (
                                     <>
-                                        <DataWrapper css={'my-4'} list={1}>
+                                        <DataWrapper css={'my-4'} id={'ticketConfig'}>
                                             <ShowServiceTicketListUi
                                                 tickets={tickets.result}
                                                 handleTicketsDelete={handleTicketDelete}

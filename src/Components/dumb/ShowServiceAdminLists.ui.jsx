@@ -10,7 +10,7 @@ export default function ShowServiceAdminListUi({ customers, operators, handleOpe
                     <div className="col">
                         <DataWrapper
                             css={''}
-                            list={1}
+                            id={1}
                         >
                             {/* tabella clienti  */}
 
@@ -51,7 +51,7 @@ export default function ShowServiceAdminListUi({ customers, operators, handleOpe
                     <div className="col">
                         <DataWrapper
                             css={''}
-                            list={2}
+                            id={2}
                         >
                             {/* tabella operatori  */}
                             <div className="my-5 bg-white rounded rounded-4 p-3 shadow">

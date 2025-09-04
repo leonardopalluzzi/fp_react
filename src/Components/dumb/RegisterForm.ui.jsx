@@ -1,4 +1,4 @@
-export default function RegisterFormUi({ user, onsubmit, onchange }) {
+export default function RegisterFormUi({ user, onsubmit, onchange, label, passwordRequired }) {
     return (
         <>
             <form onSubmit={(e) => { e.preventDefault(); onsubmit() }}>
@@ -47,12 +47,12 @@ export default function RegisterFormUi({ user, onsubmit, onchange }) {
                         id=""
                         aria-describedby="helpId"
                         placeholder="SafePass.01!"
-                        required
+                        required={passwordRequired}
                     />
                     <small id="helpId" class="form-text text-muted">Choose yuor password</small>
                 </div>
                 <div className="d-flex align-items-center justify-content-center">
-                    <button type="submit" className="btn btn-primary fs-4">Register</button>
+                    <button type="submit" className="btn btn-primary fs-4">{label ? label : 'Register'}</button>
                 </div>
 
             </form>

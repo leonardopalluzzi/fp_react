@@ -1,11 +1,18 @@
 import { useFiltersContext } from "../../Contexts/FiltersContext";
 import { useMessageContext } from "../../Contexts/MessageContext";
+import LoaderUi from "../dumb/Loader.ui";
 
-export default function DataWrapper({ children, css, list }) {
+export default function DataWrapper({ children, css, id }) {
     const { config, handleRefresh } = useFiltersContext()
     const { setLoader } = useMessageContext()
 
-    const { setPage, pageNumber, fields = [], values = {}, onChange = () => { }, currentPage = 0 } = config[list]
+    if (config[id] == null) {
+        return children
+    } else if (!config[id]) {
+        return <LoaderUi />;
+    }
+
+    const { setPage, pageNumber, fields = [], values = {}, onChange = () => { }, currentPage = 0 } = config[id]
 
     function handleChange(key, value) {
         onChange(prev => ({ ...prev, [key]: value }))

@@ -11,7 +11,7 @@ export default function AdminShowService() {
     const { currentUser } = useAuthContext();
     const { id } = useParams();
     const token = currentUser.token;
-    const { refreshKey } = useFiltersContext()
+    const { setFiltersConfig, refreshKey } = useFiltersContext()
 
     const [service, setService] = useState({
         state: 'loading'

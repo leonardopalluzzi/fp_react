@@ -33,6 +33,7 @@ export default function Register() {
                     user={user}
                     onchange={handleChange}
                     onsubmit={handleSubmit}
+                    passwordRequired={true}
                 />
             </div>
 

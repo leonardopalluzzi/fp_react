@@ -105,12 +105,6 @@ export default function AdminUsers() {
     }, [operators, customers, admins])
 
 
-
-
-
-
-
-
     function handleFetch(listType, setter, page, query) {
         console.log(query);
 
