@@ -4,12 +4,14 @@ import { useParams } from "react-router-dom";
 import { useMessageContext } from "../../../Contexts/MessageContext";
 import LoaderUi from "../../../Components/dumb/Loader.ui";
 import ShowService from "../../../Components/smart/ShowService";
+import { useFiltersContext } from "../../../Contexts/FiltersContext";
 
 export default function AdminShowService() {
     const { throwMessage } = useMessageContext();
     const { currentUser } = useAuthContext();
     const { id } = useParams();
     const token = currentUser.token;
+    const { refreshKey } = useFiltersContext()
 
     const [service, setService] = useState({
         state: 'loading'
@@ -44,7 +46,7 @@ export default function AdminShowService() {
                 })
                 throwMessage('error', [err.message])
             })
-    }, [])
+    }, [refreshKey])
 
 
     switch (service.state) {

@@ -6,8 +6,6 @@ export default function DataWrapper({ children, css, list }) {
     const { setLoader } = useMessageContext()
 
     const { setPage, pageNumber, fields = [], values = {}, onChange = () => { }, currentPage = 0 } = config[list]
-    console.log(pageNumber);
-
 
     function handleChange(key, value) {
         onChange(prev => ({ ...prev, [key]: value }))

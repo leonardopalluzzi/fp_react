@@ -9,8 +9,8 @@ function FiltersProvider({ children }) {
     const { setLoader } = useMessageContext()
 
     function handleRefresh() {
-        setRefreshKey(prev => (prev + 1))
         setLoader(true)
+        setRefreshKey(prev => (prev + 1))
     }
 
     const [config, setConfig] = useState({

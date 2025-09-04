@@ -6,7 +6,7 @@ import DataWrapper from "./DataWrapper"
 
 export default function ModalServiceManager({ token, function: action, title, label, setDisplay, list, serviceId }) {
     const { throwMessage, setLoader } = useMessageContext()
-    const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
+    const { setFiltersConfig, buildQuery, refreshKey, handleRefresh } = useFiltersContext()
 
     const [users, setUsers] = useState({
         state: 'loading'
@@ -67,7 +67,7 @@ export default function ModalServiceManager({ token, function: action, title, la
 
     // richiamo funzione submit corretta con le props necessarie
     function handleSubmit(uId) {
-        action(token, serviceId, uId, setLoader, throwMessage) // valorizzare props
+        action(token, serviceId, uId, setLoader, throwMessage, handleRefresh) // valorizzare props
     }
 
     switch (users.state) {
