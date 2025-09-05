@@ -72,8 +72,8 @@ export default function ShowService({ roles, service }) {
 
                 setTickets({
                     state: 'success',
-                    pagination: data,
-                    result: data.content
+                    pagination: data.result,
+                    result: data.result.content
                 })
             })
             .catch(err => {
@@ -109,7 +109,7 @@ export default function ShowService({ roles, service }) {
     }
 
     function handleTicketEdit(itemId) {
-        return navigate(routeConfig.ticketEdit(itemId))
+        return navigate(routeConfig.ticketEdit(itemId, service.id))
     }
 
     function handleTicketShow(itemId) {

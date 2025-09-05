@@ -8,8 +8,8 @@ import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 
 export default function AdminEditService() {
-    const { throwMessage } = useMessageContext();
-    const { currentUser } = useAuthContext();
+    const { throwMessage, setLoader } = useMessageContext();
+    const { currentUser, prefix } = useAuthContext();
     const { id } = useParams();
     const token = currentUser.token;
 
@@ -62,20 +62,18 @@ export default function AdminEditService() {
                     res2.json()
                 ])
 
-                if ((service.state && service.state === "expired") ||
-                    (typeList.state && typeList.state === "expired")) {
-                    throwMessage("expired", [service.error || typeList.error]);
-                } else if ((service.state && service.state === "error") ||
-                    (typeList.state && typeList.state === "error")) {
-                    throwMessage("error", [service.error || typeList.error]);
-                } else {
-                    console.log(typeList);
-
+                if((service.state && service.state == 'success') && (typeList.state && typeList.state == 'success')){
                     setService({
                         state: "success",
                         result: service,
                         serviceTypeList: typeList
                     });
+                } else if(service.state && typeList.state){
+                    setLoader(false)
+                    throwMessage(service.state || typeList.state, [service.message || typeList.message])
+                } else {
+                    setLoader(false)
+                    throwMessage('error', ['Unknown Error'])
                 }
 
             } catch (err) {

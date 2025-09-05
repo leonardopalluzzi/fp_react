@@ -12,12 +12,26 @@ function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState({
         state: 'loading'
     })
+    const [prefix, setPrefix] = useState('')
 
     const navigate = useNavigate();
 
     useEffect(() => {
         checkForToken()
     }, [])
+
+    useEffect(()=>{
+        if(currentUser.state == 'success'){
+            if(currentUser.details.roles.includes(Role.ADMIN) || currentUser.details.roles.includes(Role.SUPERADMIN)){
+                setPrefix('admin')
+            } else if(currentUser.details.roles.includes(Role.EMPLOYEE)){
+                setPrefix('employee')
+            } else if(currentUser.details.roles.includes(Role.CUSTOMER)){
+                setPrefix('customer')
+            }
+        }
+
+    }, [currentUser])
 
     function login(user) {
         if (!checkForToken()) {
@@ -131,7 +145,7 @@ function AuthProvider({ children }) {
 
     return (
         <>
-            <AuthContext.Provider value={{ currentUser, login, logout, register }}>
+            <AuthContext.Provider value={{ currentUser, login, logout, register, prefix }}>
                 {children}
             </AuthContext.Provider>
         </>

@@ -28,15 +28,15 @@ export default function AdminShowService() {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-
-                setService({
-                    state: 'success',
-                    result: data
-                })
-                if (data.state == 'error') {
-                    throwMessage('error', [data.error])
-                } else if (data.state == 'expired') {
-                    throwMessage(data.state, [data.error])
+                if(data.state && data.state == 'success'){
+                    setService({
+                        state: 'success',
+                        result: data.result
+                    })
+                } else if(data.state){
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
                 }
             })
             .catch(err => {

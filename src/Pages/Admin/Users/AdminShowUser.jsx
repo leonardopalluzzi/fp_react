@@ -6,14 +6,16 @@ import LoaderUi from "../../../Components/dumb/Loader.ui"
 import ShowServiceTicketListUi from "../../../Components/dumb/ShowServiceTicketList.ui"
 import { useNavigate } from "react-router-dom"
 import ServiceTabelLightUi from "../../../Components/dumb/ServiceTableLight.ui"
+import { crudRoutesConfig } from "../../../Js/CrudRoutesConfig"
 
 
 export default function AdminShowUser() {
     const { throwMessage } = useMessageContext()
-    const { currentUser } = useAuthContext()
+    const { currentUser, prefix } = useAuthContext()
     const { id } = useParams()
     const token = currentUser.token
     const navigate = useNavigate()
+    const routeConfig = crudRoutesConfig[prefix]
 
 
     const [user, setUser] = useState({
@@ -41,7 +43,7 @@ export default function AdminShowUser() {
                 } else {
                     setUser({
                         state: 'success',
-                        result: data
+                        result: data.result
                     })
                 }
 
@@ -57,7 +59,7 @@ export default function AdminShowUser() {
     }
 
     function handleTicketEdit(tId) {
-        return navigate(`/admin/ticket/edit/${tId}`)
+        return navigate(routeConfig.ticketEdit(tId, serviceId)) //service id da capire come prenderlo
     }
 
     function handleTicketDelete(tId) {
@@ -79,7 +81,7 @@ export default function AdminShowUser() {
     }
 
     function handleTicketShow(tId) {
-        return navigate(`/admin/ticket/${tId}`)
+        return navigate(routeConfig.ticketShow(tId))
 
     }
 

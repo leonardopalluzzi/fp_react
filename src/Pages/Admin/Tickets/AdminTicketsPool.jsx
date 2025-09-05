@@ -6,12 +6,16 @@ import ShowServiceTicketListUi from "../../../Components/dumb/ShowServiceTicketL
 import DataWrapper from "../../../Components/smart/DataWrapper"
 import { Status } from "../../../Js/TicketStatus"
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
+import { crudRoutesConfig } from "../../../Js/CrudRoutesConfig"
+import { useNavigate } from "react-router-dom"
 
 export default function AdminTicketsPool() {
     const { throwMessage, setLoader } = useMessageContext()
-    const { currentUser } = useAuthContext()
+    const { currentUser, prefix } = useAuthContext()
     const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
     const token = currentUser.token
+    const routeConfig = crudRoutesConfig[prefix]
+    const navigate = useNavigate()
 
     const [tickets, setTickets] = useState({
         state: 'loading'
@@ -116,11 +120,11 @@ export default function AdminTicketsPool() {
     }, [page, refreshKey])
 
     function handleTicketEdit(tId) {
-
+        return navigate(routeConfig.ticketEdit(tId, serviceId)) // da prender il serviceId
     }
 
     function handleTicketShow(tId) {
-
+        return navigate(routeConfig.ticketShow(tId))
     }
 
     function handleTicketDelete(tId) {

@@ -6,14 +6,16 @@ import LoaderUi from "../../../Components/dumb/Loader.ui"
 import UsersGenericListUi from "../../../Components/dumb/UsersGenericList.ui"
 import { useNavigate } from "react-router-dom"
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
+import { crudRoutesConfig } from "../../../Js/CrudRoutesConfig"
 
 
 export default function AdminUsers() {
     const { throwMessage, setLoader } = useMessageContext()
-    const { currentUser } = useAuthContext()
+    const { currentUser, prefix } = useAuthContext()
     const { setFiltersConfig, buildQuery, refreshKey, handleRefresh } = useFiltersContext()
     const token = currentUser.token
     const navigate = useNavigate();
+    const routeConfig = crudRoutesConfig[prefix]
 
     //state e variabili per fetch
     //----------
@@ -143,11 +145,11 @@ export default function AdminUsers() {
 
 
     function handleOperatorShow(uId) {
-        return navigate(`/admin/user/${uId}`)
+        return navigate(routeConfig.userShow(uId))
     }
 
     function handleOperatorEdit(uId) {
-        return navigate(`/admin/user/edit/${uId}`)
+        return navigate(routeConfig.userEdit(uId))
     }
 
     function handleOperatorDelete(uId) {

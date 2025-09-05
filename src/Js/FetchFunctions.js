@@ -112,7 +112,64 @@ const registerCustomerToService = async (token, payload, setLoader, throwMessage
 
 }
 
+//tickets
+
+const deleteTicket = (tId, token, throwMessage, setLoader, handleRefresh) => {
+    setLoader(true)
+    fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets/delete/${tId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if(data.state && data.state == 'success'){
+                    throwMessage(data.state, ['Ticket deleted correctly'])
+                } else if(data.state){
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
+                }
+            })
+            .catch(err => {
+                throwMessage('error', [err.message])
+            })
+            .finally(()=>{
+                setLoader(false)
+                handleRefresh()
+            })
+}
+
+// service
+const deleteService = (sId, token, setLoader, throwMessage, handleRefresh) => {
+    setLoader(true)
+    fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services/delete/${sId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if(data.state && data.state == 'success'){
+                    throwMessage(data.state, ['Service Deleted Correctly'])
+                } else if(data.state){
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error',['Unknown Error'])
+                }
+            })
+            .catch(err => {
+                throwMessage('error', [err.message])
+            })
+            .finally(()=>{
+                setLoader(false)
+                handleRefresh()
+            })
+}
+
 // aggiungere tipologiche
 
 
-export { assignOperatorToService, deleteOperatorFromService, registerCustomerToService, deleteCustomerFromService }
+export { assignOperatorToService, deleteOperatorFromService, registerCustomerToService, deleteCustomerFromService, deleteTicket, deleteService }

@@ -7,13 +7,17 @@ import { useNavigate } from "react-router-dom"
 import DataWrapper from "../../../Components/smart/DataWrapper"
 import { Status } from '../../../Js/TicketStatus'
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
+import {deleteTicket} from '../../../Js/FetchFunctions'
+import {crudRoutesConfig} from '../../../Js/CrudRoutesConfig'
+
 
 export default function AdminTickets() {
     const { throwMessage, setLoader } = useMessageContext()
-    const { currentUser } = useAuthContext()
-    const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
+    const { currentUser, prefix } = useAuthContext()
+    const { setFiltersConfig, buildQuery, refreshKey, handleRefresh } = useFiltersContext()
     const token = currentUser.token
     const navigate = useNavigate()
+    const routeConfig = crudRoutesConfig[prefix]
 
     const [tickets, setTickets] = useState({
         state: 'loading'
@@ -101,8 +105,8 @@ export default function AdminTickets() {
 
                 setTickets({
                     state: 'success',
-                    pagination: data,
-                    result: data.content
+                    pagination: data.result,
+                    result: data.result.content
                 })
             })
             .catch(err => {
@@ -117,29 +121,16 @@ export default function AdminTickets() {
     }, [page, refreshKey])
 
     function handleTicketEdit(tId, sId) {
-        return navigate(`/admin/ticket/edit/${tId}/service/${sId}`)
+        return navigate(routeConfig.ticketEdit(tId, sId))
 
     }
 
     function handleTicketShow(tId) {
-        return navigate(`/admin/ticket/${tId}`)
+        return navigate(routeConfig.ticketShow(tId))
     }
 
     function handleTicketDelete(tId) {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets/delete/${tId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-
-            })
-            .catch(err => {
-                console.error(err)
-            })
+        deleteTicket(tId, token, throwMessage, setLoader, handleRefresh)
 
     }
 

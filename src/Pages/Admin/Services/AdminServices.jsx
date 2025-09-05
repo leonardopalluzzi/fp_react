@@ -9,11 +9,12 @@ import { crudRoutesConfig } from "../../../Js/CrudRoutesConfig";
 import DataWrapper from "../../../Components/smart/DataWrapper";
 import { useFiltersContext } from "../../../Contexts/FiltersContext";
 import { Status } from "../../../Js/ServiceStatus";
+import { deleteService } from "../../../Js/FetchFunctions";
 
 export default function AdminServices() {
     const { throwMessage, setLoader } = useMessageContext();
     const { currentUser } = useAuthContext();
-    const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
+    const { setFiltersConfig, buildQuery, refreshKey, handleRefresh } = useFiltersContext()
     const navigate = useNavigate();
     const token = currentUser.token;
 
@@ -135,25 +136,7 @@ export default function AdminServices() {
     const routeConfig = crudRoutesConfig['admin']
 
     function handleDelete(itemId) {
-        console.log(`cancellazione servizio: ${itemId}`);
-
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services/delete/${itemId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                if (data.status == 'OK') {
-                    throwMessage('success', ['Item Deleted Correctly'])
-                }
-
-            })
-            .catch(err => {
-                throwMessage('error', [err.message])
-            })
+        deleteService(itemId, token, setLoader, throwMessage, handleRefresh)
     }
 
     function handleUpdate(itemId) {
