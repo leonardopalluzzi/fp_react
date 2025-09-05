@@ -48,7 +48,7 @@ export default function AdminTicketsPool() {
 
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services`, {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services?page=0`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -59,14 +59,16 @@ export default function AdminTicketsPool() {
                 if (data.state && (data.state == 'error' || data.state == 'expired')) {
                     throwMessage(data.state, [data.message])
                     return
-                } else {
+                } else if(data.state && data.state == 'success') {
                     setServices({
                         state: 'success',
-                        result: data.map(s => ({
+                        result: data.result.content.map(s => ({
                             value: s.id,
                             label: s.name
                         }))
                     })
+                } else {
+                    throwMessage('error', ['Unknown error'])
                 }
             })
             .catch(err => {

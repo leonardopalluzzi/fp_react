@@ -112,6 +112,7 @@ export default function AdminEditTicket() {
                 }
             })
             .catch(err => throwMessage('error', [err.message]))
+            .finally(()=> setLoader(false))
     }
 
 

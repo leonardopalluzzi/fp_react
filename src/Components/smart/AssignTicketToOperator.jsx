@@ -6,6 +6,7 @@ import { useFiltersContext } from "../../Contexts/FiltersContext"
 export default function AssignTIcketToOperator({ currentUser, serviceId, ticketId, currentAssignee }) {
     const { throwMessage, setLoader } = useMessageContext()
     const token = currentUser.token
+    
     const { handleRefresh } = useFiltersContext()
 
     const [operators, setOperators] = useState({
@@ -14,11 +15,8 @@ export default function AssignTIcketToOperator({ currentUser, serviceId, ticketI
 
     const [operatorId, setOperatorId] = useState(currentAssignee)
 
-    //recupero lista di operatori per servizio dalla index, a partire dal ticket id
-
-    // nella back ho fatto le specification per users per hasService e hasRole, e sono gia integrate, ma alla fine ho fatto endpoin dedicato con metodo getoperatorbyservice
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/${serviceId}`, { //ricorsione infinita lato back
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byService/${serviceId}?page=0`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -30,14 +28,18 @@ export default function AssignTIcketToOperator({ currentUser, serviceId, ticketI
 
                 if (data.state && (data.state == 'error' || data.state == 'expired')) {
                     throwMessage(data.state, [data.message])
-                } else {
+                } else if(data.state && data.state == 'success') {
                     setOperators({
                         state: 'success',
-                        result: data
+                        result: data.result.content,
+                        pagination: data.result
                     })
+                } else {
+                    throwMessage('error', ['Unknown Error'])
                 }
             })
             .catch(err => {
+                console.error(err)
                 throwMessage('error', [err.message])
                 setOperators({
                     state: 'error',

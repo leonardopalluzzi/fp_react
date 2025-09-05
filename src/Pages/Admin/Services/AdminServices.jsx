@@ -112,8 +112,8 @@ export default function AdminServices() {
 
                     setServices({
                         state: 'success',
-                        result: data.content,
-                        pagination: data
+                        result: data.result.content,
+                        pagination: data.result
                     })
                 } else {
                     throwMessage(data.state, [JSON.stringify(data)])

@@ -3,12 +3,15 @@ import { useState, useEffect } from "react"
 import { useMessageContext } from "../../Contexts/MessageContext"
 import LoaderUi from "../../Components/dumb/Loader.ui"
 import RegisterFormUi from "../../Components/dumb/RegisterForm.ui"
+import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export default function ShowProfile() {
     const { currentUser } = useAuthContext()
     const token = currentUser.token
     const id = currentUser.details.id
     const { throwMessage } = useMessageContext()
+    const navigate = useNavigate()
 
     const [user, setUser] = useState({
         state: 'loading'
@@ -69,11 +72,12 @@ export default function ShowProfile() {
 
     function handleSubmit() {
         const userToUpdate = { ...newUser }
+        
 
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/update`, {
-            method: 'POST',
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/update/${user.result.id}`, {
+            method: 'PUT',
             headers: {
-                'Authoirization': `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
                 'Content-type': 'application/json'
             },
             body: JSON.stringify(userToUpdate)
@@ -83,7 +87,8 @@ export default function ShowProfile() {
                 console.log(data);
 
                 if (data.state && data.state == 'success') {
-                    throwMessage(data.state, ['User updated correctly'])
+                    throwMessage(data.state, ['User updated correctly, you need to re-login'])
+                    return navigate("/login")
                 } else if (data.state) {
                     throwMessage(data.state, [data.message])
                 } else {
