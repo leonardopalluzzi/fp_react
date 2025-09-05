@@ -145,11 +145,6 @@ export default function AdminEditService() {
     }
 
 
-    const fakeArr = [{
-        id: 1, name: 'cacca'
-    }]
-
-
 
     switch (service.state) {
         case 'loading':
