@@ -260,7 +260,6 @@ const deleteUser = (uId, token, throwMessage, setLoader, handleRefresh) => {
 
             if (data.state && data.state == 'success') {
                 throwMessage('success', ['User deleted'])
-                handleFetch()
             } else if (data.state) {
                 throwMessage(data.state, [data.message])
             } else {
