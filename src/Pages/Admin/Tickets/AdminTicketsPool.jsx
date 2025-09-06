@@ -63,7 +63,7 @@ export default function AdminTicketsPool() {
                 if (data.state && (data.state == 'error' || data.state == 'expired')) {
                     throwMessage(data.state, [data.message])
                     return
-                } else if(data.state && data.state == 'success') {
+                } else if (data.state && data.state == 'success') {
                     setServices({
                         state: 'success',
                         result: data.result.content.map(s => ({
@@ -97,15 +97,19 @@ export default function AdminTicketsPool() {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                if (data.state && (data.state == 'error' || data.state == 'expired')) {
-                    throwMessage(data.state, [data.message])
-                } else {
+
+                if (data.state && data.state == 'success') {
                     setTickets({
                         state: 'success',
-                        result: data.content,
-                        pagination: data
+                        result: data.result.content,
+                        pagination: data.result
                     })
+                } else if (data.state) {
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
                 }
+
             })
             .catch(err => {
                 setTickets({

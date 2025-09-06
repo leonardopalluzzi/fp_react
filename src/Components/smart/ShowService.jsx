@@ -32,9 +32,7 @@ export default function ShowService({ roles, service }) {
 
     //filtri e paginazione
     const [page, setPage] = useState(0)
-    const [filters, setFilters] = useState({
-        serviceId: service.id
-    })
+    const [filters, setFilters] = useState({})
 
     useEffect(() => {
         if (tickets.state == 'success') {
@@ -60,7 +58,7 @@ export default function ShowService({ roles, service }) {
 
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}${buildQuery(filters)}`, {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}&serviceId=${service.id}${buildQuery(filters)}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
