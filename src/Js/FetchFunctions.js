@@ -247,7 +247,36 @@ const updateService = (sId, payload, token, setLoader, throwMessage, handleRefre
 
 }
 
+//users
+const deleteUser = (uId, token, throwMessage, setLoader, handleRefresh) => {
+    fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/delete/${uId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+
+            if (data.state && data.state == 'success') {
+                throwMessage('success', ['User deleted'])
+                handleFetch()
+            } else if (data.state) {
+                throwMessage(data.state, [data.message])
+            } else {
+                throwMessage('error', ['Unknown Error'])
+            }
+        })
+        .catch(err => {
+            throwMessage('error', [err.message])
+        })
+        .finally(() => {
+            setLoader(true)
+            handleRefresh()
+        })
+}
+
 // aggiungere tipologiche
 
 
-export { assignOperatorToService, deleteOperatorFromService, registerCustomerToService, deleteCustomerFromService, deleteTicket, deleteService, updateService, createTicket }
+export { assignOperatorToService, deleteOperatorFromService, registerCustomerToService, deleteCustomerFromService, deleteTicket, deleteService, updateService, createTicket, deleteUser }

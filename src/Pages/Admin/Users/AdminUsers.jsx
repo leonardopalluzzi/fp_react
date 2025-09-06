@@ -7,6 +7,7 @@ import UsersGenericListUi from "../../../Components/dumb/UsersGenericList.ui"
 import { useNavigate } from "react-router-dom"
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
 import { crudRoutesConfig } from "../../../Js/CrudRoutesConfig"
+import { deleteUser } from "../../../Js/FetchFunctions"
 
 
 export default function AdminUsers() {
@@ -153,28 +154,7 @@ export default function AdminUsers() {
     }
 
     function handleOperatorDelete(uId) {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/delete/${uId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.state && (data.state == 'error' || data.state == 'expired')) {
-                    throwMessage(data.state, [data.message])
-                } else {
-                    throwMessage('success', ['User deleted'])
-                    handleFetch()
-                }
-            })
-            .catch(err => {
-                throwMessage('error', [err.message])
-            })
-            .finally(() => {
-                setLoader(true)
-                handleRefresh()
-            })
+        deleteUser(uId, token, throwMessage, setLoader, handleRefresh)
     }
 
     switch (fetchState) {

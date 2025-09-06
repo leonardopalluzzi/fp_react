@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
 export default function AdminEditUser() {
-    const { throwMessage } = useMessageContext()
+    const { throwMessage, setLoader } = useMessageContext()
     const { currentUser } = useAuthContext()
     const token = currentUser.token
     const { id } = useParams()
@@ -27,20 +27,19 @@ export default function AdminEditUser() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-
-                if (data.state && (data.state == 'error' || data.state == 'expired')) {
-                    throwMessage(data.state, [data.message])
-                } else {
+                if (data.state && data.state == 'success') {
                     setUser({
                         state: 'success',
-                        username: data.username,
-                        email: data.email,
+                        username: data.result.username,
+                        email: data.result.email,
                         password: ''
                     })
+                } else if (data.state) {
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
                 }
-            }
-            )
+            })
             .catch(err => {
                 setUser({
                     state: 'error',
@@ -58,7 +57,7 @@ export default function AdminEditUser() {
     }
 
     function handleSubmit() {
-
+        setLoader(true)
         const userToSend = {
             username: user.username,
             email: user.email,
@@ -86,6 +85,7 @@ export default function AdminEditUser() {
                     throwMessage(data.state, [data.message])
                 } else {
                     throwMessage('success', ['User Updated Correctly'])
+                    setLoader(false)
                     return navigate(`/admin/user/${id}`)
                 }
             })
@@ -109,7 +109,7 @@ export default function AdminEditUser() {
                 <>
                     <div className="container my-5">
                         <h1>User Info</h1>
-                        <p>Here you can update basics user info</p>
+                        <p>Here you can update basics user info, (if you want to keep teh previous password, just leave the field blank)</p>
                         <div className="card border-0 shadow p-4">
                             <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
                                 <div class="input-group mb-3">

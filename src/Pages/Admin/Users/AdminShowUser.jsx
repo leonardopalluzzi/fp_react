@@ -7,15 +7,18 @@ import ShowServiceTicketListUi from "../../../Components/dumb/ShowServiceTicketL
 import { useNavigate } from "react-router-dom"
 import ServiceTabelLightUi from "../../../Components/dumb/ServiceTableLight.ui"
 import { crudRoutesConfig } from "../../../Js/CrudRoutesConfig"
+import { deleteTicket } from "../../../Js/FetchFunctions"
+import { useFiltersContext } from "../../../Contexts/FiltersContext"
 
 
 export default function AdminShowUser() {
-    const { throwMessage } = useMessageContext()
+    const { throwMessage, setLoader } = useMessageContext()
     const { currentUser, prefix } = useAuthContext()
     const { id } = useParams()
     const token = currentUser.token
     const navigate = useNavigate()
     const routeConfig = crudRoutesConfig[prefix]
+    const { refreshKey, handleRefresh } = useFiltersContext()
 
 
     const [user, setUser] = useState({
@@ -25,7 +28,7 @@ export default function AdminShowUser() {
 
     useEffect(() => {
         handleFetch()
-    }, [])
+    }, [refreshKey])
 
     function handleFetch() {
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/${id}`, {
@@ -36,15 +39,18 @@ export default function AdminShowUser() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
 
-                if (data.state && (data.state == 'error' || data.state == 'expired')) {
-                    throwMessage(data.state, [data.message])
-                } else {
+                if (data.state && data.state == 'success') {
+                    console.log(data);
+
                     setUser({
                         state: 'success',
                         result: data.result
                     })
+                } else if (data.state) {
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
                 }
 
             }
@@ -56,28 +62,17 @@ export default function AdminShowUser() {
                 })
                 throwMessage('error', [err.message])
             })
+            .finally(() => {
+                setLoader(false)
+            })
     }
 
-    function handleTicketEdit(tId) {
+    function handleTicketEdit(tId, serviceId) {
         return navigate(routeConfig.ticketEdit(tId, serviceId)) //service id da capire come prenderlo
     }
 
     function handleTicketDelete(tId) {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets/delete/${tId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-
-            })
-            .catch(err => {
-                console.error(err)
-            })
-
+        deleteTicket(tId, token, throwMessage, setLoader, handleRefresh)
     }
 
     function handleTicketShow(tId) {

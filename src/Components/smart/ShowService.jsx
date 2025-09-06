@@ -10,12 +10,13 @@ import { useAuthContext } from "../../Contexts/AuthContext";
 import { useFiltersContext } from "../../Contexts/FiltersContext";
 import { useMessageContext } from "../../Contexts/MessageContext";
 import ServiceManager from "./ServiceManager";
+import { deleteTicket, deleteUser } from "../../Js/FetchFunctions";
 
 export default function ShowService({ roles, service }) {
     const { currentUser } = useAuthContext()
     const token = currentUser.token
-    const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
-    const { setLoader } = useMessageContext()
+    const { setFiltersConfig, buildQuery, refreshKey, handleRefresh } = useFiltersContext()
+    const { throwMessage, setLoader } = useMessageContext()
 
     console.log(service);
 
@@ -87,31 +88,31 @@ export default function ShowService({ roles, service }) {
 
 
     // operators
-    function handleOperatorDelete(itemId) {
-        console.log('operator delete');
+    function handleOperatorDelete(uId) {
+        deleteUser(uId, token, throwMessage, setLoader, handleRefresh)
     }
 
-    function handleOperatorEdit(itemId) {
-        return navigate(routeConfig.userEdit(itemId))
+    function handleOperatorEdit(uId) {
+        return navigate(routeConfig.userEdit(uId))
     }
 
-    function handleOperatorShow(itemId) {
-        return navigate(routeConfig.usershow(itemId))
+    function handleOperatorShow(uId) {
+        return navigate(routeConfig.userShow(uId))
     }
 
 
     //tickets
-    function handleTicketDelete(itemId) {
-        console.log('ticket delete');
+    function handleTicketDelete(tId) {
+        deleteTicket(tId, token, throwMessage, setLoader, handleRefresh)
 
     }
 
-    function handleTicketEdit(itemId) {
-        return navigate(routeConfig.ticketEdit(itemId, service.id))
+    function handleTicketEdit(tId) {
+        return navigate(routeConfig.ticketEdit(tId, service.id))
     }
 
-    function handleTicketShow(itemId) {
-        return navigate(routeConfig.ticketShow(itemId))
+    function handleTicketShow(tId) {
+        return navigate(routeConfig.ticketShow(tId))
     }
 
     return (

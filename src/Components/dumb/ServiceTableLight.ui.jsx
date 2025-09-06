@@ -16,6 +16,7 @@ export default function ServiceTabelLightUi({ services, onShow }) {
                                 <th scope="col">Code</th>
                                 <th scope="col">Type</th>
                                 <th scope="col">Status</th>
+                                <th scope="vol">ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -25,8 +26,11 @@ export default function ServiceTabelLightUi({ services, onShow }) {
                                         <tr class="">
                                             <td>{item.name}</td>
                                             <td>{item.code}</td>
-                                            <td>{item.type.name}</td>
+                                            <td>{item.serviceType.name}</td>
                                             <td>{item.status}</td>
+                                            <td>
+                                                <button className="btn btn-primary" onClick={() => onShow(item.id)}><i class="bi bi-eye"></i></button>
+                                            </td>
                                         </tr>
                                     </>
                                 ))
