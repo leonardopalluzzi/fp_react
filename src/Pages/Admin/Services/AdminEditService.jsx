@@ -6,12 +6,15 @@ import { useAuthContext } from "../../../Contexts/AuthContext"
 import { useMessageContext } from "../../../Contexts/MessageContext"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
+import { updateService } from "../../../Js/FetchFunctions"
+import { useFiltersContext } from "../../../Contexts/FiltersContext"
 
 export default function AdminEditService() {
     const { throwMessage, setLoader } = useMessageContext();
     const { currentUser, prefix } = useAuthContext();
     const { id } = useParams();
     const token = currentUser.token;
+    const { refreshKey, handleRefresh } = useFiltersContext()
 
     const [service, setService] = useState({
         state: 'loading',
@@ -19,15 +22,10 @@ export default function AdminEditService() {
             name: '',
             description: '',
             serviceTypeId: null,
+            status: '',
             ticketTypes: [
-                { name: '' }
+                { id: null, name: '' }
             ],
-            customers: [{
-                username: ''
-            }],
-            operators: [],
-            tickets: [],
-
         }
     })
 
@@ -61,14 +59,26 @@ export default function AdminEditService() {
                     res1.json(),
                     res2.json()
                 ])
+                console.log(typeList);
+                console.log(service);
 
-                if((service.state && service.state == 'success') && (typeList.state && typeList.state == 'success')){
+
+
+                if ((service.state && service.state == 'success') && (typeList.state && typeList.state == 'success')) {
                     setService({
                         state: "success",
-                        result: service,
-                        serviceTypeList: typeList
+                        result: {
+                            name: service.result.name,
+                            description: service.result.description,
+                            serviceTypeId: service.result.serviceType.id,
+                            status: service.result.status,
+                            ticketTypes: service.result.ticketTypes.length > 0 ? service.result.ticketTypes : [
+                                { id: null, name: '' }
+                            ],
+                        },
+                        serviceTypeList: typeList.result
                     });
-                } else if(service.state && typeList.state){
+                } else if (service.state && typeList.state) {
                     setLoader(false)
                     throwMessage(service.state || typeList.state, [service.message || typeList.message])
                 } else {
@@ -77,6 +87,7 @@ export default function AdminEditService() {
                 }
 
             } catch (err) {
+                console.error(err)
                 setService({
                     state: 'error',
                     message: err.message
@@ -90,7 +101,7 @@ export default function AdminEditService() {
         }
 
         fetchData();
-    }, [])
+    }, [refreshKey])
 
     //get tipologiche service
     useEffect(() => {
@@ -99,52 +110,59 @@ export default function AdminEditService() {
 
 
     //handle per form edit basic details
-    function handleDetailsChange() {
+    function handleDetailsChange(key, value) {
+        setService({
+            ...service,
+            result: {
+                ...service.result,
+                [key]: value
+            }
+        })
 
     }
 
     function handleDetailsSubmit() {
+        const payload = { ...service.result }
+        updateService(id, payload, token, setLoader, throwMessage, handleRefresh, setService)
+    }
+
+    function deleteTTtype(index) {
+        const updatedArray = service.result.ticketTypes
+        updatedArray.length == 1 ? throwMessage('error', ['You must insert at least one ticket type']) : updatedArray.splice(index, 1)
+        setService({
+            ...service,
+            result: {
+                ...service.result,
+                ticketTypes: updatedArray
+            }
+        })
+    }
+
+    function addTTtype() {
+        const updatedArray = service.result.ticketTypes
+        updatedArray.length == 4 ? throwMessage('error', ['You can insert a maximum of 4 tycket types']) : updatedArray.push({ name: '' })
+        setService({
+            ...service,
+            result: {
+                ...service.result,
+                ticketTypes: updatedArray
+            }
+        })
 
     }
 
-    function handleTTadd() {
+    function handleTTchange(index, value) {
+        const updatedArray = [...service.result.ticketTypes]
+        updatedArray[index].name = value
 
+        setService({
+            ...service,
+            result: {
+                ...service.result,
+                ticketTypes: updatedArray
+            }
+        })
     }
-
-    function handleTTchange() {
-
-    }
-
-    function handleTTdelete() {
-
-    }
-
-
-    function handleOperatorShow() {
-
-    }
-
-    function handleOperatorDelete() {
-
-    }
-
-    function handleOperatorEdit() {
-
-    }
-
-    function handleTicketsDelete() {
-
-    }
-
-    function handleTicketShow() {
-
-    }
-
-    function handleTicketEdit() {
-
-    }
-
-
 
     switch (service.state) {
         case 'loading':
@@ -164,30 +182,17 @@ export default function AdminEditService() {
                 <>
 
                     <div className="container my-5">
-                        <h1>Configure Service</h1>
-                        <p>Here you can configure your service details</p>
+                        <h1>Edit Service</h1>
+                        <p>Here you can edit your service basic details</p>
                         <CreateServiceFormBasicUi
                             service={service.result}
                             onchange={handleDetailsChange}
                             onsubmit={handleDetailsSubmit}
-                            onTTadd={handleTTadd}
+                            onTTadd={addTTtype}
                             onTTchange={handleTTchange}
-                            onTTdelete={handleTTdelete}
+                            onTTdelete={deleteTTtype}
                             serviceTypeList={service.serviceTypeList}
                             disableStatusSelect={false}
-                        />
-                        <ShowServiceAdminLits
-                            customers={service.result.customers}
-                            operators={service.result.operators}
-                            handleOperatorDelete={handleOperatorDelete}
-                            handleOperatorEdit={handleOperatorEdit}
-                            handleOperatorShow={handleOperatorShow}
-                        />
-                        <ShowServiceTicketLists
-                            tickets={service.result.tickets}
-                            handleTicketEdit={handleTicketEdit}
-                            handleTicketShow={handleTicketShow}
-                            handleTicketsDelete={handleTicketsDelete}
                         />
                     </div>
                 </>

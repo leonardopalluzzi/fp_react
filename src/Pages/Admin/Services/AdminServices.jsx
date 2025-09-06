@@ -78,7 +78,7 @@ export default function AdminServices() {
 
                 setServiceTypes({
                     state: 'success',
-                    result: data.map(s => (
+                    result: data.result.map(s => (
                         { key: s.id, label: s.name }
                     ))
                 })
