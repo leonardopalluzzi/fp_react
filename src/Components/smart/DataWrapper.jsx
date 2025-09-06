@@ -103,10 +103,16 @@ export default function DataWrapper({ children, css, id }) {
                         ))
                     }
                 </div>
-                <div className="d-flex gap-4">
-                    <div className=""><button className="btn btn-success" onClick={() => handleRefresh()}>Apply Filters</button></div>
-                    <div className=""><button onClick={() => resetFilters()} className="btn btn-outline-danger">Reset Filters</button></div>
-                </div>
+                {
+                    fields.length > 0 && (
+                        <>
+                            <div className="d-flex gap-4">
+                                <div className=""><button className="btn btn-success" onClick={() => handleRefresh()}>Apply Filters</button></div>
+                                <div className=""><button onClick={() => resetFilters()} className="btn btn-outline-danger">Reset Filters</button></div>
+                            </div>
+                        </>
+                    )
+                }
             </div>
 
 
@@ -119,9 +125,9 @@ export default function DataWrapper({ children, css, id }) {
                         <ul className="pagination">
                             {
                                 currentPage > 0 && <li className="page-item">
-                                    <a className="page-link" onClick={() => handlePrevPage()} aria-label="Previous">
+                                    <button className="page-link" onClick={() => handlePrevPage()} aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
-                                    </a>
+                                    </button>
                                 </li>
                             }
 
@@ -134,9 +140,9 @@ export default function DataWrapper({ children, css, id }) {
                             }
                             {
                                 currentPage < pageNumber - 1 && <li className="page-item">
-                                    <a className="page-link" onClick={() => handleNextPage()} aria-label="Next">
+                                    <button className="page-link" onClick={() => handleNextPage()} aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
-                                    </a>
+                                    </button>
                                 </li>
                             }
                         </ul>

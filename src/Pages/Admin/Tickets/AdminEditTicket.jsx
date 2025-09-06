@@ -47,20 +47,21 @@ export default function AdminEditTicket() {
                     res2.json()
                 ])
 
-                if ((ticketData.state && (ticketData.state == 'error' || ticketData.state == 'expired')) || (typeListData.state && (typeListData.state == 'error' || typeListData.state == 'expired'))) {
-                    throwMessage(ticketData || typeListData.state, [ticketData.message || typeListData.message])
-                    return
-                } else {
+                if (ticketData.state && typeListData.state && (ticketData.state == 'success' && typeListData.state == 'success')) {
                     console.log(ticketData);
-
                     setTicket({
                         state: 'success',
-                        title: ticketData.title,
-                        description: ticketData.description,
-                        typeId: ticketData.type.id,
-                        typeList: typeListData
+                        title: ticketData.result.title,
+                        description: ticketData.result.description,
+                        typeId: ticketData.result.type.id,
+                        typeList: typeListData.result
                     })
+                } else if (ticketData.state && typeListData.state) {
+                    throwMessage(ticketData.state || typeListData.state, [ticketData.message || typeListData.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
                 }
+
             } catch (err) {
                 throwMessage('error', [err.message])
                 setTicket({
@@ -112,7 +113,7 @@ export default function AdminEditTicket() {
                 }
             })
             .catch(err => throwMessage('error', [err.message]))
-            .finally(()=> setLoader(false))
+            .finally(() => setLoader(false))
     }
 
 
@@ -135,6 +136,7 @@ export default function AdminEditTicket() {
                             typeList={ticket.typeList}
                             showNotes={false}
                             actionName={'Save'}
+                            title={'Edit Ticket'}
                         />
                     </div>
                 </>

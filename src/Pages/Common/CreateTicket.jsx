@@ -6,16 +6,15 @@ import LoaderUi from "../../Components/dumb/Loader.ui"
 import { useNavigate } from "react-router-dom"
 import { Role } from "../../Js/Roles"
 import CreatTicketFormUi from "../../Components/dumb/CreateTicketForm.ui"
+import { createTicket } from "../../Js/FetchFunctions"
 
 
 export default function CreateTicket() {
-    const { throwMessage } = useMessageContext()
-    const { currentUser } = useAuthContext()
+    const { throwMessage, setLoader } = useMessageContext()
+    const { currentUser, prefix } = useAuthContext()
     const token = currentUser.token
     const { id } = useParams() // id servizio
     const navigate = useNavigate()
-
-    const prefix = currentUser.details.roles.includes(Role.ADMIN) && 'admin' || currentUser.details.roles.includes(Role.SUPERADMIN) && 'admin' || currentUser.details.roles.includes(Role.EMPLOYEE) && 'employee' || currentUser.details.roles.includes(Role.CUSTOMER) && 'customer'
 
     const [newTicket, setNewTicket] = useState({
         title: '',
@@ -39,11 +38,18 @@ export default function CreateTicket() {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
+                if (data.state && data.state == 'success') {
+                    setServiceTypeList({
+                        state: 'success',
+                        result: data.result
+                    })
+                } else if (data.state) {
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
+                }
 
-                setServiceTypeList({
-                    state: 'success',
-                    result: data
-                })
+
             })
             .catch(err => {
                 setServiceTypeList({
@@ -56,29 +62,30 @@ export default function CreateTicket() {
 
 
     function handleSubmit() {
-        const ticketToSend = { ...newTicket }
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets/store/${id}`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(ticketToSend)
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
+        createTicket(newTicket, id, token, setLoader, throwMessage, navigate, prefix)
+        // const ticketToSend = { ...newTicket }
+        // fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets/store/${id}`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Authorization': `Bearer ${token}`,
+        //         'content-type': 'application/json'
+        //     },
+        //     body: JSON.stringify(ticketToSend)
+        // })
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         console.log(data);
 
-                if (data.state && (data.state == 'error' || data.state == 'expired')) {
-                    throwMessage(data.state, [data.message])
-                } else {
-                    throwMessage('success', ["Ticket Created Succesfully"])
-                    return navigate(`/${prefix}/ticket/${data.id}`)
-                }
-            })
-            .catch(err => [
-                throwMessage('error', [err.message])
-            ])
+        //         if (data.state && (data.state == 'error' || data.state == 'expired')) {
+        //             throwMessage(data.state, [data.message])
+        //         } else {
+        //             throwMessage('success', ["Ticket Created Succesfully"])
+        //             return navigate(`/${prefix}/ticket/${data.id}`)
+        //         }
+        //     })
+        //     .catch(err => [
+        //         throwMessage('error', [err.message])
+        //     ])
     }
 
     function handleChange(key, value) {
@@ -111,6 +118,7 @@ export default function CreateTicket() {
                         typeList={serviceTypeList.result}
                         showNotes={true}
                         actionName={'Create'}
+                        title={'Create Ticket'}
                     />
                 </>
             )

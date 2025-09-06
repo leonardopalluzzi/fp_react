@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom"
 import DataWrapper from "../../../Components/smart/DataWrapper"
 import { Status } from '../../../Js/TicketStatus'
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
-import {deleteTicket} from '../../../Js/FetchFunctions'
-import {crudRoutesConfig} from '../../../Js/CrudRoutesConfig'
+import { deleteTicket } from '../../../Js/FetchFunctions'
+import { crudRoutesConfig } from '../../../Js/CrudRoutesConfig'
 
 
 export default function AdminTickets() {

@@ -141,6 +141,42 @@ const deleteTicket = (tId, token, throwMessage, setLoader, handleRefresh) => {
         })
 }
 
+const createTicket = (payload, sId, token, setLoader, throwMessage, navigate, prefix) => {
+    setLoader(true)
+    const ticketToSend = { ...payload }
+    fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets/store/${sId}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(ticketToSend)
+    })
+        .then(res => res.json())
+        .then(data => {
+
+            if (data.state && data.state == 'success') {
+                throwMessage('success', ["Ticket Created Succesfully"])
+                setLoader(false)
+                return navigate(`/${prefix}/ticket/${data.result.id}`)
+            } else if (data.state) {
+                setLoader(false)
+                throwMessage(data.state, [data.message])
+                return
+            } else {
+                setLoader(false)
+
+                throwMessage('error', ['Unknown Error'])
+                return
+            }
+
+        })
+        .catch(err => {
+            setLoader(false)
+            throwMessage('error', [err.message])
+        })
+}
+
 // service
 const deleteService = (sId, token, setLoader, throwMessage, handleRefresh) => {
     setLoader(true)
@@ -214,4 +250,4 @@ const updateService = (sId, payload, token, setLoader, throwMessage, handleRefre
 // aggiungere tipologiche
 
 
-export { assignOperatorToService, deleteOperatorFromService, registerCustomerToService, deleteCustomerFromService, deleteTicket, deleteService, updateService }
+export { assignOperatorToService, deleteOperatorFromService, registerCustomerToService, deleteCustomerFromService, deleteTicket, deleteService, updateService, createTicket }

@@ -1,8 +1,8 @@
-export default function CreatTicketFormUi({ ticket, onchange, onsubmit, typeList, showNotes, actionName }) {
+export default function CreatTicketFormUi({ ticket, onchange, onsubmit, typeList, showNotes, actionName, title }) {
     return (
         <>
             <div className="container my-5">
-                <h1 className="my-5">Create ticket</h1>
+                <h1 className="my-5">{title}</h1>
                 <form onSubmit={(e) => { e.preventDefault(); onsubmit() }} >
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="basic-addon1">Title</span>

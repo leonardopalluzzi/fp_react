@@ -8,6 +8,7 @@ import ShowTicketFullUi from "../../../Components/dumb/ShowTicketFull.ui"
 import TicketHistoryTasbleUi from "../../../Components/dumb/TicketHistoryTable.ui"
 import TicketManager from "../../../Components/smart/TicketManager"
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
+import DataWrapper from "../../../Components/smart/DataWrapper"
 
 export default function AdminShowTicket() {
     const { throwMessage, setLoader } = useMessageContext()
@@ -15,13 +16,19 @@ export default function AdminShowTicket() {
     const { id } = useParams()
     const token = currentUser.token
     const navigate = useNavigate()
-    const { refreshKey } = useFiltersContext()
+    const { setFiltersConfig, refreshKey } = useFiltersContext()
 
     const [ticket, setTicket] = useState({
-        state: 'error',
+        state: 'loading',
     })
 
     const [page, setPage] = useState(0)
+
+    useEffect(() => {
+        if (ticket.state == 'success') {
+            setFiltersConfig(1, page, ticket.history.pagination.totalPages, setPage)
+        }
+    }, [page, ticket])
 
 
     const urlTicketFetch = `${import.meta.env.VITE_BACK_URL}/api/v1/tickets/${id}`
@@ -35,8 +42,6 @@ export default function AdminShowTicket() {
     }
 
     useEffect(() => {
-        console.log("ID ticket:", id, "Page:", page);
-
         const ticketFetch = async () => {
             try {
                 const [tt, th] = await Promise.all([
@@ -51,19 +56,27 @@ export default function AdminShowTicket() {
                     th.json()
                 ])
 
-                //setto
-                console.log(ticket);
+                if (ticket.state && ticketHistory.state && (ticket.state == 'success' && ticketHistory.state == 'success')) {
+                    console.log(ticket);
 
-                setTicket({
-                    state: 'success',
-                    result: ticket,
-                    history: {
-                        get: ticketHistory.content,
-                        pagination: ticketHistory
-                    }
-                })
+                    setTicket({
+                        state: 'success',
+                        result: ticket.result,
+                        history: {
+                            get: ticketHistory.result.content,
+                            pagination: ticketHistory.result
+                        }
+                    })
+                } else if (ticket.state && ticketHistory.state) {
+                    throwMessage(ticket.state || ticketHistory.state, [ticket.message || ticketHistory.message])
+                    return
+                } else {
+                    throwMessage('error', ['Unknown Error'])
+                    return
+                }
 
             } catch (err) {
+                throwMessage('error', [err.message])
                 setTicket({
                     state: 'error',
                     message: err.message
@@ -74,7 +87,7 @@ export default function AdminShowTicket() {
         }
 
         ticketFetch()
-    }, [refreshKey])
+    }, [page, refreshKey])
 
 
     switch (ticket.state) {
@@ -104,9 +117,12 @@ export default function AdminShowTicket() {
                             ticketStatus={ticket.result.status}
                             currentAssignee={ticket.result.assignedTo != null ? ticket.result.assignedTo.id : ""}
                         />
-                        <TicketHistoryTasbleUi
-                            history={ticket.history}
-                        />
+                        <DataWrapper css={''} id={1}>
+                            <TicketHistoryTasbleUi
+                                history={ticket.history}
+                            />
+                        </DataWrapper>
+
                     </div>
                 </>
             )
