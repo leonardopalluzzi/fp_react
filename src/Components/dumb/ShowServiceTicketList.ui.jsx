@@ -35,7 +35,16 @@ export default function ShowServiceTicketListUi({ tickets, handleTicketsDelete, 
                                             <td>
                                                 <div className="d-flex align-items-center justify-content-center gap-2">
                                                     <button onClick={() => handleTicketShow(t.id)} className="btn btn-primary"><i class="bi bi-eye-fill"></i></button>
-                                                    <button onClick={() => handleTicketEdit(t.id, t.serviceId)} className="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
+                                                    {t.serviceId ? (
+                                                        <>
+                                                            <button onClick={() => handleTicketEdit(t.id, t.serviceId)} className="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <button onClick={() => handleTicketEdit(t.id, t.service.id)} className="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
+                                                        </>
+                                                    )}
+
                                                     <DeleteModalUi itemId={t.id} deleteFunction={handleTicketsDelete} />
                                                 </div>
                                             </td>
