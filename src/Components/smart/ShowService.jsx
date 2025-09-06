@@ -61,6 +61,10 @@ export default function ShowService({ roles, service }) {
 
     }, [tickets, filters, service])
 
+    //get operator by service con filtri
+
+    //get customer by service (da implementare in backend)
+
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}&serviceId=${service.id}${buildQuery(filters)}`, {
