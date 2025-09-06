@@ -53,6 +53,10 @@ export default function ShowService({ roles, service }) {
             ]
 
             setFiltersConfig('ticketConfig', page, tickets.pagination.totalPages, setPage, ticketsFields, filters, setFilters)
+
+            // serve per passare una config null ai filtri sulle liste degli oepratori, qui non sono paginate quindi non vanno mostrati
+            setFiltersConfig(1)
+            setFiltersConfig(2)
         }
 
     }, [tickets, filters, service])
