@@ -47,7 +47,7 @@ export default function AdminServices() {
             const fields = [
                 { key: 'name', label: 'Name', type: 'text' },
                 { key: 'description', label: 'Description', type: 'text' },
-                { key: 'status', label: 'Status', type: 'option', options: statusOptions },
+                { key: 'status', label: 'Status', type: 'select', options: statusOptions },
                 { key: 'createdAt', label: 'Created At', type: 'date' },
                 { key: 'serviceType', label: 'Service Type', type: 'select', options: serviceTypes.result },
                 { key: 'code', label: 'Code', type: 'text' },
