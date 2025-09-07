@@ -61,7 +61,7 @@ export default function ShowService({ roles, service }) {
 
     }, [tickets, filters, service])
 
-    //get operator by service con filtri
+    //get operators by service con filtri
 
     //get customer by service (da implementare in backend)
 

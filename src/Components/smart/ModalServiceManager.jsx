@@ -27,7 +27,7 @@ export default function ModalServiceManager({ token, function: action, title, la
                 { key: 'email', label: 'Email', type: 'text' }
             ]
 
-            setFiltersConfig(1, page, users.pagination.totalPages, setPage, fields, filters, setFilters)
+            setFiltersConfig(3, page, users.pagination.totalPages, setPage, fields, filters, setFilters)
         }
 
     }, [users])
@@ -113,7 +113,7 @@ export default function ModalServiceManager({ token, function: action, title, la
                             </div>
 
                             <h1 className="mb-5">{title}</h1>
-                            <DataWrapper css={'row row-cols-2'} list={1}>
+                            <DataWrapper css={'row row-cols-2'} list={3}>
                                 <div className="row row-cols-1 my-4">
                                     {
                                         users.result.length == 0 ? <h3>No Data -</h3> : users.result.map(item => (
