@@ -6,10 +6,7 @@ import DataWrapper from "./DataWrapper"
 
 export default function ModalServiceManager({ token, function: action, title, label, setDisplay, list, serviceId, companyId, endpoint }) {
     const { throwMessage, setLoader } = useMessageContext()
-    const { setFiltersConfig, buildQuery, refreshKey, handleRefresh } = useFiltersContext()
-
-    console.log(endpoint);
-
+    const { setFiltersConfig, buildQuery, refreshKey, handleRefresh, onChangeRefreshKey } = useFiltersContext()
 
     const [users, setUsers] = useState({
         state: 'loading'
@@ -27,10 +24,10 @@ export default function ModalServiceManager({ token, function: action, title, la
                 { key: 'email', label: 'Email', type: 'text' }
             ]
 
-            setFiltersConfig(3, page, users.pagination.totalPages, setPage, fields, filters, setFilters)
+            setFiltersConfig(4, page, users.pagination.totalPages, setPage, fields, filters, setFilters)
         }
 
-    }, [users])
+    }, [users, onChangeRefreshKey])
     // -------------
 
 
@@ -113,20 +110,22 @@ export default function ModalServiceManager({ token, function: action, title, la
                             </div>
 
                             <h1 className="mb-5">{title}</h1>
-                            <DataWrapper css={'row row-cols-2'} list={3}>
-                                <div className="row row-cols-1 my-4">
-                                    {
-                                        users.result.length == 0 ? <h3>No Data -</h3> : users.result.map(item => (
-                                            <>
-                                                <div onClick={() => handleSubmit(item.id)} className="col btn btn-outline-dark text-start my-1 p-2">
-                                                    {item.username} - {item.email}
-                                                </div>
-                                            </>
-                                        ))
-                                    }
+                            <div className="container">
+                                <DataWrapper css={'row row-cols-2'} list={4}>
+                                    <div className="row row-cols-1 my-4">
+                                        {
+                                            users.result.length == 0 ? <h3>No Data -</h3> : users.result.map(item => (
+                                                <>
+                                                    <div onClick={() => handleSubmit(item.id)} className="col btn btn-outline-dark text-start my-1 p-2">
+                                                        {item.username} - {item.email}
+                                                    </div>
+                                                </>
+                                            ))
+                                        }
 
-                                </div>
-                            </DataWrapper>
+                                    </div>
+                                </DataWrapper>
+                            </div>
                         </div>
 
                     </div>

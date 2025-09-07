@@ -11,7 +11,7 @@ export default function AdminShowService() {
     const { currentUser } = useAuthContext();
     const { id } = useParams();
     const token = currentUser.token;
-    const { setFiltersConfig, refreshKey } = useFiltersContext()
+    const { refreshKey } = useFiltersContext()
 
     const [service, setService] = useState({
         state: 'loading'
@@ -28,12 +28,12 @@ export default function AdminShowService() {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                if(data.state && data.state == 'success'){
+                if (data.state && data.state == 'success') {
                     setService({
                         state: 'success',
                         result: data.result
                     })
-                } else if(data.state){
+                } else if (data.state) {
                     throwMessage(data.state, [data.message])
                 } else {
                     throwMessage('error', ['Unknown Error'])

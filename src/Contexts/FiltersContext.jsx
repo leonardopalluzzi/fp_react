@@ -6,6 +6,7 @@ const FiltersContext = createContext()
 function FiltersProvider({ children }) {
 
     const [refreshKey, setRefreshKey] = useState(0)
+    const [onChangeRefreshKey, setOnChangeRefreshKey] = useState(0)
     const { setLoader } = useMessageContext()
 
     function handleRefresh() {
@@ -49,7 +50,7 @@ function FiltersProvider({ children }) {
 
     return (
         <>
-            <FiltersContext.Provider value={{ config, setFiltersConfig, buildQuery, refreshKey, handleRefresh }}>
+            <FiltersContext.Provider value={{ config, setFiltersConfig, buildQuery, refreshKey, handleRefresh, setOnChangeRefreshKey, onChangeRefreshKey }}>
                 {children}
             </FiltersContext.Provider>
         </>

@@ -3,8 +3,9 @@ import { useMessageContext } from "../../Contexts/MessageContext";
 import LoaderUi from "../dumb/Loader.ui";
 
 export default function DataWrapper({ children, css, id }) {
-    const { config, handleRefresh } = useFiltersContext()
+    const { config, handleRefresh, setOnChangeRefreshKey } = useFiltersContext()
     const { setLoader } = useMessageContext()
+    console.log(config);
 
     if (config[id] == null) {
         return children
@@ -16,6 +17,7 @@ export default function DataWrapper({ children, css, id }) {
 
     function handleChange(key, value) {
         onChange(prev => ({ ...prev, [key]: value }))
+        setOnChangeRefreshKey(prev => prev + 1)
     }
 
     function handleNextPage() {

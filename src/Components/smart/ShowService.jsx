@@ -11,11 +11,12 @@ import { useFiltersContext } from "../../Contexts/FiltersContext";
 import { useMessageContext } from "../../Contexts/MessageContext";
 import ServiceManager from "./ServiceManager";
 import { deleteTicket, deleteUser } from "../../Js/FetchFunctions";
+import LoaderMiniUi from "../dumb/LoaderMini.ui";
 
 export default function ShowService({ roles, service }) {
     const { currentUser } = useAuthContext()
     const token = currentUser.token
-    const { setFiltersConfig, buildQuery, refreshKey, handleRefresh } = useFiltersContext()
+    const { setFiltersConfig, buildQuery, refreshKey, handleRefresh, onChangeRefreshKey } = useFiltersContext()
     const { throwMessage, setLoader } = useMessageContext()
 
     console.log(service);
@@ -30,11 +31,36 @@ export default function ShowService({ roles, service }) {
     const [tickets, setTickets] = useState({
         state: 'loading'
     })
+    const [operators, setOperators] = useState({
+        state: 'loading'
+    })
+    const [customers, setCustomers] = useState({
+        state: 'loading'
+    })
 
     //filtri e paginazione
     const [page, setPage] = useState(0)
     const [filters, setFilters] = useState({})
 
+    const [operatorsPage, setOperatorsPage] = useState(0)
+    const [operatorsFilters, setOperatorsFilters] = useState({})
+
+    const [customersPage, setCustomersPage] = useState(0)
+    const [customersFilters, setCustomersFilters] = useState({})
+
+    const [usersLoader, setUsersLoader] = useState('loading')
+
+    //state loader globale per i fetch a customers e operators
+    useEffect(() => {
+        if (operators.state == 'success' && customers.state == 'success') {
+            setUsersLoader('success')
+        } else if (operators.state == 'error' || operators.state == 'error') {
+            setUsersLoader('error')
+        }
+
+    }, [operators, customers])
+
+    //config filtri lista tickets
     useEffect(() => {
         if (tickets.state == 'success') {
 
@@ -53,19 +79,95 @@ export default function ShowService({ roles, service }) {
             ]
 
             setFiltersConfig('ticketConfig', page, tickets.pagination.totalPages, setPage, ticketsFields, filters, setFilters)
-
-            // serve per passare una config null ai filtri sulle liste degli oepratori, qui non sono paginate quindi non vanno mostrati
-            setFiltersConfig(1)
-            setFiltersConfig(2)
         }
 
-    }, [tickets, filters, service])
+    }, [tickets, onChangeRefreshKey])
+
+
+    // config filtri users
+    const usersFields = [
+        { key: 'username', label: 'Username', type: 'text' },
+        { key: 'email', label: 'email', type: 'text' }
+
+    ]
+    //config filtri operators
+    useEffect(() => {
+        if (operators.state == 'success') {
+            setFiltersConfig(2, operatorsPage, operators.pagination.totalPages, setOperatorsPage, usersFields, operatorsFilters, setOperatorsFilters)
+        }
+    }, [operators, onChangeRefreshKey])
+
+    //config filtri customers
+    useEffect(() => {
+        if (customers.state == 'success') {
+            setFiltersConfig(1, customersPage, customers.pagination.totalPages, setCustomersPage, usersFields, customersFilters, setCustomersFilters)
+        }
+    }, [customers, onChangeRefreshKey])
 
     //get operators by service con filtri
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byService/${service.id}?page=${operatorsPage}${buildQuery(operatorsFilters)}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.state && data.state == 'success') {
+                    setOperators({
+                        state: 'success',
+                        result: data.result.content,
+                        pagination: data.result
+                    })
+                } else if (data.state) {
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
+                }
+            })
+            .catch(err => {
+                throwMessage('error', [err.message])
+                setOperators({
+                    state: 'error',
+                    message: err.message
+                })
+            })
+    }, [operatorsPage, refreshKey])
 
     //get customer by service (da implementare in backend)
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byService/customers/${service.id}?page=${customersPage}${buildQuery(customersFilters)}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.state && data.state == 'success') {
+                    setCustomers({
+                        state: 'success',
+                        result: data.result.content,
+                        pagination: data.result
+                    })
+                } else if (data.state) {
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
+                }
+            })
+            .catch(err => {
+                throwMessage('error', [err.message])
+                setCustomers({
+                    state: 'error',
+                    message: err.message
+                })
+            })
+    }, [customersPage, refreshKey])
 
 
+    //fetch tickets
     useEffect(() => {
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}&serviceId=${service.id}${buildQuery(filters)}`, {
             method: 'GET',
@@ -173,13 +275,21 @@ export default function ShowService({ roles, service }) {
                 {
                     (roles.includes(Role.ADMIN)) && (
                         <>
-                            <ShowServiceAdminListUi
-                                customers={service.customers}
-                                operators={service.operators}
-                                handleOperatorShow={handleOperatorShow}
-                                handleOperatorEdit={handleOperatorEdit}
-                                handleOperatorDelete={handleOperatorDelete}
-                            />
+                            {
+                                usersLoader == 'loading' && <LoaderMiniUi />
+                            }
+                            {
+                                usersLoader == 'error' && (<></>)
+                            }
+                            {
+                                usersLoader == 'success' && <ShowServiceAdminListUi
+                                    customers={customers.result}
+                                    operators={operators.result}
+                                    handleOperatorShow={handleOperatorShow}
+                                    handleOperatorEdit={handleOperatorEdit}
+                                    handleOperatorDelete={handleOperatorDelete}
+                                />
+                            }
                         </>
                     )
                 }
