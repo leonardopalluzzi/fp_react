@@ -2,13 +2,13 @@ import { useState } from "react"
 import { useMessageContext } from "../../Contexts/MessageContext"
 import { Status } from '../../Js/TicketStatus'
 import { useFiltersContext } from "../../Contexts/FiltersContext";
+import { useAuthContext } from "../../Contexts/AuthContext";
 
 export default function UpdateTicketHistory({ currentUser, ticketId, ticketStatus }) {
-    console.log(ticketStatus);
-
     const { throwMessage, setLoader } = useMessageContext()
     const token = currentUser.token
     const { handleRefresh } = useFiltersContext()
+    const { prefix } = useAuthContext()
 
     const statusArray = []
 
@@ -86,19 +86,25 @@ export default function UpdateTicketHistory({ currentUser, ticketId, ticketStatu
                         <textarea value={historyUpdate.notes} name="notes" onChange={(e) => handleChange(e.target.name, e.target.value)} class="form-control" aria-label="With textarea"></textarea>
                     </div>
 
-
-                    <label class="input-group-text" for="inputGroupSelect01">Status</label>
-                    <select value={historyUpdate.status} name="status" onChange={(e) => handleChange(e.target.name, e.target.value)} class="form-select" id="inputGroupSelect01">
-                        {
-                            statusArray.map((item, i) => (
-                                <>
+                    {
+                        prefix != 'customer' && (
+                            <>
+                                <label class="input-group-text" for="inputGroupSelect01">Status</label>
+                                <select value={historyUpdate.status} name="status" onChange={(e) => handleChange(e.target.name, e.target.value)} class="form-select" id="inputGroupSelect01">
                                     {
-                                        <option key={i} value={item}>{item}</option>
+                                        statusArray.map((item, i) => (
+                                            <>
+                                                {
+                                                    <option key={i} value={item}>{item}</option>
+                                                }
+                                            </>
+                                        ))
                                     }
-                                </>
-                            ))
-                        }
-                    </select>
+                                </select>
+                            </>
+                        )
+                    }
+
                 </div>
 
                 <div>
