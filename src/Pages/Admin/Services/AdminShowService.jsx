@@ -5,6 +5,7 @@ import { useMessageContext } from "../../../Contexts/MessageContext";
 import LoaderUi from "../../../Components/dumb/Loader.ui";
 import ShowService from "../../../Components/smart/ShowService";
 import { useFiltersContext } from "../../../Contexts/FiltersContext";
+import Error from "../../../Components/dumb/Error";
 
 export default function AdminShowService() {
     const { throwMessage } = useMessageContext();
@@ -59,6 +60,7 @@ export default function AdminShowService() {
         case 'error':
             return (
                 <>
+                    <Error message={service.message} />
                 </>
             )
         case 'success':

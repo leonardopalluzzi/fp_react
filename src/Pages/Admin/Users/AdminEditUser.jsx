@@ -3,6 +3,7 @@ import { useAuthContext } from "../../../Contexts/AuthContext"
 import { useMessageContext } from "../../../Contexts/MessageContext"
 import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import Error from "../../../Components/dumb/Error"
 
 export default function AdminEditUser() {
     const { throwMessage, setLoader } = useMessageContext()
@@ -102,6 +103,7 @@ export default function AdminEditUser() {
         case 'error':
             return (
                 <>
+                    <Error message={user.message} />
                 </>
             )
         case 'success':

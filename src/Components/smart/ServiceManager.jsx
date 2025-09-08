@@ -15,7 +15,8 @@ export default function ServiceManager({ currentUser, serviceId, companyId }) {
         setDisplay(true)
         setEndpoint(
             config == 'assignOperator' && `${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byCompany/${companyId}/service/${serviceId}?exclude=true&` ||
-            config == 'deleteOperator' && `${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byService/${serviceId}?` //mettere qui enpoint che restituisce tutti users del servizio
+            config == 'deleteOperator' && `${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byService/${serviceId}?` ||
+            config == 'deleteCustomer' && `${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byService/customers/${serviceId}?`
         )
         setModalConfig(propsConfig[config])
     }
@@ -74,7 +75,7 @@ export default function ServiceManager({ currentUser, serviceId, companyId }) {
 
                 {/* modal */}
                 {
-                    display && <ModalServiceManager {...modalConfig} companyId={companyId} endpoint={endpoint} />
+                    display && <ModalServiceManager {...modalConfig} endpoint={endpoint} />
                 }
 
             </div>

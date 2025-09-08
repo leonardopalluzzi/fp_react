@@ -5,6 +5,7 @@ import LoaderUi from '../../../Components/dumb/Loader.ui'
 import { useNavigate } from "react-router-dom"
 import CreateServiceFormBasicUi from "../../../Components/dumb/CreateServiceFormBasic.ui"
 import { Status } from "../../../Js/ServiceStatus"
+import Error from "../../../Components/dumb/Error"
 
 export default function AdminCreateService() {
     const { throwMessage } = useMessageContext()
@@ -147,7 +148,7 @@ export default function AdminCreateService() {
         case 'error':
             return (
                 <>
-
+                    <Error message={serviceTypes.message} />
                 </>
             )
         case 'success':

@@ -9,6 +9,7 @@ import TicketHistoryTasbleUi from "../../../Components/dumb/TicketHistoryTable.u
 import TicketManager from "../../../Components/smart/TicketManager"
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
 import DataWrapper from "../../../Components/smart/DataWrapper"
+import Error from "../../../Components/dumb/Error"
 
 export default function AdminShowTicket() {
     const { throwMessage, setLoader } = useMessageContext()
@@ -100,7 +101,7 @@ export default function AdminShowTicket() {
         case 'error':
             return (
                 <>
-
+                    <Error message={ticket.message} />
                 </>
             )
         case 'success':

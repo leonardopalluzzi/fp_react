@@ -3,8 +3,8 @@ import { useState, useEffect } from "react"
 import { useMessageContext } from "../../Contexts/MessageContext"
 import LoaderUi from "../../Components/dumb/Loader.ui"
 import RegisterFormUi from "../../Components/dumb/RegisterForm.ui"
-import { Navigate } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
+import Error from "../../Components/dumb/Error"
 
 export default function ShowProfile() {
     const { currentUser } = useAuthContext()
@@ -72,7 +72,7 @@ export default function ShowProfile() {
 
     function handleSubmit() {
         const userToUpdate = { ...newUser }
-        
+
 
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/update/${user.result.id}`, {
             method: 'PUT',
@@ -111,6 +111,7 @@ export default function ShowProfile() {
         case 'error':
             return (
                 <>
+                    <Error message={user.message} />
                 </>
             )
         case 'success':

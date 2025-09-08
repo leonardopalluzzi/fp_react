@@ -99,7 +99,14 @@ const registerCustomerToService = async (token, payload, setLoader, throwMessage
         }
 
         const data = await response.json()
-        throwMessage('success', ['Customer registered to service correctly'])
+        if (data.state && data.state == 'success') {
+            throwMessage('suc{cess', ['Customer registered to service correctly'])
+        } else if (data.state) {
+            throwMessage(data.state, [data.message])
+        } else {
+            throwMessage('error', ['Unknown Error'])
+        }
+
         return data
 
     } catch (err) {
@@ -247,6 +254,38 @@ const updateService = (sId, payload, token, setLoader, throwMessage, handleRefre
 
 }
 
+const getAllServicesForSelect = (token, throwMessage, setter) => {
+    fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services/manage`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.state && data.state == 'success') {
+                setter({
+                    state: 'success',
+                    result: data.result.map(s => ({
+                        value: s.id,
+                        label: s.name
+                    }))
+                })
+            } else if (data.state) {
+                throwMessage(data.state, [data.message])
+            } else {
+                throwMessage('error', ['Unkown Error'])
+            }
+        })
+        .catch(err => {
+            throwMessage('error', [err.message])
+            setter({
+                state: 'error',
+                message: err.message
+            })
+        })
+}
+
 //users
 const deleteUser = (uId, token, throwMessage, setLoader, handleRefresh) => {
     fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/delete/${uId}`, {
@@ -257,7 +296,6 @@ const deleteUser = (uId, token, throwMessage, setLoader, handleRefresh) => {
     })
         .then(res => res.json())
         .then(data => {
-
             if (data.state && data.state == 'success') {
                 throwMessage('success', ['User deleted'])
             } else if (data.state) {
@@ -278,4 +316,4 @@ const deleteUser = (uId, token, throwMessage, setLoader, handleRefresh) => {
 // aggiungere tipologiche
 
 
-export { assignOperatorToService, deleteOperatorFromService, registerCustomerToService, deleteCustomerFromService, deleteTicket, deleteService, updateService, createTicket, deleteUser }
+export { assignOperatorToService, deleteOperatorFromService, registerCustomerToService, deleteCustomerFromService, deleteTicket, deleteService, updateService, createTicket, deleteUser, getAllServicesForSelect }

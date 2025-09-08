@@ -9,6 +9,7 @@ import ServiceTabelLightUi from "../../../Components/dumb/ServiceTableLight.ui"
 import { crudRoutesConfig } from "../../../Js/CrudRoutesConfig"
 import { deleteTicket } from "../../../Js/FetchFunctions"
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
+import Error from "../../../Components/dumb/Error"
 
 
 export default function AdminShowUser() {
@@ -95,7 +96,7 @@ export default function AdminShowUser() {
         case 'error':
             return (
                 <>
-
+                    <Error message={user.message} />
                 </>
             )
         case 'success':

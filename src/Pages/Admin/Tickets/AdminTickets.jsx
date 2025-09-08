@@ -9,6 +9,8 @@ import { Status } from '../../../Js/TicketStatus'
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
 import { deleteTicket } from '../../../Js/FetchFunctions'
 import { crudRoutesConfig } from '../../../Js/CrudRoutesConfig'
+import { getAllServicesForSelect } from "../../../Js/FetchFunctions"
+import Error from "../../../Components/dumb/Error"
 
 
 export default function AdminTickets() {
@@ -56,37 +58,10 @@ export default function AdminTickets() {
 
     }, [tickets, filters, services])
 
-    useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services/manage`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
 
-                if (data.state && (data.state == 'error' || data.state == 'expired')) {
-                    throwMessage(data.state, [data.message])
-                    return
-                } else {
-                    setServices({
-                        state: 'success',
-                        result: data.map(s => ({
-                            value: s.id,
-                            label: s.name
-                        }))
-                    })
-                }
-            })
-            .catch(err => {
-                throwMessage('error', [err.message])
-                setServices({
-                    state: 'error',
-                    message: err.message
-                })
-            })
+    // fetch per lista servizi per select filtri
+    useEffect(() => {
+        getAllServicesForSelect(token, throwMessage, setServices)
     }, [])
 
 
@@ -101,13 +76,17 @@ export default function AdminTickets() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-
-                setTickets({
-                    state: 'success',
-                    pagination: data.result,
-                    result: data.result.content
-                })
+                if (data.state && data.state == 'success') {
+                    setTickets({
+                        state: 'success',
+                        pagination: data.result,
+                        result: data.result.content
+                    })
+                } else if (data.state) {
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
+                }
             })
             .catch(err => {
                 setTickets({
@@ -144,7 +123,7 @@ export default function AdminTickets() {
         case 'error':
             return (
                 <>
-
+                    <Error message={tickets.message} />
                 </>
             )
         case 'success':

@@ -117,6 +117,16 @@ export const routes = [
                 path: 'profile',
                 component: Profile,
                 roles: [Role.EMPLOYEE, Role.SUPERADMIN]
+            },
+            {
+                path: 'services',
+                component: AdminServices,
+                roles: [Role.EMPLOYEE, Role.SUPERADMIN]
+            },
+            {
+                path: 'service/:id',
+                component: AdminShowService,
+                roles: [Role.EMPLOYEE, Role.SUPERADMIN]
             }
         ]
     },

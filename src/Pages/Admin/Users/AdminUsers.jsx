@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom"
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
 import { crudRoutesConfig } from "../../../Js/CrudRoutesConfig"
 import { deleteUser } from "../../../Js/FetchFunctions"
+import Error from "../../../Components/dumb/Error"
 
 
 export default function AdminUsers() {
@@ -83,8 +84,6 @@ export default function AdminUsers() {
     }, [fetchState, operatorsFilters, customersFilters]);
     //------------------
 
-
-    //seprare i 3 fetch per operators, customers e admins, lato back è gia settato
     useEffect(() => {
         handleFetch('operators', setOperators, operatorsPage, buildQuery(operatorsFilters))
 
@@ -119,17 +118,16 @@ export default function AdminUsers() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-
-                if (data.state && (data.state == 'error' || data.state == 'expired')) {
-                    throwMessage(`${data.state} on ${listType}`, [data.message])
-                    return;
-                } else {
+                if (data.state && data.state == 'success') {
                     setter({
                         state: 'success',
                         result: data.content,
                         pagination: data
                     })
+                } else if (data.state) {
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknwon Error'])
                 }
             })
             .catch(err => {
@@ -167,6 +165,7 @@ export default function AdminUsers() {
         case 'error':
             return (
                 <>
+                    <Error message={'An error happend during fetch'} />
                 </>
             )
         case 'success':

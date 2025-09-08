@@ -5,7 +5,7 @@ import LoaderUi from "../dumb/Loader.ui";
 export default function DataWrapper({ children, css, id }) {
     const { config, handleRefresh, setOnChangeRefreshKey } = useFiltersContext()
     const { setLoader } = useMessageContext()
-    console.log(config);
+    console.log(config[4]);
 
     if (config[id] == null) {
         return children

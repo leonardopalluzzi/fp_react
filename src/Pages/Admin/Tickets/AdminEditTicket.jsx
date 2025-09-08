@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react"
 import LoaderUi from "../../../Components/dumb/Loader.ui"
 import CreateTicketFormUi from '../../../Components/dumb/CreateTicketForm.ui'
+import Error from "../../../Components/dumb/Error"
 
 export default function AdminEditTicket() {
     const { throwMessage, setLoader } = useMessageContext()
@@ -123,6 +124,7 @@ export default function AdminEditTicket() {
         case 'error':
             return (
                 <>
+                    <Error message={ticket.message} />
                 </>
             )
         case 'success':

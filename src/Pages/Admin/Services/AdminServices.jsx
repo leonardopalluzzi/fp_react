@@ -10,6 +10,7 @@ import DataWrapper from "../../../Components/smart/DataWrapper";
 import { useFiltersContext } from "../../../Contexts/FiltersContext";
 import { Status } from "../../../Js/ServiceStatus";
 import { deleteService } from "../../../Js/FetchFunctions";
+import Error from "../../../Components/dumb/Error";
 
 export default function AdminServices() {
     const { throwMessage, setLoader } = useMessageContext();
@@ -102,24 +103,18 @@ export default function AdminServices() {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.state && data.state == "expired") {
-                    throwMessage('expired', [data.error])
-
-                } else if (data.error) {
-                    throwMessage('error', [JSON.stringify(data)])
-                }
-                if (data.state != 'error' && data.state != 'expired') {
-                    console.log(data);
-
+                console.log(data);
+                if (data.state && data.state == 'success') {
                     setServices({
                         state: 'success',
                         result: data.result.content,
                         pagination: data.result
                     })
+                } else if (data.state) {
+                    throwMessage(data.state, [data.message])
                 } else {
-                    throwMessage(data.state, [JSON.stringify(data)])
+                    throwMessage('error', ['Unknown Error'])
                 }
-
             })
             .catch(err => {
                 setServices({
@@ -159,7 +154,7 @@ export default function AdminServices() {
         case 'error':
             return (
                 <>
-
+                    <Error message={services.message} />
                 </>
             )
         case 'success':

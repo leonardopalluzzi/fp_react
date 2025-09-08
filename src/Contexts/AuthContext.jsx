@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Role } from "../Js/Roles";
 import { useMessageContext } from "./MessageContext";
 
@@ -8,7 +8,7 @@ const AuthContext = createContext()
 
 function AuthProvider({ children }) {
 
-    const {throwMessage} = useMessageContext()
+    const { throwMessage, setLoader } = useMessageContext()
     const [currentUser, setCurrentUser] = useState({
         state: 'loading'
     })
@@ -20,13 +20,13 @@ function AuthProvider({ children }) {
         checkForToken()
     }, [])
 
-    useEffect(()=>{
-        if(currentUser.state == 'success'){
-            if(currentUser.details.roles.includes(Role.ADMIN) || currentUser.details.roles.includes(Role.SUPERADMIN)){
+    useEffect(() => {
+        if (currentUser.state == 'success') {
+            if (currentUser.details.roles.includes(Role.ADMIN) || currentUser.details.roles.includes(Role.SUPERADMIN)) {
                 setPrefix('admin')
-            } else if(currentUser.details.roles.includes(Role.EMPLOYEE)){
+            } else if (currentUser.details.roles.includes(Role.EMPLOYEE)) {
                 setPrefix('employee')
-            } else if(currentUser.details.roles.includes(Role.CUSTOMER)){
+            } else if (currentUser.details.roles.includes(Role.CUSTOMER)) {
                 setPrefix('customer')
             }
         }
@@ -35,6 +35,7 @@ function AuthProvider({ children }) {
 
     function login(user) {
         if (!checkForToken()) {
+            setLoader(true)
             fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/auth/login`, {
                 method: "POST",
                 headers: {
@@ -70,17 +71,19 @@ function AuthProvider({ children }) {
                 })
                 .catch(err => {
                     console.log(err.message);
-                    
+
                     setCurrentUser({
                         state: 'error',
                         message: err.message
                     })
                     throwMessage('error', [err.message])
                 })
+                .finally(() => {
+                    setLoader(false)
+                })
         } else {
             redoLogin(user)
         }
-
     }
 
     function redoLogin(user) {
@@ -94,6 +97,7 @@ function AuthProvider({ children }) {
     }
 
     function register(user) {
+        setLoader(true)
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/auth/register`, {
             method: "POST",
             headers: {
@@ -119,6 +123,9 @@ function AuthProvider({ children }) {
                     state: 'error',
                     message: err.message
                 })
+            })
+            .finally(() => {
+                setLoader(false)
             })
 
     }

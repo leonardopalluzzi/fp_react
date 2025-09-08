@@ -4,9 +4,9 @@ import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import LoaderUi from "../../Components/dumb/Loader.ui"
 import { useNavigate } from "react-router-dom"
-import { Role } from "../../Js/Roles"
 import CreatTicketFormUi from "../../Components/dumb/CreateTicketForm.ui"
 import { createTicket } from "../../Js/FetchFunctions"
+import Error from "../../Components/dumb/Error"
 
 
 export default function CreateTicket() {
@@ -63,29 +63,6 @@ export default function CreateTicket() {
 
     function handleSubmit() {
         createTicket(newTicket, id, token, setLoader, throwMessage, navigate, prefix)
-        // const ticketToSend = { ...newTicket }
-        // fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets/store/${id}`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Authorization': `Bearer ${token}`,
-        //         'content-type': 'application/json'
-        //     },
-        //     body: JSON.stringify(ticketToSend)
-        // })
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         console.log(data);
-
-        //         if (data.state && (data.state == 'error' || data.state == 'expired')) {
-        //             throwMessage(data.state, [data.message])
-        //         } else {
-        //             throwMessage('success', ["Ticket Created Succesfully"])
-        //             return navigate(`/${prefix}/ticket/${data.id}`)
-        //         }
-        //     })
-        //     .catch(err => [
-        //         throwMessage('error', [err.message])
-        //     ])
     }
 
     function handleChange(key, value) {
@@ -106,6 +83,7 @@ export default function CreateTicket() {
         case 'error':
             return (
                 <>
+                    <Error message={serviceTypeList.message} />
                 </>
             )
         case 'success':

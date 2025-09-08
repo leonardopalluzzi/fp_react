@@ -1,13 +1,12 @@
 import CreateServiceFormBasicUi from "../../../Components/dumb/CreateServiceFormBasic.ui"
 import LoaderUi from "../../../Components/dumb/Loader.ui"
-import ShowServiceAdminLits from '../../../Components/dumb/ShowServiceAdminLists.ui'
-import ShowServiceTicketLists from '../../../Components/dumb/ShowServiceTicketList.ui'
 import { useAuthContext } from "../../../Contexts/AuthContext"
 import { useMessageContext } from "../../../Contexts/MessageContext"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { updateService } from "../../../Js/FetchFunctions"
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
+import Error from "../../../Components/dumb/Error"
 
 export default function AdminEditService() {
     const { throwMessage, setLoader } = useMessageContext();
@@ -174,7 +173,7 @@ export default function AdminEditService() {
         case 'error':
             return (
                 <>
-
+                    <Error message={service.message} />
                 </>
             )
         case 'success':

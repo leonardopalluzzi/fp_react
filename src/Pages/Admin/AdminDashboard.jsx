@@ -5,6 +5,7 @@ import { useAuthContext } from "../../Contexts/AuthContext"
 
 import DashBoard from "../../Components/smart/DashBoard";
 import { Role } from "../../Js/Roles";
+import Error from "../../Components/dumb/Error";
 
 export default function AdminDashboard() {
 
@@ -79,9 +80,7 @@ export default function AdminDashboard() {
             )
         case 'error':
             return (
-                <div className="text-danger">
-                    {stats.message}
-                </div>
+                <Error message={stats.message} />
             )
         case 'success':
             return (

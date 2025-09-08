@@ -1,14 +1,12 @@
 import LoginFormUi from "../../Components/dumb/LoginForm.ui"
 import { useState } from "react"
 import { useAuthContext } from "../../Contexts/AuthContext"
-import { useNavigate } from "react-router-dom"
 import { useMessageContext } from "../../Contexts/MessageContext"
 
 export default function Login() {
 
     const { login } = useAuthContext()
     const { throwMessage } = useMessageContext()
-    const navigate = useNavigate()
 
     const [userToSend, setUserToSend] = useState({
         username: '',

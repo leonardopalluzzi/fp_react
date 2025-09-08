@@ -4,7 +4,7 @@ import { useMessageContext } from "../../Contexts/MessageContext"
 import { useFiltersContext } from "../../Contexts/FiltersContext"
 import DataWrapper from "./DataWrapper"
 
-export default function ModalServiceManager({ token, function: action, title, label, setDisplay, list, serviceId, companyId, endpoint }) {
+export default function ModalServiceManager({ token, function: action, title, label, setDisplay, list, serviceId, endpoint }) {
     const { throwMessage, setLoader } = useMessageContext()
     const { setFiltersConfig, buildQuery, refreshKey, handleRefresh, onChangeRefreshKey } = useFiltersContext()
 
@@ -102,7 +102,6 @@ export default function ModalServiceManager({ token, function: action, title, la
         case 'success':
             return (
                 <>
-
                     <div className="modal_container">
                         <div className="bg-light p-4 rounded rounded-4">
                             <div className="d-flex w-100 align-items-center justify-content-end">
@@ -111,7 +110,7 @@ export default function ModalServiceManager({ token, function: action, title, la
 
                             <h1 className="mb-5">{title}</h1>
                             <div className="container">
-                                <DataWrapper css={'row row-cols-2'} list={4}>
+                                <DataWrapper css={'row row-cols-2'} id={4}>
                                     <div className="row row-cols-1 my-4">
                                         {
                                             users.result.length == 0 ? <h3>No Data -</h3> : users.result.map(item => (
