@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom"
-import AdminHeader from "../Components/smart/AdminHeader"
+import Header from "../Components/smart/Header"
 import Footer from "../Components/smart/Footer"
 import Aside from "../Components/smart/Aside"
 
 export default function AdminLayout() {
     return (
         <>
-            <AdminHeader />
+            <Header />
             <Aside />
             <div id="site_main">
                 <Outlet />

@@ -1,8 +1,10 @@
 import { Link, NavLink } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
+import { useAuthContext } from "../../Contexts/AuthContext"
 
-export default function AdminHeader() {
+export default function Header() {
     const navigate = useNavigate()
+    const {prefix} = useAuthContext()
     return (
         <>
             <div id="site_header">
@@ -28,14 +30,11 @@ export default function AdminHeader() {
                         <div className="collapse navbar-collapse" id="collapsibleNavId">
                             <ul className="navbar-nav me-auto mt-2 mt-lg-0">
                                 <li className="nav-item">
-                                    <NavLink className="nav-link active" to={'/admin/dashboard '} aria-current="page"
+                                    <NavLink className="nav-link active" to={`/${prefix}/dashboard `} aria-current="page"
                                     >
                                         DashBoard
                                         <span className="visually-hidden">(current)</span>
                                     </NavLink>
-                                </li>
-                                <li className="nav-item">
-                                    <NavLink className="nav-link" href="#">Link</NavLink>
                                 </li>
                             </ul>
                         </div>

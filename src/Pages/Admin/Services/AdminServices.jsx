@@ -14,14 +14,14 @@ import Error from "../../../Components/dumb/Error";
 
 export default function AdminServices() {
     const { throwMessage, setLoader } = useMessageContext();
-    const { currentUser } = useAuthContext();
+    const { currentUser, prefix } = useAuthContext();
     const { setFiltersConfig, buildQuery, refreshKey, handleRefresh } = useFiltersContext()
     const navigate = useNavigate();
     const token = currentUser.token;
 
 
     //configrazione table
-    const config = serviceTableConfig['admin'];
+    const config = serviceTableConfig[prefix];
 
     const [services, setServices] = useState({
         state: 'loading'
@@ -100,7 +100,7 @@ export default function AdminServices() {
             })
     }, [page, refreshKey])
 
-    const routeConfig = crudRoutesConfig['admin']
+    const routeConfig = crudRoutesConfig[prefix]
 
     function handleDelete(itemId) {
         deleteService(itemId, token, setLoader, throwMessage, handleRefresh)

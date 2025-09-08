@@ -14,7 +14,7 @@ import { deleteTicket, deleteUser } from "../../Js/FetchFunctions";
 import LoaderMiniUi from "../dumb/LoaderMini.ui";
 
 export default function ShowService({ roles, service }) {
-    const { currentUser } = useAuthContext()
+    const { currentUser, prefix } = useAuthContext()
     const token = currentUser.token
     const { setFiltersConfig, buildQuery, refreshKey, handleRefresh, onChangeRefreshKey } = useFiltersContext()
     const { throwMessage, setLoader } = useMessageContext()
@@ -267,10 +267,13 @@ export default function ShowService({ roles, service }) {
                     }
 
                 </div>
-                <div className="my-5">
-                    <h1>Manage Service</h1>
-                    <ServiceManager currentUser={currentUser} serviceId={service.id} companyId={service.companyId} />
-                </div>
+                {
+                    prefix == 'admin' && <div className="my-5">
+                                            <h1>Manage Service</h1>
+                                            <ServiceManager currentUser={currentUser} serviceId={service.id} companyId={service.companyId} />
+                                        </div>
+                }
+                
 
                 {
                     (roles.includes(Role.ADMIN)) && (

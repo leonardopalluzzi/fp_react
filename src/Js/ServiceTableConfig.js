@@ -12,7 +12,7 @@ export const serviceTableConfig = {
         ],
         actions: ['view', 'update', 'delete']
     },
-    operator: {
+    employee: {
         columns: [
             { key: 'name', label: 'Name' },
             { key: 'serviceType.name', label: 'Service Type' },

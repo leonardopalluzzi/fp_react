@@ -108,8 +108,6 @@ export default function AdminUsers() {
 
 
     function handleFetch(listType, setter, page, query) {
-        console.log(query);
-
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users?list=${listType}&page=${page}${query}`, {
             method: 'GET',
             headers: {
@@ -118,11 +116,13 @@ export default function AdminUsers() {
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
+                
                 if (data.state && data.state == 'success') {
                     setter({
                         state: 'success',
-                        result: data.content,
-                        pagination: data
+                        result: data.result.content,
+                        pagination: data.result
                     })
                 } else if (data.state) {
                     throwMessage(data.state, [data.message])

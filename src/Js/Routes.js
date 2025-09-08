@@ -19,6 +19,7 @@ import AdminUsers from "../Pages/Admin/Users/AdminUsers";
 import AdminShowUser from "../Pages/Admin/Users/AdminShowUser";
 import AdminEditUser from "../Pages/Admin/Users/AdminEditUser";
 import AdminCreateUser from "../Pages/Admin/Users/AdminCreateUser";
+import EmployeeTickets from '../Pages/Employee/Tickets/EmployeeTickets';
 
 export const routes = [
     {
@@ -127,6 +128,29 @@ export const routes = [
                 path: 'service/:id',
                 component: AdminShowService,
                 roles: [Role.EMPLOYEE, Role.SUPERADMIN]
+            },
+            // index tt
+            {
+                path: 'tickets',
+                component: EmployeeTickets,
+                roles: [Role.EMPLOYEE, Role.SUPERADMIN]
+            },
+            // tt pool
+            {
+                path: 'ticketspool',
+                component: AdminTicketsPool,
+                roles: [Role.EMPLOYEE, Role.SUPERADMIN]
+            },
+            // show tt con create ecc...
+            {
+                path: 'ticket/:id',
+                component: AdminShowTicket,
+                roles: [Role.EMPLOYEE, Role.SUPERADMIN]
+            },
+            {
+                path: 'ticket/create/:id',
+                component: CreateTicket,
+                roles: [Role.EMPLOYEE, Role.SUPERADMIN]
             }
         ]
     },
@@ -145,6 +169,10 @@ export const routes = [
                 component: Profile,
                 roles: [Role.CUSTOMER, Role.SUPERADMIN]
             }
+            // tt index
+            // tt show con create tt ecc...
+            // service index
+            // service show solo lettura
         ]
     }
 ]

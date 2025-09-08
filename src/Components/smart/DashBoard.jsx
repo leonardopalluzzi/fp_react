@@ -7,14 +7,15 @@ import { Role } from "../../Js/Roles";
 import RadialGraphUi from "../dumb/RadialGraph.ui";
 import LinearGraphUi from "../dumb/LinearGraph.ui";
 import PieGraphUi from "../dumb/PieGraph.ui";
+import { useAuthContext } from "../../Contexts/AuthContext";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 const { adminLayouts, customerLayouts, employeeLayouts } = DashboardLayouts
 
 
-export default function DashBoard({ servicesData, ticketsData, usersData, role }) {
 
-    const prefix = role == Role.ADMIN ? 'admin' : role == Role.EMPLOYEE ? 'employee' : role == Role.CUSTOMER ? 'customer' : role == Role.SUPERADMIN ? 'admin' : ''
+export default function DashBoard({ servicesData, ticketsData, usersData, role }) {
+    const {prefix} = useAuthContext()
 
     const [layouts, setLayouts] = useState(role == Role.ADMIN ? adminLayouts() :
         role == Role.EMPLOYEE ? employeeLayouts() :
@@ -49,14 +50,17 @@ export default function DashBoard({ servicesData, ticketsData, usersData, role }
                 >
 
                     {/* grafico services  */}
-                    <div
-                        key="services"
-                        className="bg-white shadow rounded p-4"
-                    >
-                        <h3>Services Statistics</h3>
-                        <PieGraphUi data={servicesData} action={`/${prefix}/services`} />
+                    {
+                        role == Role.ADMIN &&  <div
+                                                    key="services"
+                                                    className="bg-white shadow rounded p-4"
+                                                >
+                                                    <h3>Services Statistics</h3>
+                                                    <PieGraphUi data={servicesData} action={`/${prefix}/services`} />
 
-                    </div>
+                                                </div>
+                    }
+                   
 
 
                     {/* grafico tickets  */}
@@ -66,12 +70,14 @@ export default function DashBoard({ servicesData, ticketsData, usersData, role }
                     </div>
 
                     {/* users stats  */}
-                    <div key="users" className="bg-white shadow rounded p-3">
-                        <h3>Employees / Customers Statistics</h3>
-                        {
-                            role == Role.ADMIN ? <RadialGraphUi data={usersData} action={`/${prefix}/users`} /> : null
-                        }
-                    </div>
+                    {
+                        role == Role.ADMIN &&  <div key="users" className="bg-white shadow rounded p-3">
+                            <h3>Employees / Customers Statistics</h3>
+                            <RadialGraphUi data={usersData} action={`/${prefix}/users`} />
+                        </div>
+                    }
+                    
+                   
                 </ResponsiveGridLayout >
             </div >
         </>

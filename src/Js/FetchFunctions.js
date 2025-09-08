@@ -348,4 +348,16 @@ const deleteUser = (uId, token, throwMessage, setLoader, handleRefresh) => {
 // aggiungere tipologiche
 
 
-export { assignOperatorToService, deleteOperatorFromService, registerCustomerToService, deleteCustomerFromService, deleteTicket, deleteService, updateService, createTicket, deleteUser, getAllServicesForSelect, getServiceTypesForSelect }
+export { 
+    assignOperatorToService, 
+    deleteOperatorFromService, 
+    registerCustomerToService, 
+    deleteCustomerFromService, 
+    deleteTicket, 
+    deleteService, 
+    updateService, 
+    createTicket, 
+    deleteUser, 
+    getAllServicesForSelect, 
+    getServiceTypesForSelect 
+}
