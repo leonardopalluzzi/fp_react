@@ -286,6 +286,38 @@ const getAllServicesForSelect = (token, throwMessage, setter) => {
         })
 }
 
+const getServiceTypesForSelect = (token, setter, throwMessage,) => {
+    fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tipologies/servicetypes`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+
+            if (data.state && data.state == 'success') {
+                setter({
+                    state: 'success',
+                    result: data.result.map(s => (
+                        { key: s.id, label: s.name }
+                    ))
+                })
+            } else if (data.state) {
+                throwMessage(data.state, [data.message])
+            } else {
+                throwMessage('error', ['Unknown Error'])
+            }
+        })
+        .catch(err => {
+            setter({
+                state: 'error',
+                message: err.message
+            })
+            throwMessage('error', [err.message])
+        })
+}
+
 //users
 const deleteUser = (uId, token, throwMessage, setLoader, handleRefresh) => {
     fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/delete/${uId}`, {
@@ -316,4 +348,4 @@ const deleteUser = (uId, token, throwMessage, setLoader, handleRefresh) => {
 // aggiungere tipologiche
 
 
-export { assignOperatorToService, deleteOperatorFromService, registerCustomerToService, deleteCustomerFromService, deleteTicket, deleteService, updateService, createTicket, deleteUser, getAllServicesForSelect }
+export { assignOperatorToService, deleteOperatorFromService, registerCustomerToService, deleteCustomerFromService, deleteTicket, deleteService, updateService, createTicket, deleteUser, getAllServicesForSelect, getServiceTypesForSelect }

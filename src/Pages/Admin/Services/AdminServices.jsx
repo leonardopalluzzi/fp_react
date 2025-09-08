@@ -9,7 +9,7 @@ import { crudRoutesConfig } from "../../../Js/CrudRoutesConfig";
 import DataWrapper from "../../../Components/smart/DataWrapper";
 import { useFiltersContext } from "../../../Contexts/FiltersContext";
 import { Status } from "../../../Js/ServiceStatus";
-import { deleteService } from "../../../Js/FetchFunctions";
+import { deleteService, getServiceTypesForSelect } from "../../../Js/FetchFunctions";
 import Error from "../../../Components/dumb/Error";
 
 export default function AdminServices() {
@@ -62,35 +62,7 @@ export default function AdminServices() {
 
     //fetch per tipologica service type
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tipologies/servicetypes`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.state && data.state == 'expired') {
-                    throwMessage('expired', [data.error])
-                } else if (data.state && data.state == 'error') {
-                    throwMessage('error', [data.error])
-                }
-                console.log(data);
-
-                setServiceTypes({
-                    state: 'success',
-                    result: data.result.map(s => (
-                        { key: s.id, label: s.name }
-                    ))
-                })
-            })
-            .catch(err => {
-                setServiceTypes({
-                    state: 'error',
-                    message: err.message
-                })
-                throwMessage('error', [err.message])
-            })
+        getServiceTypesForSelect(token, setServiceTypes, throwMessage)
     }, [])
 
     // fetch dati
