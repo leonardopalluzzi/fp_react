@@ -4,7 +4,7 @@ import { useAuthContext } from "../../Contexts/AuthContext"
 
 export default function Header() {
     const navigate = useNavigate()
-    const {prefix} = useAuthContext()
+    const { prefix } = useAuthContext()
     return (
         <>
             <div id="site_header">
@@ -13,7 +13,7 @@ export default function Header() {
                 >
                     <div className="container">
 
-                        <Link className="navbar-brand" to={'/admin/dashboard'}>
+                        <Link className="navbar-brand" to={`/${prefix}/dashboard`}>
                             <img className="site_logo" src="/logo.svg" alt="Site Logo" />
                         </Link>
                         <button
@@ -39,7 +39,7 @@ export default function Header() {
                             </ul>
                         </div>
                         <div>
-                            <Link to={'/admin/profile'} className="fs-1 btn btn-trasparent">
+                            <Link to={`/${prefix}/profile`} className="fs-1 btn btn-trasparent">
                                 <i class="bi bi-person-circle"></i>
                             </Link>
                         </div>

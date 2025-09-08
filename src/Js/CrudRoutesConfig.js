@@ -11,8 +11,7 @@ export const crudRoutesConfig = {
         serviceShow: id => `/employee/service/${id}`,
         userShow: id => `/employee/user/${id}`,
         userEdit: id => `/employee/user/edit/${id}`,
-        ticketShow: id => `/employee/ticket/${id}`,
-        ticketEdit: id => `/employee/ticket/edit/${id}`
+        ticketShow: id => `/employee/ticket/${id}`
     },
     customer: {
         serviceShow: id => `/customer/service/${id}`,

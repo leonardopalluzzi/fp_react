@@ -139,6 +139,9 @@ export default function AdminTickets() {
                                 handleTicketEdit={handleTicketEdit}
                                 handleTicketShow={handleTicketShow}
                                 handleTicketsDelete={handleTicketDelete}
+                                showShow={true}
+                                showDelete={true}
+                                showEdit={false}
                             />
 
                         </DataWrapper>

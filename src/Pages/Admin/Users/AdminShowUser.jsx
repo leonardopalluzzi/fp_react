@@ -142,6 +142,9 @@ export default function AdminShowUser() {
                                     handleTicketEdit={handleTicketEdit}
                                     handleTicketShow={handleTicketShow}
                                     handleTicketsDelete={handleTicketDelete}
+                                    showDelete={true}
+                                    showEdit={true}
+                                    showShow={true}
                                 />
                             </div>
 
@@ -152,6 +155,9 @@ export default function AdminShowUser() {
                                     handleTicketEdit={handleTicketEdit}
                                     handleTicketShow={handleTicketShow}
                                     handleTicketsDelete={handleTicketDelete}
+                                    showDelete={true}
+                                    showEdit={true}
+                                    showShow={true}
                                 />
                             </div>
                         </div>

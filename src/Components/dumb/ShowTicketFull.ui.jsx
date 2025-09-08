@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom"
+import { useAuthContext } from "../../Contexts/AuthContext"
 
 export default function ShowTicketFullUi({ ticket }) {
     const navigate = useNavigate()
+    const { prefix } = useAuthContext()
     return (
         <>
 
@@ -25,7 +27,7 @@ export default function ShowTicketFullUi({ ticket }) {
                             <label htmlFor="">For Service:</label>
                             <div className="d-flex align-items-center justify-content-start gap-4">
                                 <h5>{ticket.service.name}</h5>
-                                <button className="btn btn-outline-primary" onClick={() => navigate(`/admin/service/${ticket.service.id}`)}><i class="bi bi-eye"></i></button>
+                                <button className="btn btn-outline-primary" onClick={() => navigate(`/${prefix}/service/${ticket.service.id}`)}><i class="bi bi-eye"></i></button>
                             </div>
                         </div>
                     </div>

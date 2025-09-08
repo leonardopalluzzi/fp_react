@@ -133,6 +133,9 @@ export default function AdminTicketsPool() {
                                 handleTicketEdit={handleTicketEdit}
                                 handleTicketShow={handleTicketShow}
                                 handleTicketsDelete={handleTicketDelete}
+                                showDelete={true}
+                                showEdit={prefix == 'admin' ? true : false}
+                                showShow={true}
                             />
                         </DataWrapper>
                     </div>

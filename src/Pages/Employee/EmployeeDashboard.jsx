@@ -10,6 +10,7 @@ import { useFiltersContext } from "../../Contexts/FiltersContext";
 import { getAllServicesForSelect, deleteTicket } from "../../Js/FetchFunctions"
 import ShowServiceTicketListUi from "../../Components/dumb/ShowServiceTicketList.ui"
 import { crudRoutesConfig } from "../../Js/CrudRoutesConfig"
+import { useNavigate } from "react-router-dom"
 
 export default function EmployeeDashboard() {
 
@@ -18,6 +19,7 @@ export default function EmployeeDashboard() {
     const { setFiltersConfig, refreshKey, onChangeRefreshKey, buildQuery, handleRefresh } = useFiltersContext()
     const token = currentUser.token
     const crudConfig = crudRoutesConfig[prefix]
+    const navigate = useNavigate()
 
     const [stats, setStats] = useState({
         state: 'loading',
@@ -146,12 +148,12 @@ export default function EmployeeDashboard() {
         deleteTicket(tId, token, throwMessage, setLoader, handleRefresh)
     }
                                     
-    function handleTicketEdit(tId){
-        crudConfig.ticketEdit(tId)
+    function handleTicketEdit(tId, sId){
+        throw new Error("You don't have the authority to complete this operation");
     }
                                     
-    function handleTicketShow(tId){
-        crudConfig.ticketShow(tId)
+    function handleTicketShow(tId){        
+        navigate(crudConfig.ticketShow(tId))
     }
 
 
@@ -187,6 +189,9 @@ export default function EmployeeDashboard() {
                                     handleTicketsDelete={handleTicketsDelete}
                                     handleTicketEdit={handleTicketEdit}
                                     handleTicketShow={handleTicketShow}
+                                    showEdit={false}
+                                    showDelete={true}
+                                    showShow={true}
                                 />
                             </div>
                         </>

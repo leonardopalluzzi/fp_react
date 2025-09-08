@@ -309,6 +309,9 @@ export default function ShowService({ roles, service }) {
                                                 handleTicketsDelete={handleTicketDelete}
                                                 handleTicketShow={handleTicketShow}
                                                 handleTicketEdit={handleTicketEdit}
+                                                showShow={true}
+                                                showEdit={prefix == 'admin' ? true : false}
+                                                showDelete={true}
                                             />
                                         </DataWrapper>
                                     </>
