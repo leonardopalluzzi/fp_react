@@ -8,6 +8,7 @@ import RadialGraphUi from "../dumb/RadialGraph.ui";
 import LinearGraphUi from "../dumb/LinearGraph.ui";
 import PieGraphUi from "../dumb/PieGraph.ui";
 import { useAuthContext } from "../../Contexts/AuthContext";
+import RegisterCustomerToService from "./RegisterCustomerToService";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 const { adminLayouts, customerLayouts, employeeLayouts } = DashboardLayouts
@@ -15,7 +16,7 @@ const { adminLayouts, customerLayouts, employeeLayouts } = DashboardLayouts
 
 
 export default function DashBoard({ servicesData, ticketsData, usersData, role }) {
-    const {prefix} = useAuthContext()
+    const { prefix } = useAuthContext()
 
     const [layouts, setLayouts] = useState(role == Role.ADMIN ? adminLayouts() :
         role == Role.EMPLOYEE ? employeeLayouts() :
@@ -35,7 +36,13 @@ export default function DashBoard({ servicesData, ticketsData, usersData, role }
     return (
         <>
             <div className="container py-5">
-                <h1>Dashboard</h1>
+                <div className="d-flex align-items-center justify-content-between ">
+                    <h1>Dashboard</h1>
+                    {
+                        prefix == 'customer' && <RegisterCustomerToService />
+                    }
+                </div>
+
                 <button className="btn btn-outline-dark " onClick={resetLayout}>Reset Layout</button>
                 <ResponsiveGridLayout
                     key={refreshkey}
@@ -51,16 +58,16 @@ export default function DashBoard({ servicesData, ticketsData, usersData, role }
 
                     {/* grafico services  */}
                     {
-                        role == Role.ADMIN &&  <div
-                                                    key="services"
-                                                    className="bg-white shadow rounded p-4"
-                                                >
-                                                    <h3>Services Statistics</h3>
-                                                    <PieGraphUi data={servicesData} action={`/${prefix}/services`} />
+                        role == Role.ADMIN || role == Role.CUSTOMER && <div
+                            key="services"
+                            className="bg-white shadow rounded p-4"
+                        >
+                            <h3>Services Statistics</h3>
+                            <PieGraphUi data={servicesData} action={`/${prefix}/services`} />
 
-                                                </div>
+                        </div>
                     }
-                   
+
 
 
                     {/* grafico tickets  */}
@@ -71,13 +78,13 @@ export default function DashBoard({ servicesData, ticketsData, usersData, role }
 
                     {/* users stats  */}
                     {
-                        role == Role.ADMIN &&  <div key="users" className="bg-white shadow rounded p-3">
+                        role == Role.ADMIN && <div key="users" className="bg-white shadow rounded p-3">
                             <h3>Employees / Customers Statistics</h3>
                             <RadialGraphUi data={usersData} action={`/${prefix}/users`} />
                         </div>
                     }
-                    
-                   
+
+
                 </ResponsiveGridLayout >
             </div >
         </>

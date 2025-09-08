@@ -168,11 +168,36 @@ export const routes = [
                 path: 'profile',
                 component: Profile,
                 roles: [Role.CUSTOMER, Role.SUPERADMIN]
-            }
+            },
             // tt index
+            {
+                path: 'tickets',
+                component: AdminTickets,
+                roles: [Role.CUSTOMER, Role.SUPERADMIN]
+            },
             // tt show con create tt ecc...
+            {
+                path: 'ticket/:id',
+                component: AdminShowTicket,
+                roles: [Role.CUSTOMER, Role.SUPERADMIN]
+            },
             // service index
+            {
+                path: 'services',
+                component: AdminServices,
+                roles: [Role.CUSTOMER, Role.SUPERADMIN]
+            },
             // service show solo lettura
+            {
+                path: 'service/:id',
+                component: AdminShowService,
+                roles: [Role.CUSTOMER, Role.SUPERADMIN]
+            },
+            {
+                path: 'ticket/create/:id',
+                component: CreateTicket,
+                roles: [Role.CUSTOMER, Role.SUPERADMIN]
+            }
         ]
     }
 ]

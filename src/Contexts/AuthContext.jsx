@@ -107,8 +107,6 @@ function AuthProvider({ children }) {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-
                 console.log(jwtDecode(data.token));
                 setCurrentUser({
                     state: 'success',
@@ -116,7 +114,6 @@ function AuthProvider({ children }) {
                     details: jwtDecode(data.token)
                 })
                 localStorage.setItem("token", data.token);
-
             })
             .catch(err => {
                 setCurrentUser({

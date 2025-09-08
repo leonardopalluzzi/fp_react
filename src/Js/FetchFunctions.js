@@ -100,7 +100,7 @@ const registerCustomerToService = async (token, payload, setLoader, throwMessage
 
         const data = await response.json()
         if (data.state && data.state == 'success') {
-            throwMessage('suc{cess', ['Customer registered to service correctly'])
+            throwMessage('success', ['Customer registered to service correctly'])
         } else if (data.state) {
             throwMessage(data.state, [data.message])
         } else {
@@ -213,8 +213,6 @@ const deleteService = (sId, token, setLoader, throwMessage, handleRefresh) => {
 }
 
 const updateService = (sId, payload, token, setLoader, throwMessage, handleRefresh, setService) => {
-    console.log(payload);
-
     setLoader(true)
     fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services/update/${sId}`, {
         method: 'PUT',
@@ -263,6 +261,8 @@ const getAllServicesForSelect = (token, throwMessage, setter) => {
     })
         .then(res => res.json())
         .then(data => {
+            console.log(data);
+
             if (data.state && data.state == 'success') {
                 setter({
                     state: 'success',
@@ -348,16 +348,16 @@ const deleteUser = (uId, token, throwMessage, setLoader, handleRefresh) => {
 // aggiungere tipologiche
 
 
-export { 
-    assignOperatorToService, 
-    deleteOperatorFromService, 
-    registerCustomerToService, 
-    deleteCustomerFromService, 
-    deleteTicket, 
-    deleteService, 
-    updateService, 
-    createTicket, 
-    deleteUser, 
-    getAllServicesForSelect, 
-    getServiceTypesForSelect 
+export {
+    assignOperatorToService,
+    deleteOperatorFromService,
+    registerCustomerToService,
+    deleteCustomerFromService,
+    deleteTicket,
+    deleteService,
+    updateService,
+    createTicket,
+    deleteUser,
+    getAllServicesForSelect,
+    getServiceTypesForSelect
 }

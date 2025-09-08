@@ -11,6 +11,7 @@ import { getAllServicesForSelect, deleteTicket } from "../../Js/FetchFunctions"
 import ShowServiceTicketListUi from "../../Components/dumb/ShowServiceTicketList.ui"
 import { crudRoutesConfig } from "../../Js/CrudRoutesConfig"
 import { useNavigate } from "react-router-dom"
+import DataWrapper from "../../Components/smart/DataWrapper"
 
 export default function EmployeeDashboard() {
 
@@ -45,29 +46,27 @@ export default function EmployeeDashboard() {
 
     // set fields per filtri
     const statusOptions = []
-    
-        for (const key in Status) {
-            const option = { value: key, label: key }
-            statusOptions.push(option)
-        }
+
+    for (const key in Status) {
+        const option = { value: key, label: key }
+        statusOptions.push(option)
+    }
 
     const fields = [
-                { key: 'status', label: 'Ticket Status', type: 'select', options: statusOptions },
-                { key: 'title', label: 'Title', type: 'text' },
-                { key: 'description', label: 'Description', type: 'text' },
-                { key: 'createdAt', label: 'Created At', type: 'date' },
-                { key: 'serviceId', label: 'Service', type: 'select', options: services.result }
-            ]
+        { key: 'status', label: 'Ticket Status', type: 'select', options: statusOptions },
+        { key: 'title', label: 'Title', type: 'text' },
+        { key: 'description', label: 'Description', type: 'text' },
+        { key: 'createdAt', label: 'Created At', type: 'date' },
+        { key: 'serviceId', label: 'Service', type: 'select', options: services.result }
+    ]
 
     //set config filtri
-    useState(()=>{
-        if(tickets.state == 'success'){
-
+    useEffect(() => {
+        if (tickets.state == 'success' && services.state == 'success') {
             setFiltersConfig(1, page, tickets.pagination.totalPages, setPage, fields, filters, setFilters)
-
         }
 
-    }, [tickets, onChangeRefreshKey])
+    }, [tickets, services, onChangeRefreshKey])
 
 
     // fetch per le stats
@@ -113,46 +112,50 @@ export default function EmployeeDashboard() {
 
 
     //fetch ai servizi per filtri
-    useEffect(()=>{
+    useEffect(() => {
         getAllServicesForSelect(token, throwMessage, setServices)
     }, [])
 
-    useEffect(()=>{
+    //fetch ai tickets
+    useEffect(() => {
         fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}${buildQuery(filters)}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(res => res.json())
-        .then(data => {
-            if(data.state && data.state == 'success'){
-                setTickets({
-                    state: 'success',
-                    result: data.result.content,
-                    pagination: data.result
-                })
-            } else if(data.state){
-                throwMessage(data.state, [data.message])
-            } else {
-                throwMessage('error', ['Unknown Error'])
-            }
-        })
-        .catch(err =>{
-            throwMessage('error', [err.message])
-        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.state && data.state == 'success') {
+                    setTickets({
+                        state: 'success',
+                        result: data.result.content,
+                        pagination: data.result
+                    })
+                } else if (data.state) {
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
+                }
+            })
+            .catch(err => {
+                throwMessage('error', [err.message])
+            })
+            .finally(() => {
+                setLoader(false)
+            })
     }, [page, refreshKey])
 
 
-    function handleTicketsDelete(tId){
+    function handleTicketsDelete(tId) {
         deleteTicket(tId, token, throwMessage, setLoader, handleRefresh)
     }
-                                    
-    function handleTicketEdit(tId, sId){
+
+    function handleTicketEdit(tId, sId) {
         throw new Error("You don't have the authority to complete this operation");
     }
-                                    
-    function handleTicketShow(tId){        
+
+    function handleTicketShow(tId) {
         navigate(crudConfig.ticketShow(tId))
     }
 
@@ -179,25 +182,28 @@ export default function EmployeeDashboard() {
                         usersData={stats.usersData}
                         role={Role.EMPLOYEE}
                     />
-                    
+
                     {
                         tickets.state == 'success' && (
-                        <>
-                            <div className="container">
-                                <ShowServiceTicketListUi
-                                    tickets={tickets.result}
-                                    handleTicketsDelete={handleTicketsDelete}
-                                    handleTicketEdit={handleTicketEdit}
-                                    handleTicketShow={handleTicketShow}
-                                    showEdit={false}
-                                    showDelete={true}
-                                    showShow={true}
-                                />
-                            </div>
-                        </>
-                    )
+                            <>
+                                <div className="container">
+                                    <DataWrapper css={''} id={1}>
+                                        <ShowServiceTicketListUi
+                                            tickets={tickets.result}
+                                            handleTicketsDelete={handleTicketsDelete}
+                                            handleTicketEdit={handleTicketEdit}
+                                            handleTicketShow={handleTicketShow}
+                                            showEdit={false}
+                                            showDelete={true}
+                                            showShow={true}
+                                        />
+                                    </DataWrapper>
+
+                                </div>
+                            </>
+                        )
                     }
-                    
+
                 </>
             )
     }

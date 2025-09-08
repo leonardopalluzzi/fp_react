@@ -269,11 +269,11 @@ export default function ShowService({ roles, service }) {
                 </div>
                 {
                     prefix == 'admin' && <div className="my-5">
-                                            <h1>Manage Service</h1>
-                                            <ServiceManager currentUser={currentUser} serviceId={service.id} companyId={service.companyId} />
-                                        </div>
+                        <h1>Manage Service</h1>
+                        <ServiceManager currentUser={currentUser} serviceId={service.id} companyId={service.companyId} />
+                    </div>
                 }
-                
+
 
                 {
                     (roles.includes(Role.ADMIN)) && (
@@ -298,7 +298,7 @@ export default function ShowService({ roles, service }) {
                 }
 
                 {
-                    (roles.includes(Role.ADMIN) || roles.includes(Role.EMPLOYEE)) && (
+                    (roles.includes(Role.ADMIN) || roles.includes(Role.EMPLOYEE)) || roles.includes(Role.CUSTOMER) && (
                         <>
                             {
                                 tickets.state == 'success' && (
