@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../../Contexts/AuthContext"
+import { formatDate } from "../../Js/UtilFunctions"
 
 export default function ShowTicketFullUi({ ticket }) {
     const navigate = useNavigate()
@@ -21,7 +22,7 @@ export default function ShowTicketFullUi({ ticket }) {
                         <h5>{ticket.type.name}</h5>
 
                         <label htmlFor="">Created At:</label>
-                        <h5>{ticket.createdAt}</h5>
+                        <h5>{formatDate(ticket.createdAt)}</h5>
 
                         <div>
                             <label htmlFor="">For Service:</label>

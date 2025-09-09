@@ -12,6 +12,7 @@ import { useMessageContext } from "../../Contexts/MessageContext";
 import ServiceManager from "./ServiceManager";
 import { deleteTicket, deleteUser } from "../../Js/FetchFunctions";
 import LoaderMiniUi from "../dumb/LoaderMini.ui";
+import { formatDate } from "../../Js/UtilFunctions";
 
 export default function ShowService({ roles, service }) {
     const { currentUser, prefix } = useAuthContext()
@@ -19,13 +20,8 @@ export default function ShowService({ roles, service }) {
     const { setFiltersConfig, buildQuery, refreshKey, handleRefresh, onChangeRefreshKey } = useFiltersContext()
     const { throwMessage, setLoader } = useMessageContext()
 
-    console.log(service);
-
-
     const navigate = useNavigate()
-
-    const roleConfigPrefix = roles.includes(Role.ADMIN) && 'admin' || roles.includes(Role.EMPLOYEE) && 'employee' || roles.includes(Role.CUSTOMER) && 'customer';
-    const routeConfig = crudRoutesConfig[roleConfigPrefix]
+    const routeConfig = crudRoutesConfig[prefix]
 
 
     const [tickets, setTickets] = useState({
@@ -250,7 +246,7 @@ export default function ShowService({ roles, service }) {
                         (roles.includes(Role.ADMIN) || roles.includes(Role.EMPLOYEE)) && (
                             <>
                                 <label className="mt-3" htmlFor="">Created At:</label>
-                                <h4>{service.createdAt}</h4>
+                                <h4>{formatDate(service.createdAt)}</h4>
 
                                 <label className="mt-3" htmlFor="">Ticket Types:</label>
                                 <ul className="list-unstyled">
@@ -298,7 +294,6 @@ export default function ShowService({ roles, service }) {
                 }
 
                 {
-                    (roles.includes(Role.ADMIN) || roles.includes(Role.EMPLOYEE)) || roles.includes(Role.CUSTOMER) && (
                         <>
                             {
                                 tickets.state == 'success' && (
@@ -319,7 +314,6 @@ export default function ShowService({ roles, service }) {
                             }
 
                         </>
-                    )
                 }
             </div >
         </>

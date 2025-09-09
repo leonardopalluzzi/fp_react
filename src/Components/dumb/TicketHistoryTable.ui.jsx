@@ -1,6 +1,6 @@
-export default function TicketHistoryTasbleUi({ history }) {
-    console.log(history);
+import { formatDate } from "../../Js/UtilFunctions"
 
+export default function TicketHistoryTasbleUi({ history }) {
     return (
         <>
             <div className="card my-5 p-4 border-0 shadow">
@@ -25,7 +25,7 @@ export default function TicketHistoryTasbleUi({ history }) {
                                     <>
                                         <tr class="">
                                             <td>{item.notes}</td>
-                                            <td>{item.changedAt}</td>
+                                            <td>{formatDate(item.changedAt)}</td>
                                             <td>{item.changedBy.username}</td>
                                             <td>{item.status}</td>
                                         </tr>

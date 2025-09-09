@@ -1,6 +1,4 @@
 export default function ServiceTabelLightUi({ services, onShow }) {
-    console.log(services);
-
     return (
         <>
             <div className="card border-0 overflow-hidden">

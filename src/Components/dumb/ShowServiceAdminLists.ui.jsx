@@ -1,5 +1,6 @@
 import DeleteModalUi from "./DeleteModal.ui";
 import DataWrapper from "../smart/DataWrapper";
+import { formatDate } from "../../Js/UtilFunctions";
 
 export default function ShowServiceAdminListUi({ customers, operators, handleOperatorShow, handleOperatorEdit, handleOperatorDelete }) {
 
@@ -77,7 +78,7 @@ export default function ShowServiceAdminListUi({ customers, operators, handleOpe
                                                         <tr className="">
                                                             <td>{c.username}</td>
                                                             <td>{c.email}</td>
-                                                            <td>{c.createdAt}</td>
+                                                            <td>{formatDate(c.createdAt)}</td>
                                                             <td>
                                                                 <div className="d-flex align-items-center justify-content-center gap-2">
                                                                     <button onClick={() => handleOperatorShow(c.id)} className="btn btn-primary"><i class="bi bi-eye-fill"></i></button>

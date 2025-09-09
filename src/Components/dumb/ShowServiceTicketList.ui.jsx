@@ -1,4 +1,5 @@
 import DeleteModalUi from "./DeleteModal.ui"
+import { formatDate } from "../../Js/UtilFunctions";
 
 export default function ShowServiceTicketListUi({ tickets, handleTicketsDelete, handleTicketShow, handleTicketEdit, showEdit, showDelete, showShow }) {
     console.log(tickets);
@@ -31,7 +32,7 @@ export default function ShowServiceTicketListUi({ tickets, handleTicketsDelete, 
                                             <td scope="row">{t.title}</td>
                                             <td>{t.type.name}</td>
                                             <td>{t.status}</td>
-                                            <td>{t.createdAt}</td>
+                                            <td>{formatDate(t.createdAt)}</td>
                                             <td>
                                                 <div className="d-flex align-items-center justify-content-center gap-2">
                                                     {

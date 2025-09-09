@@ -26,8 +26,7 @@ export const serviceTableConfig = {
             { key: 'name', label: 'Name' },
             { key: 'serviceType.name', label: 'Service Type' },
             { key: 'code', label: 'Code' },
-            { key: 'status', label: 'Status' },
-            { key: 'tickets.length', label: 'N. of Tickets' },
+            { key: 'status', label: 'Status' }
         ],
         actions: ['view', 'delete']
 
