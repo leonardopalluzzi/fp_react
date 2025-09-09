@@ -140,7 +140,7 @@ export default function AdminTickets() {
                                 handleTicketShow={handleTicketShow}
                                 handleTicketsDelete={handleTicketDelete}
                                 showShow={true}
-                                showDelete={true}
+                                showDelete={false}
                                 showEdit={false}
                             />
 

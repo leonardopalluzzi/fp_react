@@ -139,8 +139,8 @@ export default function AdminTickets() {
                                 handleTicketEdit={handleTicketEdit}
                                 handleTicketShow={handleTicketShow}
                                 handleTicketsDelete={handleTicketDelete}
-                                showDelete={true}
-                                showEdit={true}
+                                showDelete={prefix != 'customer' ? true : false}
+                                showEdit={prefix != 'customer' ? true : false}
                                 showShow={true}
                             />
 

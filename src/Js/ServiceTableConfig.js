@@ -28,7 +28,6 @@ export const serviceTableConfig = {
             { key: 'code', label: 'Code' },
             { key: 'status', label: 'Status' }
         ],
-        actions: ['view', 'delete']
-
+        actions: ['view']
     }
 }

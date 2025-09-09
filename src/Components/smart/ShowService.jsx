@@ -102,64 +102,68 @@ export default function ShowService({ roles, service }) {
 
     //get operators by service con filtri
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byService/${service.id}?page=${operatorsPage}${buildQuery(operatorsFilters)}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.state && data.state == 'success') {
-                    setOperators({
-                        state: 'success',
-                        result: data.result.content,
-                        pagination: data.result
-                    })
-                } else if (data.state) {
-                    throwMessage(data.state, [data.message])
-                } else {
-                    throwMessage('error', ['Unknown Error'])
+        if (prefix != 'customer') {
+            fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byService/${service.id}?page=${operatorsPage}${buildQuery(operatorsFilters)}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
             })
-            .catch(err => {
-                throwMessage('error', [err.message])
-                setOperators({
-                    state: 'error',
-                    message: err.message
+                .then(res => res.json())
+                .then(data => {
+                    if (data.state && data.state == 'success') {
+                        setOperators({
+                            state: 'success',
+                            result: data.result.content,
+                            pagination: data.result
+                        })
+                    } else if (data.state) {
+                        throwMessage(data.state, [data.message])
+                    } else {
+                        throwMessage('error', ['Unknown Error'])
+                    }
                 })
-            })
+                .catch(err => {
+                    throwMessage('error', [err.message])
+                    setOperators({
+                        state: 'error',
+                        message: err.message
+                    })
+                })
+        }
     }, [operatorsPage, refreshKey])
 
     //get customer by service (da implementare in backend)
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byService/customers/${service.id}?page=${customersPage}${buildQuery(customersFilters)}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.state && data.state == 'success') {
-                    setCustomers({
-                        state: 'success',
-                        result: data.result.content,
-                        pagination: data.result
-                    })
-                } else if (data.state) {
-                    throwMessage(data.state, [data.message])
-                } else {
-                    throwMessage('error', ['Unknown Error'])
+        if (prefix != 'customer') {
+            fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/manage/byService/customers/${service.id}?page=${customersPage}${buildQuery(customersFilters)}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
             })
-            .catch(err => {
-                throwMessage('error', [err.message])
-                setCustomers({
-                    state: 'error',
-                    message: err.message
+                .then(res => res.json())
+                .then(data => {
+                    if (data.state && data.state == 'success') {
+                        setCustomers({
+                            state: 'success',
+                            result: data.result.content,
+                            pagination: data.result
+                        })
+                    } else if (data.state) {
+                        throwMessage(data.state, [data.message])
+                    } else {
+                        throwMessage('error', ['Unknown Error'])
+                    }
                 })
-            })
+                .catch(err => {
+                    throwMessage('error', [err.message])
+                    setCustomers({
+                        state: 'error',
+                        message: err.message
+                    })
+                })
+        }
     }, [customersPage, refreshKey])
 
 
@@ -294,26 +298,32 @@ export default function ShowService({ roles, service }) {
                 }
 
                 {
-                        <>
-                            {
-                                tickets.state == 'success' && (
-                                    <>
-                                        <DataWrapper css={'my-4'} id={'ticketConfig'}>
-                                            <ShowServiceTicketListUi
-                                                tickets={tickets.result}
-                                                handleTicketsDelete={handleTicketDelete}
-                                                handleTicketShow={handleTicketShow}
-                                                handleTicketEdit={handleTicketEdit}
-                                                showShow={true}
-                                                showEdit={prefix == 'admin' ? true : false}
-                                                showDelete={true}
-                                            />
-                                        </DataWrapper>
-                                    </>
-                                )
-                            }
+                    <>
+                        {
+                            tickets.state == 'loading' && <LoaderMiniUi />
+                        }
+                        {
+                            tickets.state == 'error' && (<></>)
+                        }
+                        {
+                            tickets.state == 'success' && (
+                                <>
+                                    <DataWrapper css={'my-4'} id={'ticketConfig'}>
+                                        <ShowServiceTicketListUi
+                                            tickets={tickets.result}
+                                            handleTicketsDelete={handleTicketDelete}
+                                            handleTicketShow={handleTicketShow}
+                                            handleTicketEdit={handleTicketEdit}
+                                            showShow={true}
+                                            showEdit={prefix == 'admin' ? true : false}
+                                            showDelete={true}
+                                        />
+                                    </DataWrapper>
+                                </>
+                            )
+                        }
 
-                        </>
+                    </>
                 }
             </div >
         </>
