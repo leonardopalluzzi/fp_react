@@ -11,7 +11,9 @@ export default function Guestheader() {
                     className="navbar navbar-expand-sm navbar-light bg-light"
                 >
                     <div className="container">
-                        <a className="navbar-brand" href="#">Navbar</a>
+                        <a className="navbar-brand">
+                            <img src="/logo.svg" alt="Logo" />
+                        </a>
                         <button
                             className="navbar-toggler d-lg-none"
                             type="button"
