@@ -355,7 +355,7 @@ const deleteUser = (uId, token, throwMessage, setLoader, handleRefresh) => {
         })
 }
 
-const deleteProfile = (uId, token, throwMessage, setLoader) => {
+const deleteProfile = (uId, token, throwMessage, setLoader, navigate) => {
     setLoader(true)
     fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/delete/${uId}`, {
         method: 'DELETE',
@@ -367,6 +367,8 @@ const deleteProfile = (uId, token, throwMessage, setLoader) => {
         .then(data => {
             if (data.state && data.state == 'success') {
                 throwMessage(data.state, ['User Deleted'])
+                navigate("/login")
+                return
             } else if (data.state) {
                 throwMessage(data.state, [data.message])
             } else {
@@ -374,6 +376,7 @@ const deleteProfile = (uId, token, throwMessage, setLoader) => {
             }
         })
         .catch(err => {
+            console.error(err)
             throwMessage('error', [err.message])
         })
         .finally(() => {

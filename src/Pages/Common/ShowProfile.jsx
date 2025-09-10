@@ -5,12 +5,16 @@ import LoaderUi from "../../Components/dumb/Loader.ui"
 import RegisterFormUi from "../../Components/dumb/RegisterForm.ui"
 import { useNavigate } from "react-router-dom"
 import Error from "../../Components/dumb/Error"
+import { deleteProfile } from "../../Js/FetchFunctions"
+import { useFiltersContext } from "../../Contexts/FiltersContext"
+import DeleteModalUi from "../../Components/dumb/DeleteModal.ui"
 
 export default function ShowProfile() {
-    const { currentUser } = useAuthContext()
+    const { currentUser, prefix } = useAuthContext()
     const token = currentUser.token
     const id = currentUser.details.id
-    const { throwMessage } = useMessageContext()
+    const { throwMessage, setLoader } = useMessageContext()
+    const { handleRefresh } = useFiltersContext()
     const navigate = useNavigate()
 
     const [user, setUser] = useState({
@@ -104,6 +108,10 @@ export default function ShowProfile() {
             })
     }
 
+    function handleDeleteUser(uId){
+        deleteProfile(uId, token, throwMessage, setLoader, navigate)
+    }
+
 
     switch (user.state) {
         case 'loading':
@@ -118,7 +126,16 @@ export default function ShowProfile() {
             return (
                 <>
                     <div className="container my-5">
-                        <h1>Profile Info</h1>
+                        <div className="d-flex align-items-center justify-content-between">
+                            <h1>Profile Info</h1>
+                                {
+                                    prefix == 'customer' && <div className="d-flex align-items-center jusitfy-content-center gap-4">
+                                                                <p>Delete Your Profile</p>
+                                                                <DeleteModalUi itemId={currentUser.details.id} deleteFunction={handleDeleteUser}/>
+                                                            </div>
+                                }
+                        </div>
+                        
 
                         <div className="row row-cols-1 row-cols-md-2">
 
@@ -167,11 +184,8 @@ export default function ShowProfile() {
                                     onchange={handleChange}
                                     onsubmit={handleSubmit}
                                     passwordRequired={false}
-                                />
+                                />                                
                             </div>
-
-
-
                         </div>
 
                     </div>

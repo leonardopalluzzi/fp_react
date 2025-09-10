@@ -57,7 +57,7 @@ export default function ServiceManager({ currentUser, serviceId, companyId, pref
     }
 
     function handleDetachCustomerFromService(sId){
-        deleteCustomerFromService(token, sId, currentUser.details.id, setLoader, throwMessage, handleRefresh, navigate, prefix)
+        return deleteCustomerFromService(token, sId, currentUser.details.id, setLoader, throwMessage, handleRefresh, navigate, prefix)
     }
 
     switch(prefix){
@@ -67,7 +67,7 @@ export default function ServiceManager({ currentUser, serviceId, companyId, pref
                 <div className="card border-0 shadow p-4 ">
                     <div className="border p-3 rounded rounded-3 d-flex flex-column align-items-center justify-content-center">
                         <h3>Unregister from the current service</h3>
-                        <DeleteModalUi itemId={serviceId} deleteFunction={handleDetachCustomerFromService}/>
+                        <DeleteModalUi itemId={serviceId} deleteFunction={async (id) => handleDetachCustomerFromService(id)}/>
                     </div>
                 </div>
                 
