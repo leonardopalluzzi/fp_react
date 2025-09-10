@@ -54,7 +54,7 @@ const deleteOperatorFromService = async (token, serviceId, operatorId, setLoader
 
 }
 
-const deleteCustomerFromService = async (token, serviceId, customerId, setLoader, throwMessage, handleRefresh) => {
+const deleteCustomerFromService = async (token, serviceId, customerId, setLoader, throwMessage, handleRefresh, navigate, prefix) => {
     setLoader(true)
     try {
         const response = await fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/services/manage/${serviceId}/customer/${customerId}`, {
@@ -69,7 +69,15 @@ const deleteCustomerFromService = async (token, serviceId, customerId, setLoader
         }
 
         const data = await response.json()
-        throwMessage('success', ['Customer detached from service correctly'])
+        if(data.state && data.state == 'success'){
+            throwMessage('success', ['Customer detached from service correctly'])
+            navigate(`/${prefix}/services`)
+        } else if(data.state){
+            throwMessage(data.state, [data.message])
+        } else{
+            throwMessage('error', ['Unknown Error'])
+        }
+        
         return data
 
     } catch (err) {

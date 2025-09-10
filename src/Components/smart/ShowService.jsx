@@ -268,9 +268,9 @@ export default function ShowService({ roles, service }) {
 
                 </div>
                 {
-                    prefix == 'admin' && <div className="my-5">
+                    (prefix == 'admin' || prefix == 'customer') && <div className="my-5">
                         <h1>Manage Service</h1>
-                        <ServiceManager currentUser={currentUser} serviceId={service.id} companyId={service.companyId} />
+                        <ServiceManager currentUser={currentUser} serviceId={service.id} companyId={service.companyId} prefix={prefix} />
                     </div>
                 }
 
