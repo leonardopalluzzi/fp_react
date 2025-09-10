@@ -4,11 +4,11 @@ export default function LoginFormUi({ user, onchange, onsubmit }) {
             <div className="container my-5">
                 <h1>Login</h1>
                 <form action="" onSubmit={(e) => { e.preventDefault(); onsubmit() }}>
-                    <div class="mb-3 my-4">
-                        <label for="" class="form-label">Username</label>
+                    <div className="mb-3 my-4">
+                        <label htmlFor="" className="form-label">Username</label>
                         <input
                             type="text"
-                            class="form-control"
+                            className="form-control"
                             name="username"
                             value={user.username}
                             onChange={(e) => onchange(e.target.name, e.target.value)}
@@ -17,12 +17,12 @@ export default function LoginFormUi({ user, onchange, onsubmit }) {
                             placeholder="mario rossi"
                             required
                         />
-                        <small id="helpId" class="form-text text-muted">Type your username</small>
-                        <div class="mb-3 my-4">
-                            <label for="" class="form-label">Password</label>
+                        <small id="helpId" className="form-text text-muted">Type your username</small>
+                        <div className="mb-3 my-4">
+                            <label htmlFor="" className="form-label">Password</label>
                             <input
                                 type="password"
-                                class="form-control"
+                                className="form-control"
                                 name="password"
                                 value={user.password}
                                 onChange={(e) => { onchange(e.target.name, e.target.value) }}
@@ -31,7 +31,7 @@ export default function LoginFormUi({ user, onchange, onsubmit }) {
                                 placeholder="SafePass01"
                                 required
                             />
-                            <small id="helpId" class="form-text text-muted">Type your password</small>
+                            <small id="helpId" className="form-text text-muted">Type your password</small>
                         </div>
 
                     </div>
