@@ -125,15 +125,15 @@ export default function ShowProfile() {
                         <div className="d-flex align-items-center justify-content-between">
                             <h1>Profile Info</h1>
                             {
-                                prefix == 'customer' && <div className="d-flex align-items-center jusitfy-content-center gap-4">
-                                    <p>Delete Your Profile</p>
+                                prefix == 'customer' && <div className="d-flex align-items-center justify-content-center gap-4">
+                                    <p className="mb-0 text-decoration-underline">Delete Your Profile <i className="bi bi-arrow-bar-right"></i></p>
                                     <DeleteModalUi itemId={currentUser.details.id} deleteFunction={handleDeleteUser} />
                                 </div>
                             }
                         </div>
 
 
-                        <div className="row row-cols-1 row-cols-md-2">
+                        <div className={`row row-cols-1 ${prefix == 'customer' ? 'row-cols-md-2' : ''}`}>
 
                             <div className="col">
                                 <div className="card border-0 shadow p-3">
@@ -168,17 +168,18 @@ export default function ShowProfile() {
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="col">
-                                {/* sezione di edit  */}
-                                <RegisterFormUi
-                                    user={newUser}
-                                    label={'Save'}
-                                    onchange={handleChange}
-                                    onsubmit={handleSubmit}
-                                    passwordRequired={false}
-                                />
-                            </div>
+                            {
+                                prefix == 'customer' && <div className="col">
+                                    {/* sezione di edit  */}
+                                    <RegisterFormUi
+                                        user={newUser}
+                                        label={'Save'}
+                                        onchange={handleChange}
+                                        onsubmit={handleSubmit}
+                                        passwordRequired={false}
+                                    />
+                                </div>
+                            }
                         </div>
 
                     </div>
