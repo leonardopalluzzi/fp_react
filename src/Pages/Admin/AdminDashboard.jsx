@@ -35,8 +35,6 @@ export default function AdminDashboard() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-
                 setStats({
                     state: 'success',
                     servicesData: [

@@ -3,8 +3,6 @@ import DeleteModalUi from "./DeleteModal.ui"
 import { formatDate } from "../../Js/UtilFunctions";
 
 export default function UsersGenericListUi({ users, title, onedit, onshow, ondelete, disableShow, disableEdit, disableDelete }) {
-    console.log(users);
-
     return (
         <>
             <div className="col">
@@ -26,24 +24,22 @@ export default function UsersGenericListUi({ users, title, onedit, onshow, ondel
                             </thead>
                             <tbody>
                                 {
-                                    users.map(c => (
-                                        <>
-                                            <tr className="">
-                                                <td>{c.username}</td>
-                                                <td>{c.email}</td>
-                                                <td>{formatDate(c.createdAt)}</td>
-                                                <td>
-                                                    <div className="d-flex align-items-center justify-content-center gap-2">
-                                                        <button disabled={disableShow} onClick={() => onshow(c.id)} className="btn btn-primary"><i class="bi bi-eye-fill"></i></button>
-                                                        <button disabled={disableEdit} onClick={() => onedit(c.id)} className="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
-                                                        {
-                                                            !disableDelete && <DeleteModalUi itemId={c.id} deleteFunction={ondelete} />
-                                                        }
-                                                    </div>
+                                    users.map((c, i) => (
+                                        <tr key={`user-${i}`} className="">
+                                            <td>{c.username}</td>
+                                            <td>{c.email}</td>
+                                            <td>{formatDate(c.createdAt)}</td>
+                                            <td>
+                                                <div className="d-flex align-items-center justify-content-center gap-2">
+                                                    <button disabled={disableShow} onClick={() => onshow(c.id)} className="btn btn-primary"><i className="bi bi-eye-fill"></i></button>
+                                                    <button disabled={disableEdit} onClick={() => onedit(c.id)} className="btn btn-warning"><i className="bi bi-pencil-square"></i></button>
+                                                    {
+                                                        !disableDelete && <DeleteModalUi itemId={c.id} deleteFunction={ondelete} />
+                                                    }
+                                                </div>
 
-                                                </td>
-                                            </tr>
-                                        </>
+                                            </td>
+                                        </tr>
                                     ))
                                 }
 

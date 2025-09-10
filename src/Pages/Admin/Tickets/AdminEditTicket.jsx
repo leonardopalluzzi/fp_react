@@ -49,7 +49,6 @@ export default function AdminEditTicket() {
                 ])
 
                 if (ticketData.state && typeListData.state && (ticketData.state == 'success' && typeListData.state == 'success')) {
-                    console.log(ticketData);
                     setTicket({
                         state: 'success',
                         title: ticketData.result.title,

@@ -37,7 +37,6 @@ export default function CreateTicket() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 if (data.state && data.state == 'success') {
                     setServiceTypeList({
                         state: 'success',

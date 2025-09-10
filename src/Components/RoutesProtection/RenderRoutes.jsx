@@ -27,7 +27,6 @@ export default function RenderRoutes() {
             )
         case 'success':
             const allowedRoutes = routes.filter(route => route.roles.some(role => currentUser.details.roles.includes(role)))
-            console.log(allowedRoutes);
 
             return (
                 <Routes>

@@ -69,17 +69,17 @@ const deleteCustomerFromService = async (token, serviceId, customerId, setLoader
         }
 
         const data = await response.json()
-        if(data.state && data.state == 'success'){
+        if (data.state && data.state == 'success') {
             throwMessage('success', ['Customer detached from service correctly'])
-            if(prefix == 'customer'){
+            if (prefix == 'customer') {
                 navigate(`/${prefix}/services`)
-            }  
-        } else if(data.state){
+            }
+        } else if (data.state) {
             throwMessage(data.state, [data.message])
-        } else{
+        } else {
             throwMessage('error', ['Unknown Error'])
         }
-        
+
         return data
 
     } catch (err) {
@@ -248,7 +248,6 @@ const updateService = (sId, payload, token, setLoader, throwMessage, handleRefre
             }
         })
         .catch(err => {
-            console.error(err)
             setLoader(false)
             throwMessage('error', [err.message])
             setService({
@@ -271,8 +270,6 @@ const getAllServicesForSelect = (token, throwMessage, setter) => {
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
-
             if (data.state && data.state == 'success') {
                 setter({
                     state: 'success',
@@ -376,7 +373,6 @@ const deleteProfile = (uId, token, throwMessage, setLoader, navigate) => {
             }
         })
         .catch(err => {
-            console.error(err)
             throwMessage('error', [err.message])
         })
         .finally(() => {

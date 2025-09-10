@@ -75,7 +75,6 @@ export default function IndexServices() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 if (data.state && data.state == 'success') {
                     setServices({
                         state: 'success',

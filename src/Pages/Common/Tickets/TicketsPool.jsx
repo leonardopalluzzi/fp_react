@@ -69,8 +69,6 @@ export default function TicketsPool() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-
                 if (data.state && data.state == 'success') {
                     setTickets({
                         state: 'success',

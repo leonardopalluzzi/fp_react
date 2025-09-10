@@ -28,7 +28,6 @@ export default function ShowServicePage() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 if (data.state && data.state == 'success') {
                     setService({
                         state: 'success',

@@ -40,7 +40,7 @@ export default function Header() {
                         </div>
                         <div>
                             <Link to={`/${prefix}/profile`} className="fs-1 btn btn-trasparent">
-                                <i class="bi bi-person-circle"></i>
+                                <i className="bi bi-person-circle"></i>
                             </Link>
                         </div>
                     </div>

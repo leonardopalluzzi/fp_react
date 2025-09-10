@@ -59,56 +59,50 @@ export default function DataWrapper({ children, css, id }) {
             <div>
                 <div className={css}>
                     {
-                        fields.map(f => (
-                            <>
+                        fields.map((f, i) => (
+                            <div key={`wrap-${i}`} className="col">
+                                <div className="mb-3">
+                                    {
+                                        f.type == 'select' && (
 
-                                <div className="col">
-                                    <div className="mb-3">
-                                        {
-                                            f.type == 'select' && (
-                                                <>
-                                                    <div className="input-group mb-3">
-                                                        <label className="input-group-text" for="inputGroupSelect01">{f.label}</label>
-                                                        <select value={localState[f.key]} name={f.key} onChange={(e) => handleInputChange(e.target.name, e.target.value)} className="form-select" id="inputGroupSelect01">
-                                                            <option value="">All</option>
-                                                            {
-                                                                f.options.map(o => (
-                                                                    <>
-                                                                        <option key={o.value} value={o.value}>{o.label}</option>
-                                                                    </>
-                                                                ))
-                                                            }
+                                            <div className="input-group mb-3">
+                                                <label className="input-group-text" htmlFor="inputGroupSelect01">{f.label}</label>
+                                                <select value={localState[f.key]} name={f.key} onChange={(e) => handleInputChange(e.target.name, e.target.value)} className="form-select" id="inputGroupSelect01">
+                                                    <option value="">All</option>
+                                                    {
+                                                        f.options.map(o => (
+                                                            <option key={o.value} value={o.value}>{o.label}</option>
+                                                        ))
+                                                    }
 
-                                                        </select>
-                                                    </div>
+                                                </select>
+                                            </div>
 
-                                                </>
-                                            )
-                                        }
-                                        {
-                                            f.type == 'text' && (
-                                                <>
-                                                    <div className="input-group mb-3">
-                                                        <span className="input-group-text" id="basic-addon1">{f.label}</span>
-                                                        <input value={localState[f.key] ?? ''} name={f.key} onChange={(e) => handleInputChange(e.target.name, e.target.value)} type="text" className="form-control" placeholder={f.label} aria-label="Username" aria-describedby="basic-addon1" />
-                                                    </div>
-                                                </>
-                                            )
-                                        }
-                                        {
-                                            f.type == 'date' && (
-                                                <>
-                                                    <div className="input-group mb-3">
-                                                        <span className="input-group-text" id="basic-addon1">{f.label}</span>
-                                                        <input value={localState[f.key]} name={f.key} onChange={(e) => handleInputChange(e.target.name, e.target.value)} type="datetime-local" className="form-control" placeholder={f.label} aria-label="Username" aria-describedby="basic-addon1" />
-                                                    </div>
-                                                </>
-                                            )
-                                        }
-                                    </div>
+
+                                        )
+                                    }
+                                    {
+                                        f.type == 'text' && (
+                                            <>
+                                                <div className="input-group mb-3">
+                                                    <span className="input-group-text" id="basic-addon1">{f.label}</span>
+                                                    <input value={localState[f.key] ?? ''} name={f.key} onChange={(e) => handleInputChange(e.target.name, e.target.value)} type="text" className="form-control" placeholder={f.label} aria-label="Username" aria-describedby="basic-addon1" />
+                                                </div>
+                                            </>
+                                        )
+                                    }
+                                    {
+                                        f.type == 'date' && (
+                                            <>
+                                                <div className="input-group mb-3">
+                                                    <span className="input-group-text" id="basic-addon1">{f.label}</span>
+                                                    <input value={localState[f.key]} name={f.key} onChange={(e) => handleInputChange(e.target.name, e.target.value)} type="datetime-local" className="form-control" placeholder={f.label} aria-label="Username" aria-describedby="basic-addon1" />
+                                                </div>
+                                            </>
+                                        )
+                                    }
                                 </div>
-
-                            </>
+                            </div>
                         ))
                     }
                 </div>

@@ -3,10 +3,10 @@ export default function ServiceTabelLightUi({ services, onShow }) {
         <>
             <div className="card border-0 overflow-hidden">
                 <div
-                    class="table-responsive"
+                    className="table-responsive"
                 >
                     <table
-                        class="table"
+                        className="table"
                     >
                         <thead>
                             <tr>
@@ -27,7 +27,7 @@ export default function ServiceTabelLightUi({ services, onShow }) {
                                             <td>{item.serviceType.name}</td>
                                             <td>{item.status}</td>
                                             <td>
-                                                <button className="btn btn-primary" onClick={() => onShow(item.id)}><i class="bi bi-eye"></i></button>
+                                                <button className="btn btn-primary" onClick={() => onShow(item.id)}><i className="bi bi-eye"></i></button>
                                             </td>
                                         </tr>
                                     </>

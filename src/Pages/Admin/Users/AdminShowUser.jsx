@@ -42,7 +42,6 @@ export default function AdminShowUser() {
             .then(data => {
 
                 if (data.state && data.state == 'success') {
-                    console.log(data);
 
                     setUser({
                         state: 'success',
@@ -118,10 +117,8 @@ export default function AdminShowUser() {
 
                             <label htmlFor="">Roles:</label>
                             <ul className="list-unstyled">
-                                {user.result.roles.map(item => (
-                                    <>
-                                        <li>{item.name}</li>
-                                    </>
+                                {user.result.roles.map((item, i) => (
+                                    <li key={`showUser-${i}`}>{item.name}</li>
                                 ))}
                             </ul>
 

@@ -10,7 +10,7 @@ export default function CreatTicketFormUi({ ticket, onchange, onsubmit, typeList
                     </div>
 
                     <div className="input-group mb-3 d-none">
-                        <label className="input-group-text" for="inputGroupFile01">Attachment</label>
+                        <label className="input-group-text" htmlFor="inputGroupFile01">Attachment</label>
                         <input value={ticket.attachment} name="attachments" onChange={(e) => onchange(e.target.name, e.target.value)} type="file" className="form-control" id="inputGroupFile01" />
                     </div>
 
@@ -20,14 +20,12 @@ export default function CreatTicketFormUi({ ticket, onchange, onsubmit, typeList
                     </div>
 
                     <div className="input-group mb-3">
-                        <label className="input-group-text" for="inputGroupSelect01">Ticket Type</label>
+                        <label className="input-group-text" htmlFor="inputGroupSelect01">Ticket Type</label>
                         <select value={ticket.typeId} name="typeId" onChange={(e) => onchange(e.target.name, e.target.value)} className="form-select" id="inputGroupSelect01">
                             <option value="">Choose...</option>
                             {
                                 typeList.map((item, i) => (
-                                    <>
-                                        <option value={item.id}>{item.name}</option>
-                                    </>
+                                    <option key={i} value={item.id}>{item.name}</option>
                                 ))
                             }
                         </select>

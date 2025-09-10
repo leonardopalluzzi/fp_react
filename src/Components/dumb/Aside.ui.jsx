@@ -9,19 +9,15 @@ export default function AsideUi({ menuVoices, currentUser }) {
         <>
             <div className="aside_wrapper shadow">
                 <aside className="bg-light aside">
-                    <div className="d-flex align-items-center justify-content-center"><i class="bi bi-speedometer2 fs-1 aside_icon"></i></div>
+                    <div className="d-flex align-items-center justify-content-center"><i className="bi bi-speedometer2 fs-1 aside_icon"></i></div>
 
                     <h3 className="aside_text">Welcome:</h3>
                     <h4 className="aside_text text-decoration-underline">{currentUser.sub}</h4>
                     <ul className="list-unstyled aside_text">
                         {
-                            menuVoices.map(voice =>
+                            menuVoices.map((voice, i) =>
                             (
-                                <>
-                                    <>
-                                        <li className="my-3"><NavLink className={voice.style} to={`/${roleprefix}${voice.path}`}>{voice.name}</NavLink></li>
-                                    </>
-                                </>
+                                <li key={i} className="my-3"><NavLink className={voice.style} to={`/${roleprefix}${voice.path}`}>{voice.name}</NavLink></li>
                             ))
                         }
                     </ul>

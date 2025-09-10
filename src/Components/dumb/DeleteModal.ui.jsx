@@ -4,16 +4,16 @@ export default function DeleteModalUi({ itemId, deleteFunction }) {
         <>
             <button
                 type="button"
-                class="btn btn-danger"
+                className="btn btn-danger"
                 data-bs-toggle="modal"
                 data-bs-target="#modalId"
             >
-                <i class="bi bi-file-earmark-x-fill"></i>
+                <i className="bi bi-file-earmark-x-fill"></i>
             </button>
 
 
             <div
-                class="modal fade"
+                className="modal fade"
                 id="modalId"
                 tabIndex="-1"
                 data-bs-backdrop="static"
@@ -24,33 +24,33 @@ export default function DeleteModalUi({ itemId, deleteFunction }) {
                 aria-hidden="true"
             >
                 <div
-                    class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
+                    className="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
                     role="document"
                 >
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalTitleId">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="modalTitleId">
                                 Confirm delete operation
                             </h5>
                             <button
                                 type="button"
-                                class="btn-close"
+                                className="btn-close"
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
                             ></button>
                         </div>
-                        <div class="modal-body">
+                        <div className="modal-body">
                             Are you sure you want to proceed?
                         </div>
-                        <div class="modal-footer">
+                        <div className="modal-footer">
                             <button
                                 type="button"
-                                class="btn btn-secondary"
+                                className="btn btn-secondary"
                                 data-bs-dismiss="modal"
                             >
                                 Close
                             </button>
-                            <button onClick={() => deleteFunction(itemId)} type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+                            <button onClick={() => deleteFunction(itemId)} type="button" className="btn btn-danger" data-bs-dismiss="modal">Delete</button>
                         </div>
                     </div>
                 </div>

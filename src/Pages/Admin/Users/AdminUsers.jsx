@@ -116,8 +116,6 @@ export default function AdminUsers() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-                
                 if (data.state && data.state == 'success') {
                     setter({
                         state: 'success',

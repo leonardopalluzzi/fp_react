@@ -1,6 +1,4 @@
 export default function LoginFormUi({ user, onchange, onsubmit }) {
-    console.log('render login form');
-
     return (
         <>
             <div className="container my-5">

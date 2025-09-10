@@ -39,8 +39,6 @@ export default function ShowProfile() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-
                 if (data.state && data.state == 'success') {
                     setUser({
                         state: 'success',
@@ -88,8 +86,6 @@ export default function ShowProfile() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-
                 if (data.state && data.state == 'success') {
                     throwMessage(data.state, ['User updated correctly, you need to re-login'])
                     return navigate("/login")
@@ -108,7 +104,7 @@ export default function ShowProfile() {
             })
     }
 
-    function handleDeleteUser(uId){
+    function handleDeleteUser(uId) {
         deleteProfile(uId, token, throwMessage, setLoader, navigate)
     }
 
@@ -128,14 +124,14 @@ export default function ShowProfile() {
                     <div className="container my-5">
                         <div className="d-flex align-items-center justify-content-between">
                             <h1>Profile Info</h1>
-                                {
-                                    prefix == 'customer' && <div className="d-flex align-items-center jusitfy-content-center gap-4">
-                                                                <p>Delete Your Profile</p>
-                                                                <DeleteModalUi itemId={currentUser.details.id} deleteFunction={handleDeleteUser}/>
-                                                            </div>
-                                }
+                            {
+                                prefix == 'customer' && <div className="d-flex align-items-center jusitfy-content-center gap-4">
+                                    <p>Delete Your Profile</p>
+                                    <DeleteModalUi itemId={currentUser.details.id} deleteFunction={handleDeleteUser} />
+                                </div>
+                            }
                         </div>
-                        
+
 
                         <div className="row row-cols-1 row-cols-md-2">
 
@@ -163,11 +159,8 @@ export default function ShowProfile() {
                                             <label htmlFor="">Roles:</label>
                                             <ul className="list-unstyled">
                                                 {
-                                                    user.result.roles.map(r => (
-
-                                                        <>
-                                                            <li>{r.name}</li>
-                                                        </>
+                                                    user.result.roles.map((r, i) => (
+                                                        <li key={`showProfile-${i}`}>{r.name}</li>
                                                     ))
                                                 }
                                             </ul>
@@ -184,7 +177,7 @@ export default function ShowProfile() {
                                     onchange={handleChange}
                                     onsubmit={handleSubmit}
                                     passwordRequired={false}
-                                />                                
+                                />
                             </div>
                         </div>
 

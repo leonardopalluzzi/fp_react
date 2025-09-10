@@ -12,7 +12,6 @@ function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState({
         state: 'loading'
     })
-    console.log(currentUser);
 
     const [prefix, setPrefix] = useState('')
 
@@ -47,7 +46,6 @@ function AuthProvider({ children }) {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(jwtDecode(data.token));
                     const decoded = jwtDecode(data.token)
 
                     setCurrentUser({
@@ -72,8 +70,6 @@ function AuthProvider({ children }) {
 
                 })
                 .catch(err => {
-                    console.log(err.message);
-
                     setCurrentUser({
                         state: 'error',
                         message: err.message

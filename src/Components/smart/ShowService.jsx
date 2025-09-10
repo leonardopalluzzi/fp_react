@@ -177,8 +177,6 @@ export default function ShowService({ roles, service }) {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-
                 setTickets({
                     state: 'success',
                     pagination: data.result,

@@ -31,13 +31,11 @@ export default function ShowServiceAdminListUi({ customers, operators, handleOpe
                                         </thead>
                                         <tbody>
                                             {
-                                                customers.map(c => (
-                                                    <>
-                                                        <tr className="">
-                                                            <td>{c.username}</td>
-                                                            <td>{c.email}</td>
-                                                        </tr>
-                                                    </>
+                                                customers.map((c, i) => (
+                                                    <tr key={i} className="">
+                                                        <td>{c.username}</td>
+                                                        <td>{c.email}</td>
+                                                    </tr>
                                                 ))
                                             }
 
@@ -73,22 +71,20 @@ export default function ShowServiceAdminListUi({ customers, operators, handleOpe
                                         </thead>
                                         <tbody>
                                             {
-                                                operators.map(c => (
-                                                    <>
-                                                        <tr className="">
-                                                            <td>{c.username}</td>
-                                                            <td>{c.email}</td>
-                                                            <td>{formatDate(c.createdAt)}</td>
-                                                            <td>
-                                                                <div className="d-flex align-items-center justify-content-center gap-2">
-                                                                    <button onClick={() => handleOperatorShow(c.id)} className="btn btn-primary"><i class="bi bi-eye-fill"></i></button>
-                                                                    <button onClick={() => handleOperatorEdit(c.id)} className="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
-                                                                    <DeleteModalUi itemId={c.id} deleteFunction={handleOperatorDelete} />
-                                                                </div>
+                                                operators.map((c, i) => (
+                                                    <tr key={`service-${i}`} className="">
+                                                        <td>{c.username}</td>
+                                                        <td>{c.email}</td>
+                                                        <td>{formatDate(c.createdAt)}</td>
+                                                        <td>
+                                                            <div className="d-flex align-items-center justify-content-center gap-2">
+                                                                <button onClick={() => handleOperatorShow(c.id)} className="btn btn-primary"><i className="bi bi-eye-fill"></i></button>
+                                                                <button onClick={() => handleOperatorEdit(c.id)} className="btn btn-warning"><i className="bi bi-pencil-square"></i></button>
+                                                                <DeleteModalUi itemId={c.id} deleteFunction={handleOperatorDelete} />
+                                                            </div>
 
-                                                            </td>
-                                                        </tr>
-                                                    </>
+                                                        </td>
+                                                    </tr>
                                                 ))
                                             }
 
@@ -96,8 +92,6 @@ export default function ShowServiceAdminListUi({ customers, operators, handleOpe
                                     </table>
                                 </div>
                             </div>
-
-
                         </DataWrapper>
                     </div>
                 </div>

@@ -3,9 +3,6 @@ import ToastUi from "../dumb/Toast.ui"
 
 export default function ErrorHandler() {
     const { messages, closeMessage } = useMessageContext()
-    console.log(messages);
-
-
 
     function getTextColor() {
         switch (messages.state) {
