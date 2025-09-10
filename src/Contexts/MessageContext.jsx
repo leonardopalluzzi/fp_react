@@ -18,12 +18,12 @@ function MessageProvider({ children }) {
             state: state,
             getList: [...msgList]
         })
-        if (msgList.state !== 'empty') {
+        if (state !== 'empty') {
             timeoutRef.current = setTimeout(() => setMessages({
                 state: 'empty',
                 getList: []
             }), 4000)
-        } else if (msgList.state.includes('expired')) {
+        } else if (state.includes('expired')) {
             navigate('/login')
         }
     }
