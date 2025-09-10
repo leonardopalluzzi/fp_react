@@ -1,11 +1,11 @@
 import { useFiltersContext } from "../../Contexts/FiltersContext";
 import { useMessageContext } from "../../Contexts/MessageContext";
 import LoaderUi from "../dumb/Loader.ui";
+import { useState } from "react";
 
 export default function DataWrapper({ children, css, id }) {
     const { config, handleRefresh, setOnChangeRefreshKey } = useFiltersContext()
     const { setLoader } = useMessageContext()
-    console.log(config[4]);
 
     if (config[id] == null) {
         return children
@@ -14,10 +14,16 @@ export default function DataWrapper({ children, css, id }) {
     }
 
     const { setPage, pageNumber, fields = [], values = {}, onChange = () => { }, currentPage = 0 } = config[id]
+    const [localState, setLocalState] = useState(values)
 
-    function handleChange(key, value) {
-        onChange(prev => ({ ...prev, [key]: value }))
-        setOnChangeRefreshKey(prev => prev + 1)
+    function handleInputChange(key, value) {
+        setLocalState(prev => ({ ...prev, [key]: value }));
+    }
+
+    function handleApplyFilters() {
+        onChange(localState);
+        setOnChangeRefreshKey(prev => prev + 1);
+        handleRefresh();
     }
 
     function handleNextPage() {
@@ -41,6 +47,7 @@ export default function DataWrapper({ children, css, id }) {
         fields.forEach(f => {
             resetValues[f.key] = "";
         })
+        setLocalState(resetValues)
         onChange(resetValues)
         handleRefresh()
     }
@@ -62,7 +69,7 @@ export default function DataWrapper({ children, css, id }) {
                                                 <>
                                                     <div className="input-group mb-3">
                                                         <label className="input-group-text" for="inputGroupSelect01">{f.label}</label>
-                                                        <select value={values[f.key]} name={f.key} onChange={(e) => handleChange(e.target.name, e.target.value)} className="form-select" id="inputGroupSelect01">
+                                                        <select value={localState[f.key]} name={f.key} onChange={(e) => handleInputChange(e.target.name, e.target.value)} className="form-select" id="inputGroupSelect01">
                                                             <option value="">All</option>
                                                             {
                                                                 f.options.map(o => (
@@ -83,7 +90,7 @@ export default function DataWrapper({ children, css, id }) {
                                                 <>
                                                     <div className="input-group mb-3">
                                                         <span className="input-group-text" id="basic-addon1">{f.label}</span>
-                                                        <input value={values[f.key] ?? ''} name={f.key} onChange={(e) => handleChange(e.target.name, e.target.value)} type="text" className="form-control" placeholder={f.label} aria-label="Username" aria-describedby="basic-addon1" />
+                                                        <input value={localState[f.key] ?? ''} name={f.key} onChange={(e) => handleInputChange(e.target.name, e.target.value)} type="text" className="form-control" placeholder={f.label} aria-label="Username" aria-describedby="basic-addon1" />
                                                     </div>
                                                 </>
                                             )
@@ -93,7 +100,7 @@ export default function DataWrapper({ children, css, id }) {
                                                 <>
                                                     <div className="input-group mb-3">
                                                         <span className="input-group-text" id="basic-addon1">{f.label}</span>
-                                                        <input value={values[f.key]} name={f.key} onChange={(e) => handleChange(e.target.name, e.target.value)} type="datetime-local" className="form-control" placeholder={f.label} aria-label="Username" aria-describedby="basic-addon1" />
+                                                        <input value={localState[f.key]} name={f.key} onChange={(e) => handleInputChange(e.target.name, e.target.value)} type="datetime-local" className="form-control" placeholder={f.label} aria-label="Username" aria-describedby="basic-addon1" />
                                                     </div>
                                                 </>
                                             )
@@ -109,7 +116,7 @@ export default function DataWrapper({ children, css, id }) {
                     fields.length > 0 && (
                         <>
                             <div className="d-flex gap-4">
-                                <div className=""><button className="btn btn-success" onClick={() => handleRefresh()}>Apply Filters</button></div>
+                                <div className=""><button className="btn btn-success" onClick={() => handleApplyFilters()}>Apply Filters</button></div>
                                 <div className=""><button onClick={() => resetFilters()} className="btn btn-outline-danger">Reset Filters</button></div>
                             </div>
                         </>

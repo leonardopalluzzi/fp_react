@@ -1,10 +1,13 @@
 import RegisterFormUi from "../../Components/dumb/RegisterForm.ui"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useAuthContext } from "../../Contexts/AuthContext"
+import { useNavigate } from "react-router-dom";
+import { Role } from "../../Js/Roles";
 
 export default function Register() {
 
     const { register } = useAuthContext();
+    const navigate = useNavigate()
 
     const [user, setuser] = useState({
         username: '',

@@ -286,7 +286,7 @@ const getAllServicesForSelect = (token, throwMessage, setter) => {
         })
 }
 
-const getServiceTypesForSelect = (token, setter, throwMessage,) => {
+const getServiceTypesForSelect = (token, setter, throwMessage) => {
     fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tipologies/servicetypes`, {
         method: 'GET',
         headers: {
@@ -345,6 +345,32 @@ const deleteUser = (uId, token, throwMessage, setLoader, handleRefresh) => {
         })
 }
 
+const deleteProfile = (uId, token, throwMessage, setLoader) => {
+    setLoader(true)
+    fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/users/delete/${uId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.state && data.state == 'success') {
+                throwMessage(data.state, ['User Deleted'])
+            } else if (data.state) {
+                throwMessage(data.state, [data.message])
+            } else {
+                throwMessage('error', ['Unknown Error'])
+            }
+        })
+        .catch(err => {
+            throwMessage('error', [err.message])
+        })
+        .finally(() => {
+            setLoader(false)
+        })
+}
+
 // aggiungere tipologiche
 
 
@@ -359,5 +385,6 @@ export {
     createTicket,
     deleteUser,
     getAllServicesForSelect,
-    getServiceTypesForSelect
+    getServiceTypesForSelect,
+    deleteProfile
 }

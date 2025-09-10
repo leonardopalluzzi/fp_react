@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useRef, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { createContext, useContext, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MessageContext = createContext()
 
@@ -8,21 +8,10 @@ function MessageProvider({ children }) {
         state: 'empty',
         getList: []
     });
-    const [redirect, setRedirect] = useState(false)
     const [loader, setLoader] = useState(false)
 
     const timeoutRef = useRef(null);
-
-    useEffect(() => {
-        if (messages.state == "expired") {
-            setRedirect(true)
-        }
-
-    }, [messages.state])
-
-    if (redirect) {
-        return <Navigate to={'/login'} replace />
-    }
+    const navigate = useNavigate()
 
     function throwMessage(state, msgList) {
         setMessages({
@@ -34,7 +23,9 @@ function MessageProvider({ children }) {
                 state: 'empty',
                 getList: []
             }), 4000)
-        } else if (msgList.state == 'expired') return;
+        } else if (msgList.state.includes('expired')) {
+            navigate('/login')
+        }
     }
 
     function closeMessage() {

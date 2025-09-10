@@ -1,4 +1,4 @@
-export default function ToastUi({ state, messages, closeMessage, textColor, imgPath }) {
+export default function ToastUi({ state, messages, closeMessage, textColor }) {
 
     const iconMap = {
         error: <i className="bi bi-x-circle-fill text-danger me-2"></i>,

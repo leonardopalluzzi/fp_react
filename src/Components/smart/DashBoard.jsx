@@ -58,7 +58,7 @@ export default function DashBoard({ servicesData, ticketsData, usersData, role }
 
                     {/* grafico services  */}
                     {
-                        role == Role.ADMIN || role == Role.CUSTOMER && <div
+                        (role == Role.ADMIN || role == Role.CUSTOMER) && <div
                             key="services"
                             className="bg-white shadow rounded p-4"
                         >

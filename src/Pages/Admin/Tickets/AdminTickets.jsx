@@ -16,7 +16,7 @@ import Error from "../../../Components/dumb/Error"
 export default function AdminTickets() {
     const { throwMessage, setLoader } = useMessageContext()
     const { currentUser, prefix } = useAuthContext()
-    const { setFiltersConfig, buildQuery, refreshKey, handleRefresh } = useFiltersContext()
+    const { setFiltersConfig, buildQuery, refreshKey, handleRefresh, onChangeRefreshKey } = useFiltersContext()
     const token = currentUser.token
     const navigate = useNavigate()
     const routeConfig = crudRoutesConfig[prefix]
@@ -24,9 +24,6 @@ export default function AdminTickets() {
     const [tickets, setTickets] = useState({
         state: 'loading'
     })
-
-
-
 
     //paginazione e filtri
     const [page, setPage] = useState(0)
@@ -56,7 +53,7 @@ export default function AdminTickets() {
             setFiltersConfig(1, page, tickets.pagination.totalPages, setPage, fields, filters, setFilters)
         }
 
-    }, [tickets, filters, services])
+    }, [tickets, onChangeRefreshKey, services])
 
 
     // fetch per lista servizi per select filtri
@@ -133,7 +130,6 @@ export default function AdminTickets() {
                         <h1>Assigned Tickets</h1>
                         <p>Here you can see all the currently assigned tickets</p>
                         <DataWrapper css={''} id={1}>
-
                             <ShowServiceTicketListUi
                                 tickets={tickets.result}
                                 handleTicketEdit={handleTicketEdit}
@@ -143,7 +139,6 @@ export default function AdminTickets() {
                                 showEdit={prefix != 'customer' ? true : false}
                                 showShow={true}
                             />
-
                         </DataWrapper>
                     </div>
                 </>

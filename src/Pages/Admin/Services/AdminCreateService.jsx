@@ -39,7 +39,7 @@ export default function AdminCreateService() {
 
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tipologies/servicetypes`, {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tipologies/getAllServiceTypes`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -47,17 +47,16 @@ export default function AdminCreateService() {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.state && data.state == 'expired') {
-                    throwMessage('expired', [data.error])
-                } else if (data.state && data.state == 'error') {
-                    throwMessage('error', [data.error])
+                if (data.state && data.state == 'success') {
+                    setServiceTypes({
+                        state: 'success',
+                        result: data.result
+                    })
+                } else if (data.state) {
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
                 }
-                console.log(data);
-
-                setServiceTypes({
-                    state: 'success',
-                    result: data
-                })
             })
             .catch(err => {
                 setServiceTypes({
@@ -79,22 +78,26 @@ export default function AdminCreateService() {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'content-type': 'application/json'
+                'Content-type': 'application/json'
             },
             body: JSON.stringify(serviceToSend)
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
 
-                if (data.state && data.state == 'expired') {
-                    throwMessage('expired', [data.error])
-                } else if (data.state && data.state == 'error') {
-                    throwMessage('error', [data.error])
+                if (data.state && data.state == 'success') {
+                    throwMessage('success', ['Service added Correctly'])
+                    return navigate(`/admin/service/${data.result.id}`)
+                } else if (data.state) {
+                    throwMessage(data.state, [data.message])
+                } else {
+                    throwMessage('error', ['Unknown Error'])
                 }
-                throwMessage('success', ['Service added Correctly'])
-                return navigate('/admin/services')
             })
             .catch(err => {
+                console.error(err);
+
                 throwMessage('error', [err.message])
             })
             .finally(() => {

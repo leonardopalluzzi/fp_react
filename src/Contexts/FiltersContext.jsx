@@ -27,7 +27,7 @@ function FiltersProvider({ children }) {
      * @param {Object} values - State object, initialized empty, updated via onChange.
      * @param {function} onChange - Handler to update values state.
      */
-    function setFiltersConfig(id, currentPage, pageNumber, setPage, fields, values, onChange,) {
+    function setFiltersConfig(id, currentPage, pageNumber, setPage, fields, values, onChange) {
         setConfig(prev => ({
             ...prev,
             [id]: { currentPage, pageNumber, setPage, fields, values, onChange }

@@ -231,7 +231,7 @@ export default function ShowService({ roles, service }) {
             <div className="container my-5">
                 <div className="d-flex aling-items-center justify-content-between my-4">
                     <h1>Service Info</h1>
-                    <button onClick={() => navigate(`/${roleConfigPrefix}/ticket/create/${service.id}`)} className="btn btn-outline-success">+ Create Ticket</button>
+                    <button onClick={() => navigate(`/${prefix}/ticket/create/${service.id}`)} className="btn btn-outline-success">+ Create Ticket</button>
 
                 </div>
                 <div className="card border-0 p-4 shadow">

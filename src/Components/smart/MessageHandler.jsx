@@ -7,41 +7,31 @@ export default function ErrorHandler() {
 
 
 
+    function getTextColor() {
+        switch (messages.state) {
+            case 'error':
+                return 'text-danger'
+            case 'success':
+                return 'text-success'
+            case 'warning':
+                return 'text-warning'
+            case 'expired':
+                return 'text-danger'
+        }
 
+    }
 
     switch (messages.state) {
         case 'empty':
             return null;
         default:
-
-
-
-            const textColor = messages.state === 'error'
-                ? 'text-danger'
-                : messages.state === 'success'
-                    ? 'text-success'
-                    : messages.state === 'warning'
-                        ? 'text-warning'
-                        : '';
-
-            const imgPath = messages.state === 'error'
-                ? 'path/to/error.png'
-                : messages.state === 'success'
-                    ? 'path/to/success.png'
-                    : messages.state === 'warning'
-                        ? 'path/to/warning.png'
-                        : '';
-
-
-
             return (
                 <>
                     <ToastUi
                         state={messages.state}
                         messages={messages.getList ?? []}
                         closeMessage={closeMessage}
-                        textColor={textColor}
-                        imgPath={imgPath}
+                        textColor={getTextColor()}
                     />
                 </>
             )

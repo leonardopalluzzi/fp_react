@@ -12,6 +12,8 @@ function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState({
         state: 'loading'
     })
+    console.log(currentUser);
+
     const [prefix, setPrefix] = useState('')
 
     const navigate = useNavigate();
@@ -107,13 +109,13 @@ function AuthProvider({ children }) {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(jwtDecode(data.token));
                 setCurrentUser({
                     state: 'success',
                     token: data.token,
                     details: jwtDecode(data.token)
                 })
                 localStorage.setItem("token", data.token);
+                navigate('/customer/dashboard')
             })
             .catch(err => {
                 setCurrentUser({

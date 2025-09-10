@@ -7,6 +7,8 @@ export default function Login() {
 
     const { login } = useAuthContext()
     const { throwMessage } = useMessageContext()
+    console.log('render login');
+
 
     const [userToSend, setUserToSend] = useState({
         username: '',
