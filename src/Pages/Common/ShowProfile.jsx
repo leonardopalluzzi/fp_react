@@ -8,6 +8,7 @@ import Error from "../../Components/dumb/Error"
 import { deleteProfile } from "../../Js/FetchFunctions"
 import { useFiltersContext } from "../../Contexts/FiltersContext"
 import DeleteModalUi from "../../Components/dumb/DeleteModal.ui"
+import { formatDate } from "../../Js/UtilFunctions"
 
 export default function ShowProfile() {
     const { currentUser, prefix } = useAuthContext()
@@ -151,7 +152,7 @@ export default function ShowProfile() {
 
                                         <div className="my-4">
                                             <label htmlFor="">Created At:</label>
-                                            <h5>{user.result.createdAt}</h5>
+                                            <h5>{formatDate(user.result.createdAt)}</h5>
                                         </div>
 
 
