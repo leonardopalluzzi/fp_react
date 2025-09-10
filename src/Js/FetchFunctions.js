@@ -71,7 +71,9 @@ const deleteCustomerFromService = async (token, serviceId, customerId, setLoader
         const data = await response.json()
         if(data.state && data.state == 'success'){
             throwMessage('success', ['Customer detached from service correctly'])
-            navigate(`/${prefix}/services`)
+            if(prefix == 'customer'){
+                navigate(`/${prefix}/services`)
+            }  
         } else if(data.state){
             throwMessage(data.state, [data.message])
         } else{
