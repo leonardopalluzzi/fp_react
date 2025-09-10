@@ -11,7 +11,7 @@ import { useFiltersContext } from "../../../Contexts/FiltersContext"
 import DataWrapper from "../../../Components/smart/DataWrapper"
 import Error from "../../../Components/dumb/Error"
 
-export default function AdminShowTicket() {
+export default function ShowTicket() {
     const { throwMessage, setLoader } = useMessageContext()
     const { currentUser } = useAuthContext()
     const { id } = useParams()

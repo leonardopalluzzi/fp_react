@@ -3,29 +3,26 @@ import { useAuthContext } from "../../../Contexts/AuthContext"
 import { useState, useEffect } from "react"
 import LoaderUi from "../../../Components/dumb/Loader.ui"
 import ShowServiceTicketListUi from "../../../Components/dumb/ShowServiceTicketList.ui"
-import { useNavigate } from "react-router-dom"
 import DataWrapper from "../../../Components/smart/DataWrapper"
-import { Status } from '../../../Js/TicketStatus'
+import { Status } from "../../../Js/TicketStatus"
 import { useFiltersContext } from "../../../Contexts/FiltersContext"
-import { deleteTicket } from '../../../Js/FetchFunctions'
-import { crudRoutesConfig } from '../../../Js/CrudRoutesConfig'
+import { crudRoutesConfig } from "../../../Js/CrudRoutesConfig"
+import { useNavigate } from "react-router-dom"
 import { getAllServicesForSelect } from "../../../Js/FetchFunctions"
 import Error from "../../../Components/dumb/Error"
 
-
-export default function AdminTickets() {
+export default function TicketsPool() {
     const { throwMessage, setLoader } = useMessageContext()
     const { currentUser, prefix } = useAuthContext()
-    const { setFiltersConfig, buildQuery, refreshKey, handleRefresh, onChangeRefreshKey } = useFiltersContext()
+    const { setFiltersConfig, buildQuery, refreshKey } = useFiltersContext()
     const token = currentUser.token
-    const navigate = useNavigate()
     const routeConfig = crudRoutesConfig[prefix]
+    const navigate = useNavigate()
 
     const [tickets, setTickets] = useState({
         state: 'loading'
     })
 
-    //paginazione e filtri
     const [page, setPage] = useState(0)
     const [filters, setFilters] = useState({})
     const [services, setServices] = useState({
@@ -53,19 +50,18 @@ export default function AdminTickets() {
             setFiltersConfig(1, page, tickets.pagination.totalPages, setPage, fields, filters, setFilters)
         }
 
-    }, [tickets, onChangeRefreshKey, services])
+    }, [tickets, filters, services])
 
 
-    // fetch per lista servizi per select filtri
     useEffect(() => {
         getAllServicesForSelect(token, throwMessage, setServices)
     }, [])
 
 
 
-    //fetch dati
+
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets?page=${page}${buildQuery(filters)}`, {
+        fetch(`${import.meta.env.VITE_BACK_URL}/api/v1/tickets/manage?page=${page}${buildQuery(filters)}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -73,32 +69,35 @@ export default function AdminTickets() {
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
+
                 if (data.state && data.state == 'success') {
                     setTickets({
                         state: 'success',
-                        pagination: data.result,
-                        result: data.result.content
+                        result: data.result.content,
+                        pagination: data.result
                     })
                 } else if (data.state) {
                     throwMessage(data.state, [data.message])
                 } else {
                     throwMessage('error', ['Unknown Error'])
                 }
+
             })
             .catch(err => {
                 setTickets({
                     state: 'error',
                     message: err.message
                 })
+                throwMessage('error', [err.message])
             })
             .finally(() => {
                 setLoader(false)
             })
     }, [page, refreshKey])
 
-    function handleTicketEdit(tId, sId) {
-        return navigate(routeConfig.ticketEdit(tId, sId))
-
+    function handleTicketEdit(tId) {
+        return navigate(routeConfig.ticketEdit(tId, serviceId)) // da prender il serviceId
     }
 
     function handleTicketShow(tId) {
@@ -106,7 +105,6 @@ export default function AdminTickets() {
     }
 
     function handleTicketDelete(tId) {
-        deleteTicket(tId, token, throwMessage, setLoader, handleRefresh)
 
     }
 
@@ -127,20 +125,21 @@ export default function AdminTickets() {
             return (
                 <>
                     <div className="container my-5">
-                        <h1>Assigned Tickets</h1>
-                        <p>Here you can see all the currently assigned tickets</p>
+                        <h1>Tickets Pool</h1>
+                        <p>Here you can see all the open tickets that are note assigned to an operator</p>
                         <DataWrapper css={''} id={1}>
                             <ShowServiceTicketListUi
                                 tickets={tickets.result}
                                 handleTicketEdit={handleTicketEdit}
                                 handleTicketShow={handleTicketShow}
                                 handleTicketsDelete={handleTicketDelete}
-                                showDelete={prefix != 'customer' ? true : false}
-                                showEdit={prefix != 'customer' ? true : false}
+                                showDelete={true}
+                                showEdit={prefix == 'admin' ? true : false}
                                 showShow={true}
                             />
                         </DataWrapper>
                     </div>
+
                 </>
             )
     }

@@ -6,15 +6,15 @@ import AdminDashboard from "../Pages/Admin/AdminDashboard";
 import EmployeeDashboard from "../Pages/Employee/EmployeeDashboard";
 import CustomerDashboard from "../Pages/Customer/CustomerDashboard";
 import Profile from "../Pages/Common/ShowProfile";
-import AdminServices from '../Pages/Admin/Services/AdminServices';
-import AdminShowService from "../Pages/Admin/Services/AdminShowService";
+import IndexServices from '../Pages/Common/Services/IndexServices';
+import ShowServicePage from "../Pages/Common/Services/ShowServicePage";
 import AdminCreateService from '../Pages/Admin/Services/AdminCreateService'
 import AdminEditService from "../Pages/Admin/Services/AdminEditService";
-import AdminTickets from "../Pages/Admin/Tickets/AdminTickets";
-import AdminShowTicket from '../Pages/Admin/Tickets/AdminShowTicket';
+import IndexTickets from "../Pages/Common/Tickets/IndexTickets";
+import ShowTicket from '../Pages/Common/Tickets/ShowTicket';
 import AdminEditTicket from '../Pages/Admin/Tickets/AdminEditTicket';
 import CreateTicket from "../Pages/Common/CreateTicket";
-import AdminTicketsPool from "../Pages/Admin/Tickets/AdminTicketsPool";
+import TicketsPool from "../Pages/Common/Tickets/TicketsPool";
 import AdminUsers from "../Pages/Admin/Users/AdminUsers";
 import AdminShowUser from "../Pages/Admin/Users/AdminShowUser";
 import AdminEditUser from "../Pages/Admin/Users/AdminEditUser";
@@ -39,12 +39,12 @@ export const routes = [
             },
             {
                 path: 'services',
-                component: AdminServices,
+                component: IndexServices,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             },
             {
                 path: 'service/:id',
-                component: AdminShowService,
+                component: ShowServicePage,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             },
             {
@@ -59,12 +59,12 @@ export const routes = [
             },
             {
                 path: 'tickets',
-                component: AdminTickets,
+                component: IndexTickets,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             },
             {
                 path: 'ticket/:id',
-                component: AdminShowTicket,
+                component: ShowTicket,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             },
             {
@@ -79,7 +79,7 @@ export const routes = [
             },
             {
                 path: 'ticketspool',
-                component: AdminTicketsPool,
+                component: TicketsPool,
                 roles: [Role.ADMIN, Role.SUPERADMIN]
             },
             {
@@ -121,12 +121,12 @@ export const routes = [
             },
             {
                 path: 'services',
-                component: AdminServices,
+                component: IndexServices,
                 roles: [Role.EMPLOYEE, Role.SUPERADMIN]
             },
             {
                 path: 'service/:id',
-                component: AdminShowService,
+                component: ShowServicePage,
                 roles: [Role.EMPLOYEE, Role.SUPERADMIN]
             },
             // index tt
@@ -138,13 +138,13 @@ export const routes = [
             // tt pool
             {
                 path: 'ticketspool',
-                component: AdminTicketsPool,
+                component: TicketsPool,
                 roles: [Role.EMPLOYEE, Role.SUPERADMIN]
             },
             // show tt con create ecc...
             {
                 path: 'ticket/:id',
-                component: AdminShowTicket,
+                component: ShowTicket,
                 roles: [Role.EMPLOYEE, Role.SUPERADMIN]
             },
             {
@@ -172,25 +172,25 @@ export const routes = [
             // tt index
             {
                 path: 'tickets',
-                component: AdminTickets,
+                component: IndexTickets,
                 roles: [Role.CUSTOMER, Role.SUPERADMIN]
             },
             // tt show con create tt ecc...
             {
                 path: 'ticket/:id',
-                component: AdminShowTicket,
+                component: ShowTicket,
                 roles: [Role.CUSTOMER, Role.SUPERADMIN]
             },
             // service index
             {
                 path: 'services',
-                component: AdminServices,
+                component: IndexServices,
                 roles: [Role.CUSTOMER, Role.SUPERADMIN]
             },
             // service show solo lettura
             {
                 path: 'service/:id',
-                component: AdminShowService,
+                component: ShowServicePage,
                 roles: [Role.CUSTOMER, Role.SUPERADMIN]
             },
             {

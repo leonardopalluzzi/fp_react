@@ -12,7 +12,7 @@ import { Status } from "../../../Js/ServiceStatus";
 import { deleteService, getServiceTypesForSelect } from "../../../Js/FetchFunctions";
 import Error from "../../../Components/dumb/Error";
 
-export default function AdminServices() {
+export default function IndexServices() {
     const { throwMessage, setLoader } = useMessageContext();
     const { currentUser, prefix } = useAuthContext();
     const { setFiltersConfig, buildQuery, refreshKey, handleRefresh } = useFiltersContext()

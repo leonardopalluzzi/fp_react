@@ -7,7 +7,7 @@ import ShowService from "../../../Components/smart/ShowService";
 import { useFiltersContext } from "../../../Contexts/FiltersContext";
 import Error from "../../../Components/dumb/Error";
 
-export default function AdminShowService() {
+export default function ShowServicePage() {
     const { throwMessage } = useMessageContext();
     const { currentUser } = useAuthContext();
     const { id } = useParams();

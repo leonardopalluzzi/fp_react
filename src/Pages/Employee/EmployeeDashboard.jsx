@@ -187,6 +187,7 @@ export default function EmployeeDashboard() {
                         tickets.state == 'success' && (
                             <>
                                 <div className="container">
+                                    <h2>Your tickets</h2>
                                     <DataWrapper css={''} id={1}>
                                         <ShowServiceTicketListUi
                                             tickets={tickets.result}
