@@ -6,6 +6,24 @@ export default function ToastUi({ state, messages, closeMessage, textColor }) {
         warning: <i className="bi bi-exclamation-triangle-fill text-warning me-2"></i>,
     };
 
+    function normalizeMessages(messages) {
+        const isArrayOfStrings = Array.isArray(messages) && messages.every(m => typeof m == "string")
+        const isArrayOfObjects = Array.isArray(messages) && messages.every(m => typeof m == "object" && m !== null)
+
+        if (isArrayOfStrings) {
+            return messages
+        }
+        if (isArrayOfObjects) {
+            return messages.map((item, i) => {
+                return Object.entries(item).map(([key, value], j) => `${key}: ${value}`).join(', ')
+            })
+        }
+
+        return [];
+    }
+
+    const normalizedMessages = normalizeMessages(messages)
+
     return (
         <>
             <div className={`${textColor}`}>
@@ -22,7 +40,7 @@ export default function ToastUi({ state, messages, closeMessage, textColor }) {
                         <div className="toast-body">
                             <ul className="list-unstyled">
                                 {
-                                    messages.map((message, i) => (
+                                    normalizedMessages.map((message, i) => (
                                         <>
                                             <li key={i}>{message}</li>
                                         </>
