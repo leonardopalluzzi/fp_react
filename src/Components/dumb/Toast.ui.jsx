@@ -10,6 +10,7 @@ export default function ToastUi({ state, messages, closeMessage, textColor }) {
         const isArrayOfStrings = Array.isArray(messages) && messages.every(m => typeof m == "string")
         const isArrayOfObjects = Array.isArray(messages) && messages.every(m => typeof m == "object" && m !== null)
 
+
         if (isArrayOfStrings) {
             return messages
         }

@@ -70,6 +70,7 @@ export default function AdminCreateService() {
 
     function handleSubmit() {
         const serviceToSend = { ...newService }
+        serviceToSend.status = Status.INACTIVE
         console.log(serviceToSend);
 
 
