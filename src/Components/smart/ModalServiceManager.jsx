@@ -42,8 +42,6 @@ export default function ModalServiceManager({ token, function: action, title, la
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-
                 if (data.state && (data.state == 'error' || data.state == 'expired')) {
                     throwMessage(data.state, [data.message])
                 } else if (data.state && data.state == 'success') {

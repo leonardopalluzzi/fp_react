@@ -41,12 +41,17 @@ const deleteOperatorFromService = async (token, serviceId, operatorId, setLoader
         }
 
         const data = await response.json()
-        throwMessage('success', ['Operator detached from service correctly'])
-        return data
+
+        if (data.state && data.state == 'success') {
+            throwMessage('success', ['Operator detached from service correctly'])
+        } else if (data.state) {
+            throwMessage(data.state, [data.message])
+        } else {
+            throwMessage('error', ['Unknown Error'])
+        }
 
     } catch (err) {
         throwMessage('error', [err.message])
-        return { state: 'error', message: err.message }
     } finally {
         setLoader(false)
         handleRefresh()
